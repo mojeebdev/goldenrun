@@ -2,6 +2,13 @@
 
 **Decision:** One Cloudflare account, one primary application Worker, one D1 database. GitHub is only version control. Do not add Supabase, Vercel, Firebase, other hosted databases, external authentication, managed queues, independent API hosting or real-time sockets at launch.
 
+## Domain and deployment state
+
+- **Registered domain:** `goldenrun.fun` — purchased by the owner (confirmed 2026-10-29).
+- **DNS/provider connection:** Owner reports the domain has been connected to Cloudflare.
+- **Not yet verified:** DNS propagation, SSL certificate status, live HTTP response, Workers custom-domain route, D1 provisioning, GitHub build integration and production deployment. A Cloudflare zone is not the same as a published application.
+- **Next authorized deployment step:** when requested, attach `goldenrun.fun` to the one application Worker using Cloudflare custom-domain routing, verify HTTPS and redirects (including `www` policy), and only then mark the site live. Do not alter nameservers or purchase the domain again.
+
 ## Architecture
 
 ```
@@ -21,7 +28,7 @@ Visitor on goldenrun.fun
 - Use Cloudflare Vite plugin / current Workers toolchain, React + TypeScript, Phaser + Tailwind CSS.
 - Configure SPA fallback and Worker-first routing for `/api/*`.
 - The Worker validates all writes to D1.
-- Cloudflare Workers Builds native GitHub integration deploys only after owner has reviewed configuration.
+- Cloudflare Workers Builds native GitHub integration deploys only after owner has reviewed configuration; the purchased domain and Cloudflare zone do **not** imply that the Worker has been deployed or linked to the hostname.
 - Cloudflare R2 only if/when replay media storage becomes essential; no R2 in initial MVP.
 - Cloudflare Durable Objects only for actual synchronous multiplayer or coordination at scale. Not in MVP.
 
