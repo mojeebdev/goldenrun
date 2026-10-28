@@ -1,7 +1,7 @@
 # Golden Run — Product Brief (v0.1)
 
 **Status:** Approved concept with implementation details to validate in a playable prototype  
-**Domain:** goldenrun.fun (planned)  
+**Domain:** goldenrun.fun (purchased and connected to Cloudflare; owner-confirmed)  
 **Audience:** Football fans worldwide, including fans following Ronaldo's legendary 2008 season and his road to 1,000 career goals.  
 **Promise:** One shot feels great; every verified goal matters; every week offers a fair chance to win.
 
