@@ -12,7 +12,10 @@ Every milestone must be independently shippable/testable, with tests and a short
 - [x] Draft UX, input mechanics, competition rules, integrity architecture.
 - [x] Create sequential agent build prompts in `prompts/`.
 - [ ] Complete legal/brand name/IP clearance before launch.
-- [ ] Owner confirms domain ownership, Cloudflare connection and build authorization.
+- [x] Owner confirmed purchase of `goldenrun.fun`.
+- [x] Owner confirmed `goldenrun.fun` is connected to Cloudflare.
+- [ ] Verify DNS/SSL resolution and custom-domain Worker route when deployment is authorized; not yet independently verified.
+- [ ] Owner authorizes actual gameplay implementation and any production deployment separately.
 
 ## Milestone 1 — The Perfect Shot (playable prototype)
 
@@ -61,7 +64,7 @@ Every milestone must be independently shippable/testable, with tests and a short
 - [ ] Load / stress tests, cheap device tests, slow 3G/4G assets review.
 - [ ] D1 migration rehearsal on non-production DB; backup/rollback notes.
 - [ ] Terms, Privacy, contest rules, reporting, moderation and deletion request experience.
-- [ ] Written Cloudflare dashboard deployment instructions for owner, including D1 binding, Worker build, custom domain and routing.
+- [ ] Written Cloudflare dashboard deployment instructions for owner, including D1 binding, Worker build, custom-domain route and SSL. Domain is already purchased and Cloudflare-connected; do not instruct repurchase or unnecessary nameserver changes.
 - [ ] Verify no unlicensed branding, imagery, SFX or implied endorsements.
 
 **Gate:** Automated builds pass; security and legal checklist reviewed; clear public onboarding; first shot within seconds on realistic hardware; Cloudflare production deployment requires explicit owner approval.
