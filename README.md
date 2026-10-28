@@ -1,6 +1,6 @@
 # The Golden Run ⚽🏆
 
-**Domain:** [goldenrun.fun](https://goldenrun.fun) *(planned; not a claim that the site is live)*  
+**Domain:** [goldenrun.fun](https://goldenrun.fun) *(purchased and connected to Cloudflare per owner confirmation; not yet confirmed live)*  
 **Campaign:** 2008 → 1,000  
 **Tagline:** *The road to greatness starts with one goal.*
 
@@ -28,7 +28,7 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 - **Cloudflare D1** for players, sessions, runs, shot attestations, goals, awards and rankings.
 - **Cloudflare Turnstile/WAF** for risk-based abuse prevention.
 - **Cron Triggers on the same Worker** for weekly competition settlement.
-- **Cloudflare DNS/CDN** for the domain.
+- **Cloudflare DNS/CDN** for the domain. The owner has purchased `goldenrun.fun` and connected it to Cloudflare; Worker custom-domain routing and production launch remain pending.
 - **Cloudflare Workers Builds + GitHub integration** for deployment, once the owner sets it up.
 - **Optional later:** R2 for user-generated replay media; Durable Objects only for a proven real-time requirement.
 
@@ -50,7 +50,7 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 ## Working agreement
 
-1. **Design and documentation first.** Files in this initial commit are implementation specifications, not evidence that code, domain DNS, D1 or production deployment exist.
+1. **Design and documentation first.** The owner has confirmed domain purchase and Cloudflare connection. These specifications are not evidence that gameplay code, D1, Worker routing or production deployment exist.
 2. Implement one milestone at a time; keep builds and tests green. Avoid placeholder game functionality falsely presented as complete.
 3. **Never purchase, deploy to production, connect billing, alter DNS or perform production database migrations without explicit owner direction.**
 4. Keep gameplay deterministic, input-friendly on mobile, accessible and resilient to low-end devices.
@@ -59,7 +59,7 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 ## Project status
 
-**Planning/specifications.** No gameplay implementation or Cloudflare deployment has been performed by these docs.
+**Planning/specifications.** Domain **purchased** and **connected to Cloudflare** (owner-confirmed). No gameplay implementation, Worker deployment, production custom-domain binding, or public website availability has been verified.
 
 ---
 **Source of truth:** [github.com/mojeebdev/goldenrun](https://github.com/mojeebdev/goldenrun)
