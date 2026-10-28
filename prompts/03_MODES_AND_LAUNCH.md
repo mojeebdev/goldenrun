@@ -54,7 +54,7 @@ Turn the proven arcade shooter and secure competition engine into a memorable fo
 - Add Terms, Privacy, eligibility/competition rules, reporting/deletion, original-art rights inventory and non-affiliation notice.
 - Document tournament window, exact scoring, first-1,000 awarding, dispute review and the fact that there is **no official athlete award**.
 - Load-test scoring/leaderboard paths, verify D1 cost and caching behavior, test defensive abuse controls and recovery.
-- Validate Cloudflare preview build. Provide an exact owner checklist for GitHub integration, D1 provisioning/migrations, Worker assets/API routes, Turnstile settings, Cron Trigger, DNS/custom domain and SSL.
+- Validate Cloudflare preview build. The owner has **already purchased `goldenrun.fun` and connected it to Cloudflare**; do not direct them to buy it or transfer nameservers again. Provide a checklist to **verify** zone/DNS/SSL status and, once approved, attach the existing domain to the application Worker. Include GitHub integration, D1 provisioning/migrations, Worker assets/API routes, Turnstile settings and Cron Trigger.
 - Produce deployment rollback instructions and clearly identify production D1 backup/migration precautions.
 - Do **not** deploy, connect DNS, migrate a remote database, spend money or register the domain unless the owner separately requests it.
 
