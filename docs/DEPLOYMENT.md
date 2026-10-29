@@ -16,7 +16,7 @@ npm run deploy:dry-run   # validates the Worker bundle; uploads nothing
    *Or* from a trusted machine: `npx wrangler login`, then `npm run build && npx wrangler deploy`.
 2. Check the `*.workers.dev` URL: `/`, `/play`, `/api/health` (expect `{"ok":true,...}`).
 3. **Custom domain:** the domain `goldenrun.fun` is already purchased and on Cloudflare — do **not** re-buy it or change nameservers. Worker → Settings → Domains & Routes → Add → Custom domain → `goldenrun.fun` (and decide the `www` policy: add `www.goldenrun.fun` as a custom domain or a redirect rule). Verify HTTPS and that the old zone records don't conflict.
-4. Only after the above is verified, update README "Project status" to say the site is live.
+4. Only after the above is verified, update the release history in `docs/DEVELOPMENT.md` and the CHANGELOG to say the site is live.
 
 ## Milestone 2: database and redeploy (run in this order)
 

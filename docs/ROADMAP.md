@@ -88,7 +88,7 @@ Every milestone must be independently shippable/testable, with tests and a short
 ## Working rules for each implementation task
 
 1. Audit repo state before changes.
-2. Read `README.md`, relevant docs, `prompts/00_MASTER_PROMPT.md` and current milestone prompt.
+2. Read `README.md`, `docs/DEVELOPMENT.md`, relevant docs, `prompts/00_MASTER_PROMPT.md` and current milestone prompt.
 3. Work only inside approved milestone; document any deliberately deferred work.
 4. Run format, typecheck, unit and build checks; for milestone 1 perform manual gameplay QA where tools allow.
 5. Commit code + updated docs to GitHub, with concise status, SHA and any manual Cloudflare owner actions. Do not claim testing you did not run.
