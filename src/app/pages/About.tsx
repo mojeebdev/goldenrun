@@ -191,13 +191,13 @@ export function About() {
 
         <Chapter n={8} title="Independence and non-affiliation">
           <p>
-            The Golden Run is an unofficial, independent fan game. It is not affiliated with, endorsed by, sponsored by or connected to
+            The Golden Run is an independent fan football arcade. It is not affiliated with, endorsed by, sponsored by or connected to
             Cristiano Ronaldo, any other player, club, league or competition, or the Ballon d’Or and its organisers. Mentions of real
             people and awards describe the history that inspired the game, nothing more.
           </p>
           <p className="text-base text-chalk/65">
             Player names, award names and other trademarks belong to their respective owners. Titles and badges in the game are
-            unofficial in-game recognition with no monetary value.
+            in-game fan recognition with no monetary value.
           </p>
           <p className="text-sm text-chalk/55">
             {COPYRIGHT} The copyright covers the game’s own original content. Its source code is licensed under the {CODE_LICENSE.name};

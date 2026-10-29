@@ -105,7 +105,7 @@ export function Road() {
                 <b className="text-chalk">{founding.handle ? `${founding.country ? flagEmoji(founding.country) + ' ' : ''}${founding.handle}` : 'a private player'}</b>
               </p>
             )}
-            <p className="mt-2 text-xs text-chalk/50">Unofficial in-game recognition. No prize, no affiliation with any player, club or award.</p>
+            <p className="mt-2 text-xs text-chalk/50">In-game fan recognition only. No prize or affiliation with any player, club or award.</p>
           </Panel>
           <Panel>
             <p className="label text-chalk/55">Difficulty tiers</p>

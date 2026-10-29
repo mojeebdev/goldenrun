@@ -6,7 +6,7 @@
 
 <p align="center">
   <b>2008 → 1,000.</b> <i>The road to greatness starts with one goal.</i><br />
-  A free football arcade game you play in your browser.
+  A free fan football arcade you play in your browser.
 </p>
 
 <p align="center">
@@ -57,7 +57,7 @@ Practice needs nothing. For goals that count, create a free player in seconds: t
 
 ## Fair play
 
-Your device sends only the inputs of each shot. Our server replays every shot with the same physics and goalkeeper and decides the result, so scores can't simply be made up. Unusual results are held for review before they reach a leaderboard. Titles, badges and trophies are unofficial in-game recognition with no cash prizes and nothing to buy. Full details: [rules](https://goldenrun.fun/rules) · [terms](https://goldenrun.fun/terms) · [privacy](https://goldenrun.fun/privacy).
+Your device sends only the inputs of each shot. Our server replays every shot with the same physics and goalkeeper and decides the result, so scores can't simply be made up. Unusual results are held for review before they reach a leaderboard. Titles, badges and trophies are in-game fan recognition with no cash prizes and nothing to buy. Full details: [rules](https://goldenrun.fun/rules) · [terms](https://goldenrun.fun/terms) · [privacy](https://goldenrun.fun/privacy).
 
 ## Made by
 
@@ -77,6 +77,6 @@ Questions, feedback, account help, bug reports or a dispute about a result: emai
 
 © 2026 BlindspotLab Limited. All rights reserved. The source code is licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE): the licence doesn't cover the creator portrait, or The Golden Run name and branding. Third-party software and fonts remain under their own licences.
 
-The Golden Run is an unofficial, independent fan game. It is not affiliated with, endorsed by or connected to Cristiano Ronaldo, any other player, club, league or competition, or the Ballon d’Or and its organisers. Names and trademarks belong to their respective owners. All artwork and sound are original.
+The Golden Run is an independent fan football arcade. It is not affiliated with, endorsed by or connected to Cristiano Ronaldo, any other player, club, league or competition, or the Ballon d’Or and its organisers. Names and trademarks belong to their respective owners. All artwork and sound are original.
 
 <sub>Technical documentation lives in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).</sub>

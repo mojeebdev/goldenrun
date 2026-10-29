@@ -27,7 +27,7 @@ function Terms() {
       <h1 className="display text-5xl font-extrabold uppercase italic">Terms of play</h1>
       <div className={prose}>
         <p>
-          The Golden Run (“the game”, goldenrun.fun) is a free, independent and unofficial fan game, operated by <b>{STUDIO.name}</b> (“we”,
+          The Golden Run (“the game”, goldenrun.fun) is a free, independent fan football arcade, operated by <b>{STUDIO.name}</b> (“we”,
           “us”) and created by {CREATOR.name}. By playing you agree to these terms and to the <Link to="/rules">game & competition rules</Link>.
         </p>
         <h2>Who can play</h2>
@@ -42,7 +42,7 @@ function Terms() {
         </ul>
         <h2>No prizes, no purchases</h2>
         <ul>
-          <li>There is nothing to buy and no paid entry. Titles, badges, trophies and leaderboard places, including weekly Golden Cup wins and the Founding Golden Fan title, are unofficial in-game recognition only. They have no monetary value and can’t be exchanged.</li>
+          <li>There is nothing to buy and no paid entry. Titles, badges, trophies and leaderboard places, including weekly Golden Cup wins and the Founding Golden Fan title, are in-game fan recognition only. They have no monetary value and can’t be exchanged.</li>
           <li>The game is not affiliated with, endorsed by or sponsored by any player, club, league, competition or award.</li>
         </ul>
         <h2>Ownership</h2>

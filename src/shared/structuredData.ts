@@ -22,7 +22,7 @@ export const IDS = {
 } as const;
 
 export const ABOUT_DESCRIPTION =
-  'How a legendary year in football became an independent arcade game: the story behind The Golden Run, its creator Mojeeb Titilayo, and the studio behind it, BlindspotLab Limited.';
+  'How a legendary year in football inspired a fan football arcade: the story behind The Golden Run, its creator Mojeeb Titilayo, and the studio behind it, BlindspotLab Limited.';
 
 const ref = (id: string) => ({ '@id': id });
 

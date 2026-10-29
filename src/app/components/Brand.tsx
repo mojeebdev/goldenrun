@@ -29,10 +29,10 @@ export function BallMark({ className = 'h-6 w-6' }: { className?: string }) {
   );
 }
 
-export function Unofficial({ className = '' }: { className?: string }) {
+export function FanGameNotice({ className = '' }: { className?: string }) {
   return (
     <p className={`text-xs leading-relaxed text-chalk/55 ${className}`}>
-      The Golden Run is an unofficial, independent fan-made football game. It is not affiliated with, endorsed by or
+      The Golden Run is an independent fan football arcade inspired by football milestones. It is not affiliated with, endorsed by or
       connected to any player, club, league, award or rights holder. All artwork and sound are original. Names and
       trademarks of third parties belong to their respective owners.
     </p>

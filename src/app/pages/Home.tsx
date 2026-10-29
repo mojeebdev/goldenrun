@@ -62,7 +62,7 @@ export function Home() {
         </header>
 
         <main className="flex flex-1 flex-col items-center px-4 pt-[6vh] text-center sm:pt-[3vh]">
-          <p className="label mb-3 rounded-full border border-gold/30 bg-midnight/60 px-3 py-1 text-gold backdrop-blur">Unofficial football arcade</p>
+          <p className="label mb-3 rounded-full border border-gold/30 bg-midnight/60 px-3 py-1 text-gold backdrop-blur">Fan Football Arcade</p>
           <div id="home-title">
             <Wordmark size="lg" />
           </div>

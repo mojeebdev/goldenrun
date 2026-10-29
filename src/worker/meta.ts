@@ -26,7 +26,7 @@ const PAGES: Record<string, Meta> = {
   '/': {
     title: 'The Golden Run — 2008 → 1,000',
     description:
-      'An independent football arcade game. Drag, curl and strike past the keeper, play the 2008 chapter, chase 1,000 verified goals and enter the weekly Golden Cup. Free in your browser.',
+      'A free fan football arcade. Drag, curl and strike past the keeper, play the 2008 chapter, chase 1,000 verified goals and enter the weekly Golden Cup. Free in your browser.',
     canonical: `${SITE_INFO.url}/`,
     structured: 'home',
   },

@@ -121,8 +121,8 @@ export function Join() {
               <label className="flex items-start gap-2 text-sm text-chalk/85">
                 <input type="checkbox" className="mt-1 h-4 w-4 accent-[var(--color-gold)]" checked={rules} onChange={(e) => setRules(e.target.checked)} />
                 <span>
-                  I accept the <Link to="/rules" className="text-gold underline">game & competition rules</Link>. The Golden Run is an unofficial fan
-                  game with no cash prizes.
+                  I accept the <Link to="/rules" className="text-gold underline">game & competition rules</Link>. The Golden Run is a fan football arcade
+                  with no cash prizes.
                 </span>
               </label>
               {error && <Notice tone="error">{error}</Notice>}

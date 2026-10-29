@@ -4,7 +4,7 @@
  */
 import { Link } from 'react-router';
 import { CODE_LICENSE, COPYRIGHT_YEAR, CREATOR, SITE, STUDIO } from '../../shared/site';
-import { Unofficial } from './Brand';
+import { FanGameNotice } from './Brand';
 
 export function XIcon({ className = 'h-3.5 w-3.5' }: { className?: string }) {
   return (
@@ -69,7 +69,7 @@ export function SiteFooter({ className = '' }: { className?: string }) {
         </p>
       </div>
 
-      <Unofficial className="mt-4 max-w-3xl" />
+      <FanGameNotice className="mt-4 max-w-3xl" />
     </footer>
   );
 }

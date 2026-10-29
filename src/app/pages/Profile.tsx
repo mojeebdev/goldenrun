@@ -83,7 +83,7 @@ export function Profile() {
         />
         <ReportLink handle={p.handle} />
       </div>
-      <p className="mt-6 text-xs text-chalk/50">In-game, unofficial recognition only. Not affiliated with any player, club, league or award.</p>
+      <p className="mt-6 text-xs text-chalk/50">In-game fan recognition only. Not affiliated with any player, club, league or award.</p>
     </PageShell>
   );
 }

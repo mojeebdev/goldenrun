@@ -1,7 +1,7 @@
 {
   "name": "The Golden Run",
   "short_name": "Golden Run",
-  "description": "Unofficial football arcade game. 2008 → 1,000.",
+  "description": "Fan Football Arcade. 2008 → 1,000.",
   "start_url": "/play",
   "display": "fullscreen",
   "orientation": "any",

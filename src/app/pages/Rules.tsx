@@ -16,7 +16,7 @@ export function Rules() {
       <div className="mt-6 max-w-3xl space-y-6 text-chalk/80 [&_h2]:display [&_h2]:text-2xl [&_h2]:font-extrabold [&_h2]:uppercase [&_h2]:italic [&_h2]:text-chalk [&_li]:ml-5 [&_li]:list-disc [&_a]:text-gold [&_a]:underline">
         <section>
           <h2>What this is</h2>
-          <p>The Golden Run is an unofficial, free fan game operated by BlindspotLab Limited. There are no cash prizes, no paid entries and nothing to buy. Titles and trophies are in-game recognition only and are not affiliated with any player, club, league or award.</p>
+          <p>The Golden Run is a free fan football arcade operated by BlindspotLab Limited. There are no cash prizes, no paid entries and nothing to buy. Titles and trophies are in-game recognition only and are not affiliated with any player, club, league or award.</p>
         </section>
         <section>
           <h2>Scoring per shot</h2>
