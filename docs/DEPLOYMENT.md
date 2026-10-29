@@ -1,6 +1,6 @@
 # Deployment notes (owner actions — not yet performed)
 
-Milestone 1 is a **local preview**. Nothing below has been executed. Do these only when the owner explicitly approves a deployment.
+**Status (2026-10-29):** the owner deployed Milestone 1 to `https://goldenrun.fun`. HTTPS checks passed: `/`, `/play` and `/api/health` return 200, and the health digest `b21e6426` matches the test suite. Still open: `www.goldenrun.fun` (doesn't resolve). The steps below are kept as a reference for redeploys.
 
 ## Build locally
 

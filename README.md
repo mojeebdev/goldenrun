@@ -1,6 +1,6 @@
 # The Golden Run ⚽🏆
 
-**Domain:** [goldenrun.fun](https://goldenrun.fun) *(purchased and connected to Cloudflare per owner confirmation; not yet confirmed live)*  
+**Domain:** [goldenrun.fun](https://goldenrun.fun) *(live on Cloudflare Workers since 2026-10-29)*  
 **Campaign:** 2008 → 1,000  
 **Tagline:** *The road to greatness starts with one goal.*
 
@@ -61,7 +61,7 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 ## Project status
 
-**Milestone 1 — The Perfect Shot: implemented as a local, playable preview.** Unranked guest practice runs end to end in the browser on the Cloudflare Worker toolchain. **Not deployed:** no Worker deployment, custom-domain route, D1 database or public availability exists yet. Domain **purchased** and **connected to Cloudflare** (owner-confirmed). See [CHANGELOG](CHANGELOG.md) for what shipped and what remains.
+**Milestone 1 — The Perfect Shot: live at [goldenrun.fun](https://goldenrun.fun).** The owner deployed the Worker on 2026-10-29. `/`, `/play` and `/api/health` were checked over HTTPS and return 200. The production health digest (`b21e6426`) matches the test suite. Unranked guest practice only: there is no D1 database, no accounts and nothing ranked. `www.goldenrun.fun` doesn't resolve yet. See [CHANGELOG](CHANGELOG.md) for what shipped and what remains.
 
 ## Run it locally
 

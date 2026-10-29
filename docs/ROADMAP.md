@@ -14,7 +14,7 @@ Every milestone must be independently shippable/testable, with tests and a short
 - [ ] Complete legal/brand name/IP clearance before launch.
 - [x] Owner confirmed purchase of `goldenrun.fun`.
 - [x] Owner confirmed `goldenrun.fun` is connected to Cloudflare.
-- [ ] Verify DNS/SSL resolution and custom-domain Worker route when deployment is authorized; not yet independently verified.
+- [x] Owner deployed the Worker to `goldenrun.fun` (2026-10-29). HTTPS checked: `/`, `/play` and `/api/health` return 200 and the health digest matches tests. `www` is not configured yet.
 - [x] Owner authorized Milestone 1 gameplay implementation (production deployment still requires separate approval).
 
 ## Milestone 1 — The Perfect Shot (playable prototype)

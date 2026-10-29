@@ -1,8 +1,9 @@
 {
   // The Golden Run — one application Worker serving the React/Phaser SPA via
   // Workers Static Assets plus first-party /api/* routes.
-  // Milestone 1: NO D1 binding, NO routes/custom domain, NO cron. Nothing here
-  // creates remote resources; `wrangler deploy` is an explicit owner action.
+  // Milestone 1: no D1, no cron. `wrangler deploy` is an explicit owner action
+  // and attaches the apex domain below as a Workers Custom Domain (Cloudflare
+  // creates the DNS record and certificate in the existing goldenrun.fun zone).
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "goldenrun",
   "main": "./src/worker/index.ts",
@@ -11,5 +12,6 @@
     "not_found_handling": "single-page-application",
     "run_worker_first": ["/api/*"]
   },
+  "routes": [{ "pattern": "goldenrun.fun", "custom_domain": true }],
   "observability": { "enabled": true }
 }
