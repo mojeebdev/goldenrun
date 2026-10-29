@@ -14,7 +14,8 @@ Status of release readiness after Milestone 4 (onboarding and release readiness)
 - ✅ Published rules (`/rules`), terms (`/terms`), privacy (`/privacy`), non-affiliation and art inventory (`/about`).
 - ✅ Weekly winners and the Founding Golden Fan start as **provisional**; audit steps in `OPERATIONS.md`.
 - ☐ Real-device QA: create a player and play the cup, a 2008 matchday and a Road run on an iPhone (Safari) and an Android phone (Chrome). Check passkey prompts, landscape/portrait and sound.
-- ☐ Legal review of terms and privacy before introducing any prize or partnership.
+- ✅ The owner approved the terms and privacy notice on 2026-10-29. A lawyer has not reviewed them; the pages say so. Get a legal review before introducing any prize or partnership.
+- ✅ The source code is public at github.com/mojeebdev/goldenrun under Apache 2.0. Support, bug reports and disputes still go to mojeeb@blindspotlab.xyz; the site points to email, not GitHub issues.
 - ✅ The creator, studio and copyright are credited consistently: the About page, a shared footer, the legal pages and JSON-LD all name BlindspotLab Limited. Support goes to mojeeb@blindspotlab.xyz.
 - ☐ Confirm the creator portrait may be used. It's the official founder portrait published on blindspotlab.xyz, self-hosted in `public/media/`. Replace those four files if a different photo is preferred.
 - ☐ Optional: check `/` and `/about` with Google's Rich Results Test or the Schema.org validator after deploy. Valid structured data doesn't guarantee rich results.

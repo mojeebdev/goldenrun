@@ -123,6 +123,6 @@ The Golden Run was conceived and built by [Mojeeb Titilayo](https://mojeeb.xyz) 
 
 ## License
 
-The source code is licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for attribution and exclusions: the licence doesn't cover the creator portrait in `public/media/`, and it grants no rights to The Golden Run name or branding (Apache 2.0, section 6).
+The source code is public and licensed under the [Apache License 2.0](LICENSE). For support, bug reports or disputes, email mojeeb@blindspotlab.xyz. See [NOTICE](NOTICE) for attribution and exclusions: the licence doesn't cover the creator portrait in `public/media/`, and it grants no rights to The Golden Run name or branding (Apache 2.0, section 6).
 
 The Golden Run is an unofficial, independent fan game, not affiliated with or endorsed by any player, club, league, competition or award.

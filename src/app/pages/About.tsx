@@ -165,6 +165,13 @@ export function About() {
               How results are verified: your device sends only the inputs of each shot, and our server replays every shot with the same
               physics and goalkeeper to decide the result. See the <Link to="/rules" className={inline}>rules</Link>.
             </li>
+            <li>
+              Source code:{' '}
+              <a href={SITE.repository} {...ext} className={inline}>
+                github.com/mojeebdev/goldenrun ↗
+              </a>
+              , under the {CODE_LICENSE.name}.
+            </li>
           </ul>
         </Chapter>
 

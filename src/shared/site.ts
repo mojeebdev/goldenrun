@@ -10,6 +10,8 @@ export const SITE = {
   description:
     'The Golden Run is an independent, unofficial football arcade game for the web. Drag, curl and strike past a goalkeeper, play the 2008 story chapter, chase 1,000 verified career goals and compete in the weekly Golden Cup.',
   supportEmail: 'mojeeb@blindspotlab.xyz',
+  /** Public source code. Support, bug reports and disputes go to the email above, not to GitHub. */
+  repository: 'https://github.com/mojeebdev/goldenrun',
   image: 'https://goldenrun.fun/og.png',
 } as const;
 
