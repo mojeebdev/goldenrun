@@ -1,5 +1,44 @@
 # Changelog
 
+## The story, the creator and the company (2026-10-29)
+
+### Added
+- **About page rewritten as an editorial feature** (`/about`), in eight numbered chapters:
+  - The origin story, in the creator's own words: the 2008 Ballon d'Or, the road to 1,000 goals, and why a goal counter became an arcade game.
+  - **Meet the creator:** Mojeeb Titilayo, with his official portrait and links to mojeeb.xyz, X and GitHub.
+  - **The studio:** BlindspotLab Limited.
+  - The original credits, kept.
+  - Contact and support.
+  - Independence and non-affiliation.
+- **Creator portrait:** the official founder portrait published on blindspotlab.xyz, self-hosted under `public/media/` in AVIF and JPEG at 480 and 720 px wide (20–72 KB). It's lazy-loaded with its size reserved, so the layout doesn't jump.
+- **One shared footer** (`SiteFooter`) on the home page and every content page:
+  - Page links and the support email.
+  - "Built by @MojeebMotion" with an X icon, linking to x.com/MojeebMotion.
+  - © 2026 BlindspotLab Limited, linked to blindspotlab.xyz.
+  - The unofficial-project disclaimer, now with a trademark notice.
+  - No footer is drawn over gameplay.
+- **Structured data and metadata, rendered by the Worker** for `/` and `/about`:
+  - A canonical URL.
+  - Page-specific title, description, Open Graph and Twitter tags.
+  - One JSON-LD `@graph` linking the game (VideoGame) to its creator (Person) and its publisher and copyright holder (Organization). The IDs match those on mojeeb.xyz and blindspotlab.xyz.
+  - Cristiano Ronaldo appears only as a `mentions` of the About page, never as creator, publisher or sameAs.
+  - `index.html` gains `author` and `twitter:creator`.
+
+### Changed
+- **Terms:** name BlindspotLab Limited as operator and Mojeeb Titilayo as creator. Add an ownership and trademark section, describe all titles as unofficial in-game recognition, and send support and disputes to mojeeb@blindspotlab.xyz.
+- **Privacy:** names the responsible operator and privacy contact. A new section, "If you email us", explains that registration never asks for an email address, what support correspondence contains, what it's used for, and that it isn't linked to your player.
+- **Rules:** questions, disputes and bugs now go to the support email.
+- **Removed dead links:** the GitHub "Source" and "open an issue" links pointed at a private repository, so the public couldn't open them. Bug reports now go to email.
+
+### Verified
+- **Checks:** 111 tests pass, including new structured-data tests (every `@id` reference resolves, the game links to creator and publisher, and the footballer is never named as creator, publisher, sponsor or identity). Typecheck, lint and build pass.
+- **Production build (local preview):**
+  - `/` and `/about` serve canonical tags and JSON-LD in the raw HTML.
+  - `/play`, `/rules` and `/u/*` don't.
+  - Player share previews still work.
+- **Accessibility:** axe reports no violations on `/`, `/about`, `/terms`, `/privacy`, `/rules`, `/modes` and `/play`.
+- **Layout:** desktop and mobile screenshots checked.
+
 ## Milestone 4 — Onboarding and release readiness (2026-10-29)
 
 The owner reported that the home page made you scroll to find how to join, that the how-to tips sat on the page instead of in onboarding, and that joining felt awkward. The audit is in [docs/UX_AUDIT.md](docs/UX_AUDIT.md).

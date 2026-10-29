@@ -67,7 +67,7 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 **Milestone 3 — 2008 chapter, Road to 1,000, badges, challenges and launch pages: live since 2026-10-29.** The owner applied migration `0002` remotely (a Time Travel bookmark was recorded first). Merging PR #2 deployed it automatically through Workers Builds. Checked over HTTPS: `/api/health` reports milestone 3; `/2008`, `/road-to-1000`, the legal pages, `og.png` and the `/u/*` and `/c/*` share routes all return 200; progress and Hall of Fame are served from D1.
 
-**Milestone 4 — Onboarding and release readiness: ready to merge.**
+**Milestone 4 — Onboarding and release readiness: live since 2026-10-29.**
 - A two-button home page, practice how-to plus setup, a stepped join, phone tab bar navigation and a modes hub showing your progress.
 - The audit fixes and a clean axe-core accessibility run.
 - Cheap-device timings, asset licence checks and Cloudflare dashboard instructions.
@@ -116,3 +116,9 @@ Press on the ball, drag toward the goal and release. **Direction** aims, **lengt
 
 ---
 **Source of truth:** [github.com/mojeebdev/goldenrun](https://github.com/mojeebdev/goldenrun)
+
+## Credits
+
+The Golden Run was conceived and built by [Mojeeb Titilayo](https://mojeeb.xyz) ([@MojeebMotion](https://x.com/MojeebMotion)) and is published by [BlindspotLab Limited](https://blindspotlab.xyz). © 2026 BlindspotLab Limited. All rights reserved. Third-party software and fonts remain under their own licences. Support: mojeeb@blindspotlab.xyz.
+
+The Golden Run is an unofficial, independent fan game, not affiliated with or endorsed by any player, club, league, competition or award.

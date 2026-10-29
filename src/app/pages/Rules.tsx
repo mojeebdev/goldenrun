@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { CUP } from '../../shared/competition/cup';
 import { POINTS } from '../../shared/rules';
+import { SITE } from '../../shared/site';
 import { PageShell } from '../components/PageShell';
 import { durationLabel } from '../lib/format';
 
@@ -12,10 +13,10 @@ export function Rules() {
     <PageShell>
       <p className="label text-gold">Published rules · ruleset gr-1.0.0</p>
       <h1 className="display text-5xl font-extrabold uppercase italic">Game & competition rules</h1>
-      <div className="mt-6 max-w-3xl space-y-6 text-chalk/80 [&_h2]:display [&_h2]:text-2xl [&_h2]:font-extrabold [&_h2]:uppercase [&_h2]:italic [&_h2]:text-chalk [&_li]:ml-5 [&_li]:list-disc">
+      <div className="mt-6 max-w-3xl space-y-6 text-chalk/80 [&_h2]:display [&_h2]:text-2xl [&_h2]:font-extrabold [&_h2]:uppercase [&_h2]:italic [&_h2]:text-chalk [&_li]:ml-5 [&_li]:list-disc [&_a]:text-gold [&_a]:underline">
         <section>
           <h2>What this is</h2>
-          <p>The Golden Run is an unofficial, free fan game. There are no cash prizes, no paid entries and nothing to buy. Titles and trophies are in-game recognition only and are not affiliated with any player, club, league or award.</p>
+          <p>The Golden Run is an unofficial, free fan game operated by BlindspotLab Limited. There are no cash prizes, no paid entries and nothing to buy. Titles and trophies are in-game recognition only and are not affiliated with any player, club, league or award.</p>
         </section>
         <section>
           <h2>Scoring per shot</h2>
@@ -45,7 +46,10 @@ export function Rules() {
             <li>Runs that look implausible (for example finished far faster than humanly possible, or near-perfect) are held for review and don’t appear on leaderboards until confirmed.</li>
             <li>Weekly winners are first marked provisional and confirmed after review. Results can be withdrawn for automation, multiple accounts or exploiting bugs.</li>
             <li>No system can stop every bot. Replaying shots on our server stops made-up scores, not skilled scripts, so we review top results by hand.</li>
-            <li>Questions or disputes: contact the project owner via the site’s GitHub repository.</li>
+            <li>
+              Questions, disputes or bugs: email <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a> with your nickname and, for a result, the week or
+              challenge link. We will never ask for your recovery codes.
+            </li>
           </ul>
         </section>
         <section>

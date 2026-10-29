@@ -1,19 +1,50 @@
 /**
- * Share previews: for /u/:handle and /c/:runId the Worker serves the SPA's
- * index.html with page-specific Open Graph tags (rendered on Cloudflare with
- * HTMLRewriter — no third-party image or preview service).
+ * Server-rendered metadata. The Worker serves the SPA's index.html with
+ * page-specific tags, rewritten on Cloudflare with HTMLRewriter (no third-party
+ * preview service), so crawlers and link previews see them without running JS:
+ *  - /u/:handle and /c/:runId: share-preview titles and descriptions.
+ *  - / and /about: canonical URL plus the schema.org JSON-LD graph that links
+ *    the game, its creator and its publisher.
  */
 import { flagEmoji } from '../shared/competition/identity';
+import { SITE as SITE_INFO } from '../shared/site';
+import type { StructuredPage } from '../shared/structuredData';
+import { ABOUT_DESCRIPTION, structuredDataScript } from '../shared/structuredData';
 import type { Env } from './env';
 
 interface Meta {
   title: string;
   description: string;
+  /** Absolute canonical URL; only set for pages that have one fixed address. */
+  canonical?: string;
+  structured?: StructuredPage;
 }
 
-const SITE = 'The Golden Run';
+const SITE = SITE_INFO.name;
+
+const PAGES: Record<string, Meta> = {
+  '/': {
+    title: 'The Golden Run — 2008 → 1,000',
+    description:
+      'An independent football arcade game. Drag, curl and strike past the keeper, play the 2008 chapter, chase 1,000 verified goals and enter the weekly Golden Cup. Free in your browser.',
+    canonical: `${SITE_INFO.url}/`,
+    structured: 'home',
+  },
+  '/about': {
+    title: 'About The Golden Run — the story, the creator and the studio',
+    description: ABOUT_DESCRIPTION,
+    canonical: `${SITE_INFO.url}/about`,
+    structured: 'about',
+  },
+};
+
+/** Paths whose HTML the Worker renders itself (kept in step with run_worker_first in wrangler.jsonc). */
+export function hasPageMeta(pathname: string): boolean {
+  return Object.hasOwn(PAGES, pathname) || pathname.startsWith('/u/') || pathname.startsWith('/c/');
+}
 
 async function metaFor(env: Env, path: string): Promise<Meta | null> {
+  if (Object.hasOwn(PAGES, path)) return PAGES[path]!;
   const u = /^\/u\/([A-Za-z0-9_]{3,20})\/?$/.exec(path);
   if (u) {
     const p = await env.DB.prepare(
@@ -72,11 +103,17 @@ export async function withShareMeta(request: Request, env: Env): Promise<Respons
     .on('meta[name="description"]', set(meta.description))
     .on('meta[property="og:title"]', set(meta.title))
     .on('meta[property="og:description"]', set(meta.description))
-    .on('meta[property="og:url"]', set(url.origin + url.pathname))
+    .on('meta[property="og:url"]', set(meta.canonical ?? url.origin + url.pathname))
     .on('meta[name="twitter:title"]', set(meta.title))
     .on('meta[name="twitter:description"]', set(meta.description))
+    .on('head', {
+      element: (el) => {
+        if (meta.canonical) el.append(`<link rel="canonical" href="${meta.canonical}" />`, { html: true });
+        if (meta.structured) el.append(`<script type="application/ld+json">${structuredDataScript(meta.structured)}</script>`, { html: true });
+      },
+    })
     .transform(shell);
   const headers = new Headers(rewritten.headers);
-  headers.set('cache-control', 'public, max-age=60');
+  headers.set('cache-control', meta.structured ? 'public, max-age=300' : 'public, max-age=60');
   return new Response(rewritten.body, { status: 200, headers });
 }

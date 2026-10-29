@@ -94,7 +94,13 @@ Create migrations in `migrations/` with rollback/safe-change notes. Index leader
 * **One career ledger:** `goal_ledger` rows come from accepted cup, road and chapter runs. A chapter goal is inserted only while `COUNT(ledger rows for that player and stage) < 7`, a condition evaluated inside the same batch transaction, so concurrent runs can't exceed the quota and replays add nothing.
 * **Awards** (`src/worker/db/awards.ts`): set-based, idempotent `INSERT OR IGNORE` keyed by `award_key`. Milestones `milestone-N:<player>` and `badge-2008:<player>` are `confirmed`. `founding-golden-fan` goes to the player whose 1,000th ledger row has the lowest ledger id (`ROW_NUMBER()` window, revoked players excluded) as `provisional`. It runs after each accepted run and in the hourly cron.
 * **Road courses:** chosen by the server with a random seed per run. The tier is set by the player's career total.
-* **Share previews:** `run_worker_first` includes `/u/*` and `/c/*`. The Worker fetches the SPA shell from `ASSETS` and rewrites `<title>` and the OG/Twitter tags with `HTMLRewriter`. The default image is the static `og.png`. Player share cards are drawn on the device with canvas.
+* **Server-rendered metadata:** `run_worker_first` includes `/u/*`, `/c/*`, `/` and `/about`. The Worker fetches the SPA shell from `ASSETS` and rewrites it with `HTMLRewriter` (`src/worker/meta.ts`).
+  * Every route it handles gets its own `<title>` and OG/Twitter tags.
+  * `/` and `/about` also get a `<link rel="canonical">` and one schema.org JSON-LD `@graph` from `src/shared/structuredData.ts`.
+  * The graph connects WebSite, VideoGame, WebPage or AboutPage, Person and Organization through stable `@id`s. The Person and Organization reuse the IDs already published on mojeeb.xyz and blindspotlab.xyz.
+  * Other routes get no canonical tag and no JSON-LD, so no page canonicalizes to the wrong URL.
+  * The default image is the static `og.png`. Player share cards are drawn on the device with canvas.
+* **Identity:** creator, studio, support email and the copyright line live in `src/shared/site.ts`, used by the footer, About and legal pages and the Worker.
 * **New endpoints:** `GET /api/v1/progress` (guest-safe), `GET /api/v1/challenges/:runId` (accepted ranked cup runs only), `POST /api/v1/reports`. The Hall of Fame response includes `founding`.
 
 ## Authentication without another provider

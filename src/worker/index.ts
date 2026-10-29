@@ -2,7 +2,8 @@
  * The Golden Run application Worker.
  *
  * Static assets (React + Phaser SPA) are served by Workers Static Assets; this
- * handler runs for /api/* (see `run_worker_first`) and for the hourly cron.
+ * handler runs for /api/*, for pages with server-rendered metadata (/, /about,
+ * /u/*, /c/* — see `run_worker_first`) and for the hourly cron.
  */
 import { CANONICAL_SHOT, RULESET_VERSION, resultDigest, simulateShot } from '../shared/rules';
 import type { Bootstrap } from '../shared/competition/api';
@@ -11,7 +12,7 @@ import { leaderboard } from './api/leaderboard';
 import { deleteMe, getMe, getProfile, updateMe } from './api/players';
 import { getRun, startRun, submitRun } from './api/runs';
 import { getChallenge, getProgress, reportPlayer } from './api/progress';
-import { withShareMeta } from './meta';
+import { hasPageMeta, withShareMeta } from './meta';
 import { settle } from './cron';
 import { ensureWeek } from './db/cup';
 import type { Env } from './env';
@@ -77,7 +78,7 @@ export default {
   async fetch(request, env): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname.startsWith('/api/')) return handleApi(request, env);
-    if (url.pathname.startsWith('/u/') || url.pathname.startsWith('/c/')) return withShareMeta(request, env);
+    if (hasPageMeta(url.pathname)) return withShareMeta(request, env);
     return env.ASSETS.fetch(request);
   },
   async scheduled(_controller, env, ctx): Promise<void> {

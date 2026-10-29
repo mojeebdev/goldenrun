@@ -15,6 +15,9 @@ Status of release readiness after Milestone 4 (onboarding and release readiness)
 - ✅ Weekly winners and the Founding Golden Fan start as **provisional**; audit steps in `OPERATIONS.md`.
 - ☐ Real-device QA: create a player and play the cup, a 2008 matchday and a Road run on an iPhone (Safari) and an Android phone (Chrome). Check passkey prompts, landscape/portrait and sound.
 - ☐ Legal review of terms and privacy before introducing any prize or partnership.
+- ✅ The creator, studio and copyright are credited consistently: the About page, a shared footer, the legal pages and JSON-LD all name BlindspotLab Limited. Support goes to mojeeb@blindspotlab.xyz.
+- ☐ Confirm the creator portrait may be used. It's the official founder portrait published on blindspotlab.xyz, self-hosted in `public/media/`. Replace those four files if a different photo is preferred.
+- ☐ Optional: check `/` and `/about` with Google's Rich Results Test or the Schema.org validator after deploy. Valid structured data doesn't guarantee rich results.
 
 ## Abuse protection
 - ✅ Rate limits (Workers Rate Limiting), origin checks, review holds, reports.

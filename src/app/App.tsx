@@ -14,6 +14,7 @@ import { Chapter2008 } from './pages/Chapter2008';
 import { Road } from './pages/Road';
 import { Challenge } from './pages/Challenge';
 import { Legal } from './pages/Legal';
+import { About } from './pages/About';
 
 export function App() {
   return (
@@ -26,7 +27,7 @@ export function App() {
       <Route path="/c/:runId" element={<Challenge />} />
       <Route path="/terms" element={<Legal page="terms" />} />
       <Route path="/privacy" element={<Legal page="privacy" />} />
-      <Route path="/about" element={<Legal page="about" />} />
+      <Route path="/about" element={<About />} />
       <Route path="/cup" element={<Cup />} />
       <Route path="/leaderboard" element={<Leaderboard />} />
       <Route path="/u/:username" element={<Profile />} />

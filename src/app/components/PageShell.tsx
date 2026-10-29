@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 import { useAccount } from '../lib/account';
-import { Unofficial, Wordmark } from './Brand';
+import { Wordmark } from './Brand';
+import { SiteFooter } from './SiteFooter';
 import { TabBar } from './TabBar';
 
 export function PageShell({ children }: { children: ReactNode }) {
@@ -27,16 +28,7 @@ export function PageShell({ children }: { children: ReactNode }) {
         </nav>
       </header>
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-8">{children}</main>
-      <footer className="mx-auto max-w-5xl px-4 pb-10 sm:px-8">
-        <nav className="mb-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-chalk/55" aria-label="Footer">
-          <Link to="/modes" className="hover:text-gold">Modes</Link>
-          <Link to="/rules" className="hover:text-gold">Rules</Link>
-          <Link to="/terms" className="hover:text-gold">Terms</Link>
-          <Link to="/privacy" className="hover:text-gold">Privacy</Link>
-          <Link to="/about" className="hover:text-gold">About & credits</Link>
-        </nav>
-        <Unofficial />
-      </footer>
+      <SiteFooter />
       <TabBar />
     </div>
   );
