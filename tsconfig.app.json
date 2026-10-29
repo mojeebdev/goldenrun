@@ -17,5 +17,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src/app", "src/game", "src/shared", "tests"]
+  "include": ["src/app", "src/game", "src/shared"]
 }

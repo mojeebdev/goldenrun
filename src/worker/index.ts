@@ -1,47 +1,80 @@
 /**
  * The Golden Run application Worker.
  *
- * Static assets (the React + Phaser SPA) are served by Workers Static Assets;
- * this handler only runs for /api/* (see `run_worker_first` in wrangler.jsonc).
- *
- * Milestone 1 exposes a single harmless health endpoint. It also replays a
- * canonical shot through the SAME shared simulation the browser uses and
- * returns its digest, so browser/Worker determinism can be compared.
+ * Static assets (React + Phaser SPA) are served by Workers Static Assets; this
+ * handler runs for /api/* (see `run_worker_first`) and for the hourly cron.
  */
 import { CANONICAL_SHOT, RULESET_VERSION, resultDigest, simulateShot } from '../shared/rules';
+import type { Bootstrap } from '../shared/competition/api';
+import * as auth from './api/auth';
+import { leaderboard } from './api/leaderboard';
+import { deleteMe, getMe, getProfile, updateMe } from './api/players';
+import { getRun, startRun, submitRun } from './api/runs';
+import { settle } from './cron';
+import { ensureWeek } from './db/cup';
+import type { Env } from './env';
+import { HttpError, assertSameOrigin, errorResponse, json } from './http';
+import { currentSession } from './security/session';
 
-/** Future bindings (Milestone 2+). Declared as types only — nothing is provisioned. */
-export interface Env {
-  ASSETS: Fetcher;
-  // DB: D1Database;  // Milestone 2: players, runs, goal ledger (not configured yet)
-}
+type Handler = (request: Request, env: Env, now: number, params: string[]) => Promise<Response>;
 
-function json(body: unknown, status = 200): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      'content-type': 'application/json; charset=utf-8',
-      'cache-control': 'no-store',
-      'x-content-type-options': 'nosniff',
-    },
-  });
+const routes: [method: string, pattern: RegExp, handler: Handler][] = [
+  ['GET', /^\/api\/health$/, async () => {
+    const result = simulateShot(CANONICAL_SHOT);
+    return json({ ok: true, service: 'goldenrun', milestone: 2, rulesetVersion: RULESET_VERSION, canonicalShot: { outcome: result.outcome, digest: resultDigest(result) } });
+  }],
+  ['GET', /^\/api\/v1\/bootstrap$/, async (req, env, now) => {
+    const [cup, session] = await Promise.all([ensureWeek(env, now), currentSession(env, req, now)]);
+    const body: Bootstrap = { rulesetVersion: RULESET_VERSION, serverNow: now, cup, player: session ? { handle: session.handle } : null };
+    return json(body);
+  }],
+  ['POST', /^\/api\/v1\/auth\/registration\/options$/, auth.registrationOptions],
+  ['POST', /^\/api\/v1\/auth\/registration\/verify$/, auth.registrationVerify],
+  ['POST', /^\/api\/v1\/auth\/login\/options$/, auth.loginOptions],
+  ['POST', /^\/api\/v1\/auth\/login\/verify$/, auth.loginVerify],
+  ['POST', /^\/api\/v1\/auth\/passkeys\/options$/, auth.addPasskeyOptions],
+  ['POST', /^\/api\/v1\/auth\/passkeys\/verify$/, auth.addPasskeyVerify],
+  ['POST', /^\/api\/v1\/auth\/recover$/, auth.recover],
+  ['POST', /^\/api\/v1\/auth\/recovery-codes$/, auth.regenerateRecoveryCodes],
+  ['POST', /^\/api\/v1\/auth\/logout$/, auth.logout],
+  ['POST', /^\/api\/v1\/auth\/logout-all$/, auth.logoutEverywhere],
+  ['GET', /^\/api\/v1\/me$/, getMe],
+  ['PATCH', /^\/api\/v1\/me$/, updateMe],
+  ['DELETE', /^\/api\/v1\/me$/, deleteMe],
+  ['POST', /^\/api\/v1\/runs\/start$/, startRun],
+  ['POST', /^\/api\/v1\/runs\/([0-9a-f-]{36})\/submit$/, (req, env, now, p) => submitRun(req, env, now, p[0]!)],
+  ['GET', /^\/api\/v1\/runs\/([0-9a-f-]{36})$/, (req, env, now, p) => getRun(req, env, now, p[0]!)],
+  ['GET', /^\/api\/v1\/leaderboard$/, leaderboard],
+  ['GET', /^\/api\/v1\/players\/([A-Za-z0-9_]{3,20})$/, (_req, env, _now, p) => getProfile(env, p[0]!)],
+];
+
+export async function handleApi(request: Request, env: Env, now = Date.now()): Promise<Response> {
+  const url = new URL(request.url);
+  try {
+    let pathMatched = false;
+    for (const [method, pattern, handler] of routes) {
+      const m = pattern.exec(url.pathname);
+      if (!m) continue;
+      pathMatched = true;
+      const reqMethod = request.method === 'HEAD' ? 'GET' : request.method;
+      if (reqMethod !== method) continue;
+      if (method !== 'GET') assertSameOrigin(request, env);
+      return await handler(request, env, now, m.slice(1));
+    }
+    if (pathMatched) throw new HttpError(405, 'method_not_allowed', 'Method not allowed.');
+    throw new HttpError(404, 'not_found', 'Not found.');
+  } catch (e) {
+    return errorResponse(e);
+  }
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request, env): Promise<Response> {
     const url = new URL(request.url);
-    if (url.pathname === '/api/health') {
-      if (request.method !== 'GET' && request.method !== 'HEAD') return json({ error: 'method_not_allowed' }, 405);
-      const result = simulateShot(CANONICAL_SHOT);
-      return json({
-        ok: true,
-        service: 'goldenrun',
-        milestone: 1,
-        rulesetVersion: RULESET_VERSION,
-        canonicalShot: { outcome: result.outcome, digest: resultDigest(result) },
-      });
-    }
-    if (url.pathname.startsWith('/api/')) return json({ error: 'not_found' }, 404);
+    if (url.pathname.startsWith('/api/')) return handleApi(request, env);
     return env.ASSETS.fetch(request);
+  },
+  async scheduled(_controller, env, ctx): Promise<void> {
+    ctx.waitUntil(settle(env, Date.now()).then(() => undefined));
   },
 } satisfies ExportedHandler<Env>;
