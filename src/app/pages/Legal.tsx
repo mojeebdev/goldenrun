@@ -62,10 +62,6 @@ function Terms() {
           Questions, support and disputes about a result: email {mail}. For a result, include your nickname and the week or the challenge link. To flag a nickname or
           suspected cheating, use “Report player” on a profile.
         </p>
-        <p className="text-xs text-chalk/50">
-          These terms are a plain-language description written for players. They are not legal advice and have not yet been reviewed by a lawyer; they should be
-          before any prize, sponsorship or wider commercial use.
-        </p>
       </div>
     </>
   );
@@ -113,10 +109,6 @@ function Privacy() {
           <li>Questions or requests about your data: email {mail}. We can’t verify who owns a player from an email alone, so account changes and deletion are done while signed in. If you’ve lost both your passkey and your recovery codes, the account can’t be recovered.</li>
           <li>We will never ask for your recovery codes. Don’t share them with anyone, including us.</li>
         </ul>
-        <p className="text-xs text-chalk/50">
-          This notice describes how the software actually works today. It is not legal advice and should be reviewed by a qualified lawyer for your
-          jurisdiction before wider launch.
-        </p>
       </div>
     </>
   );

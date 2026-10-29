@@ -8,6 +8,7 @@
   - `NOTICE` records the copyright (BlindspotLab Limited), the creator, the third-party licences, and what the licence doesn't cover: the creator portrait, and The Golden Run name and branding (section 6 grants no trademark rights).
 - The footer, About page, Terms and the VideoGame JSON-LD (`license`) now state the licence. The repository is public, and About & credits links to it.
 - Support, bug reports and disputes still go to mojeeb@blindspotlab.xyz, at the owner's request. The site doesn't send people to GitHub issues.
+- The terms and privacy pages no longer say they haven't been reviewed by a lawyer. The owner confirmed they have been reviewed.
 - **README rewritten for players:**
   - The game, the story behind it, how to play, the ways to play, fair play, who made it, support, and the licence.
   - Developer setup, scripts, the code map, project documents and release history moved to `docs/DEVELOPMENT.md`. The README no longer tells readers to clone the repo. The copyright line "© 2026 BlindspotLab Limited. All rights reserved." stays: the licence grants permissions, and the copyright stays with BlindspotLab Limited.
