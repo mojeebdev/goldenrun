@@ -17,7 +17,8 @@ Status of release readiness after Milestone 3. ✅ = done and verified, ☐ = ow
 
 ## Operations
 - ✅ Hourly idempotent cron; D1 Time Travel restore and Worker rollback documented in `DEPLOYMENT.md`.
-- ☐ Fix Workers Builds settings so `main` deploys automatically (build command `npm run build`).
+- ✅ `main` deploys automatically through Workers Builds (verified with the Milestone 3 merge).
+- ☐ Pull-request preview builds still fail during setup (non-production branch settings in the dashboard). They're optional and don't affect production.
 - ☐ Turn on Cloudflare notifications for Worker errors and D1 usage.
 - ☐ Weekly: review `pending_review` runs and reports; confirm the weekly winner(s).
 

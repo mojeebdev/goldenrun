@@ -65,7 +65,7 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 **Milestone 2 — Verified competition: live since 2026-10-29.** Passkey accounts, the weekly Golden Cup with server-verified scores, and D1 leaderboards. The owner created the production D1 database (`goldenrun-db`, WEUR), applied migrations remotely and deployed. Checked over HTTPS: `/api/health` reports milestone 2 with digest `b21e6426`; the bootstrap and leaderboard endpoints read from D1; cross-origin writes are refused; passkey options use RP ID `goldenrun.fun`. See [CHANGELOG](CHANGELOG.md) for what shipped and what remains.
 
-**Milestone 3 — 2008 chapter, Road to 1,000, badges, challenges and launch pages:** built and tested locally; production needs migration `0002` (see [DEPLOYMENT](docs/DEPLOYMENT.md)).
+**Milestone 3 — 2008 chapter, Road to 1,000, badges, challenges and launch pages: live since 2026-10-29.** The owner applied migration `0002` remotely (a Time Travel bookmark was recorded first). Merging PR #2 deployed it automatically through Workers Builds. Checked over HTTPS: `/api/health` reports milestone 3; `/2008`, `/road-to-1000`, the legal pages, `og.png` and the `/u/*` and `/c/*` share routes all return 200; progress and Hall of Fame are served from D1.
 
 ## Run it locally
 

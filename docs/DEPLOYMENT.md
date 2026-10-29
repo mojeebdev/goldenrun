@@ -58,6 +58,8 @@ No secrets are needed. Rate limiters (`ratelimits` in `wrangler.jsonc`) and the 
 
 ## Milestone 3: migration 0002, then deploy
 
+**Status:** done on 2026-10-29. `0002` was applied remotely and counts checked. Merging to `main` auto-deployed through Workers Builds, so production deploys from `main` now work. Pull-request preview builds still fail during build setup; check the non-production branch build settings in the Cloudflare dashboard.
+
 `0002_progression.sql` rebuilds the `runs` table (all data is kept; it has been tested on a database with Milestone 2 data). It is backward compatible, so **apply it before merging/deploying Milestone 3**:
 
 1. Note a restore point, just in case:
