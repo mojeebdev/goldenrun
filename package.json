@@ -1,6 +1,7 @@
 {
   "name": "goldenrun",
   "private": true,
+  "license": "Apache-2.0",
   "version": "0.1.0",
   "description": "The Golden Run \u2014 an unofficial football arcade game. 2008 \u2192 1,000.",
   "type": "module",

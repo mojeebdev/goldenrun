@@ -70,13 +70,13 @@ Every milestone must be independently shippable/testable, with tests and a short
 - [x] UX onboarding polish: two-button home, practice how-to plus setup, stepped join, phone tab bar, a modes hub showing your progress ([UX_AUDIT](UX_AUDIT.md)). Accessibility tested with axe-core: no violations. Analytics: documented as an owner decision (Cloudflare Web Analytics, cookieless; update `/privacy` first).
 - [x] Load / stress tests (`npm run loadcheck`), cheap-device and slow 3G/4G tests (an emulated 4× CPU slowdown against production; see LAUNCH.md), and a review of asset sizes.
 - [x] D1 migration rehearsal on a non-production DB (an integration test runs `0002` on a populated local D1), plus backup and rollback notes (Time Travel bookmark taken before `0002`; DEPLOYMENT.md).
-- [x] Terms, Privacy, contest rules, reporting, moderation and deletion request experience (plain-language drafts; legal review still recommended).
+- [x] Terms, Privacy, contest rules, reporting, moderation and deletion request experience (reviewed and approved, per the owner on 2026-10-29).
 - [x] Written Cloudflare dashboard deployment instructions for owner, including D1 binding, Worker build, custom-domain route and SSL. Domain is already purchased and Cloudflare-connected; do not instruct repurchase or unnecessary nameserver changes.
 - [x] Verify no unlicensed branding, imagery, SFX or implied endorsements. Fonts are OFL-1.1 (Fontsource); every sound is synthesised in code (Web Audio); art is code or SVG from this repo. No player likenesses, crests, kits, award imagery, footage or commentary. Since 2026-10-29, the About page names Cristiano Ronaldo and the Ballon d'Or in text only, as the historical inspiration, with an explicit non-affiliation and trademark notice.
 
 **Gate:** Automated builds pass; security and legal checklist reviewed; clear public onboarding; first shot within seconds on realistic hardware; Cloudflare production deployment requires explicit owner approval.
 
-**Status (2026-10-29):** gate met. Builds and 106 tests pass. Onboarding has been reworked (home, practice, join, phone navigation). Emulated cheap-phone tests show the first shot is possible about 5–7 s after a cold load on slow networks. Accessibility and asset checks are clean. Every production deploy is the owner merging to `main`. Still open, all owner items: real-phone QA, a legal review of terms and privacy, Phase 0 brand and IP clearance, and the analytics decision.
+**Status (2026-10-29):** gate met. Builds and 106 tests pass. Onboarding has been reworked (home, practice, join, phone navigation). Emulated cheap-phone tests show the first shot is possible about 5–7 s after a cold load on slow networks. Accessibility and asset checks are clean. Every production deploy is the owner merging to `main`. Still open, all owner items: real-phone QA, Phase 0 brand and IP clearance, and the analytics decision. Terms and privacy were reviewed and approved on 2026-10-29.
 
 ## Phase 5 — Only after retention evidence
 
@@ -88,7 +88,7 @@ Every milestone must be independently shippable/testable, with tests and a short
 ## Working rules for each implementation task
 
 1. Audit repo state before changes.
-2. Read `README.md`, relevant docs, `prompts/00_MASTER_PROMPT.md` and current milestone prompt.
+2. Read `README.md`, `docs/DEVELOPMENT.md`, relevant docs, `prompts/00_MASTER_PROMPT.md` and current milestone prompt.
 3. Work only inside approved milestone; document any deliberately deferred work.
 4. Run format, typecheck, unit and build checks; for milestone 1 perform manual gameplay QA where tools allow.
 5. Commit code + updated docs to GitHub, with concise status, SHA and any manual Cloudflare owner actions. Do not claim testing you did not run.

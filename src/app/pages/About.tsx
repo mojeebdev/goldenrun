@@ -6,7 +6,7 @@
 import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router';
-import { COPYRIGHT, CREATOR, SITE, STUDIO } from '../../shared/site';
+import { CODE_LICENSE, COPYRIGHT, CREATOR, SITE, STUDIO } from '../../shared/site';
 import { PageShell } from '../components/PageShell';
 import { XIcon } from '../components/SiteFooter';
 
@@ -141,7 +141,12 @@ export function About() {
             AI-native product studio focused on turning ideas into working products.
           </p>
           <p>
-            BlindspotLab publishes the game and holds the rights in its original code, artwork, sound and writing.{' '}
+            BlindspotLab publishes the game and holds the copyright in its original code, artwork, sound and writing, and makes the
+            source code available under the{' '}
+            <a href={CODE_LICENSE.url} {...ext} className={inline}>
+              {CODE_LICENSE.name}
+            </a>
+            .{' '}
             <a href={STUDIO.url} {...ext} className={inline}>
               Visit blindspotlab.xyz ↗
             </a>
@@ -159,6 +164,13 @@ export function About() {
             <li>
               How results are verified: your device sends only the inputs of each shot, and our server replays every shot with the same
               physics and goalkeeper to decide the result. See the <Link to="/rules" className={inline}>rules</Link>.
+            </li>
+            <li>
+              Source code:{' '}
+              <a href={SITE.repository} {...ext} className={inline}>
+                github.com/mojeebdev/goldenrun ↗
+              </a>
+              , under the {CODE_LICENSE.name}.
             </li>
           </ul>
         </Chapter>
@@ -188,8 +200,9 @@ export function About() {
             unofficial in-game recognition with no monetary value.
           </p>
           <p className="text-sm text-chalk/55">
-            {COPYRIGHT} The copyright covers the game’s own original content; third-party software and fonts remain under their own
-            licences.
+            {COPYRIGHT} The copyright covers the game’s own original content. Its source code is licensed under the {CODE_LICENSE.name};
+            that licence doesn’t cover the creator portrait or The Golden Run name and branding. Third-party software and fonts remain
+            under their own licences.
           </p>
         </Chapter>
       </article>

@@ -10,6 +10,8 @@ export const SITE = {
   description:
     'The Golden Run is an independent, unofficial football arcade game for the web. Drag, curl and strike past a goalkeeper, play the 2008 story chapter, chase 1,000 verified career goals and compete in the weekly Golden Cup.',
   supportEmail: 'mojeeb@blindspotlab.xyz',
+  /** Public source code. Support, bug reports and disputes go to the email above, not to GitHub. */
+  repository: 'https://github.com/mojeebdev/goldenrun',
   image: 'https://goldenrun.fun/og.png',
 } as const;
 
@@ -32,6 +34,13 @@ export const STUDIO = {
   url: 'https://blindspotlab.xyz',
   /** Same @id as the Organization on blindspotlab.xyz. */
   id: 'https://blindspotlab.xyz/#organization',
+} as const;
+
+/** The source code's licence (see LICENSE and NOTICE; the creator portrait and the brand are excluded). */
+export const CODE_LICENSE = {
+  name: 'Apache License 2.0',
+  spdx: 'Apache-2.0',
+  url: 'https://www.apache.org/licenses/LICENSE-2.0',
 } as const;
 
 export const COPYRIGHT_YEAR = 2026;

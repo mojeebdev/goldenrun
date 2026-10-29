@@ -3,7 +3,7 @@
  * over gameplay: /play and in-run views are full-screen and have no footer.
  */
 import { Link } from 'react-router';
-import { COPYRIGHT_YEAR, CREATOR, SITE, STUDIO } from '../../shared/site';
+import { CODE_LICENSE, COPYRIGHT_YEAR, CREATOR, SITE, STUDIO } from '../../shared/site';
 import { Unofficial } from './Brand';
 
 export function XIcon({ className = 'h-3.5 w-3.5' }: { className?: string }) {
@@ -58,7 +58,14 @@ export function SiteFooter({ className = '' }: { className?: string }) {
           <a href={STUDIO.url} target="_blank" rel="noopener" className={`${link} text-chalk/80 underline decoration-white/20 underline-offset-4`}>
             {STUDIO.name}
           </a>
-          . All rights reserved.
+          . All rights reserved.{' '}
+          <span className="whitespace-nowrap">
+            Code under{' '}
+            <a href={CODE_LICENSE.url} target="_blank" rel="noopener noreferrer" className={`${link} underline decoration-white/20 underline-offset-4`}>
+              {CODE_LICENSE.spdx}
+            </a>
+            .
+          </span>
         </p>
       </div>
 
