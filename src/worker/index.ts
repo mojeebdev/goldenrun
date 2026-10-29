@@ -10,6 +10,8 @@ import * as auth from './api/auth';
 import { leaderboard } from './api/leaderboard';
 import { deleteMe, getMe, getProfile, updateMe } from './api/players';
 import { getRun, startRun, submitRun } from './api/runs';
+import { getChallenge, getProgress, reportPlayer } from './api/progress';
+import { withShareMeta } from './meta';
 import { settle } from './cron';
 import { ensureWeek } from './db/cup';
 import type { Env } from './env';
@@ -21,7 +23,7 @@ type Handler = (request: Request, env: Env, now: number, params: string[]) => Pr
 const routes: [method: string, pattern: RegExp, handler: Handler][] = [
   ['GET', /^\/api\/health$/, async () => {
     const result = simulateShot(CANONICAL_SHOT);
-    return json({ ok: true, service: 'goldenrun', milestone: 2, rulesetVersion: RULESET_VERSION, canonicalShot: { outcome: result.outcome, digest: resultDigest(result) } });
+    return json({ ok: true, service: 'goldenrun', milestone: 3, rulesetVersion: RULESET_VERSION, canonicalShot: { outcome: result.outcome, digest: resultDigest(result) } });
   }],
   ['GET', /^\/api\/v1\/bootstrap$/, async (req, env, now) => {
     const [cup, session] = await Promise.all([ensureWeek(env, now), currentSession(env, req, now)]);
@@ -45,6 +47,9 @@ const routes: [method: string, pattern: RegExp, handler: Handler][] = [
   ['POST', /^\/api\/v1\/runs\/([0-9a-f-]{36})\/submit$/, (req, env, now, p) => submitRun(req, env, now, p[0]!)],
   ['GET', /^\/api\/v1\/runs\/([0-9a-f-]{36})$/, (req, env, now, p) => getRun(req, env, now, p[0]!)],
   ['GET', /^\/api\/v1\/leaderboard$/, leaderboard],
+  ['GET', /^\/api\/v1\/progress$/, getProgress],
+  ['GET', /^\/api\/v1\/challenges\/([0-9a-f-]{36})$/, (_req, env, now, p) => getChallenge(env, now, p[0]!)],
+  ['POST', /^\/api\/v1\/reports$/, reportPlayer],
   ['GET', /^\/api\/v1\/players\/([A-Za-z0-9_]{3,20})$/, (_req, env, _now, p) => getProfile(env, p[0]!)],
 ];
 
@@ -72,6 +77,7 @@ export default {
   async fetch(request, env): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname.startsWith('/api/')) return handleApi(request, env);
+    if (url.pathname.startsWith('/u/') || url.pathname.startsWith('/c/')) return withShareMeta(request, env);
     return env.ASSETS.fetch(request);
   },
   async scheduled(_controller, env, ctx): Promise<void> {

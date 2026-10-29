@@ -47,3 +47,47 @@ npx wrangler d1 export goldenrun-db --remote --output goldenrun-backup.sql
 ```
 
 D1 also keeps 30 days of point-in-time recovery (Time Travel): `npx wrangler d1 time-travel info goldenrun-db`.
+
+## Founding Golden Fan audit
+
+The title is created automatically as **provisional** for the player whose 1,000th accepted goal has the lowest ledger id.
+
+See who holds it and how they got there:
+
+```bash
+npx wrangler d1 execute goldenrun-db --remote --command "SELECT a.player_id, p.handle, a.review_state, a.awarded_at FROM awards a JOIN players p ON p.id = a.player_id WHERE a.award_type = 'founding-golden-fan'"
+```
+
+```bash
+npx wrangler d1 execute goldenrun-db --remote --command "SELECT r.mode, r.state, COUNT(*) runs, SUM(r.goals) goals, MIN(r.submitted_at) first, MAX(r.submitted_at) last FROM runs r WHERE r.player_id = 'PLAYER_ID' GROUP BY r.mode, r.state"
+```
+
+Confirm it (**writes**):
+
+```bash
+npx wrangler d1 execute goldenrun-db --remote --command "UPDATE awards SET review_state = 'confirmed' WHERE award_key = 'founding-golden-fan' AND review_state = 'provisional'"
+```
+
+Revoke it (**writes**). Freeing the unique key lets the next hourly cron hand the title to the next player in ledger order; revoked players are never chosen again:
+
+```bash
+npx wrangler d1 execute goldenrun-db --remote --command "UPDATE awards SET review_state = 'revoked', award_key = 'founding-golden-fan:revoked:' || player_id WHERE award_key = 'founding-golden-fan'"
+```
+
+## Player reports
+
+```bash
+npx wrangler d1 execute goldenrun-db --remote --command "SELECT r.id, t.handle AS target, r.reason, r.note, r.created_at FROM reports r JOIN players t ON t.id = r.target_id WHERE r.resolved_at IS NULL ORDER BY r.created_at"
+```
+
+Rename an offensive nickname (**writes**):
+
+```bash
+npx wrangler d1 execute goldenrun-db --remote --command "UPDATE players SET handle = 'Player_1234', handle_norm = 'player_1234' WHERE handle_norm = 'badname'"
+```
+
+Mark a report handled (**writes**):
+
+```bash
+npx wrangler d1 execute goldenrun-db --remote --command "UPDATE reports SET resolved_at = CAST(strftime('%s','now') AS INTEGER) * 1000 WHERE id = 1"
+```

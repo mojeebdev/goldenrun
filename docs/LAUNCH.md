@@ -1,0 +1,27 @@
+# Launch checklist (owner)
+
+Status of release readiness after Milestone 3. ✅ = done and verified, ☐ = owner action or open item.
+
+## Product and fairness
+- ✅ Guest practice works instantly; accounts use first-party passkeys only.
+- ✅ Every competitive result is re-simulated by the Worker; client scores are never trusted.
+- ✅ Published rules (`/rules`), terms (`/terms`), privacy (`/privacy`), non-affiliation and art inventory (`/about`).
+- ✅ Weekly winners and the Founding Golden Fan start as **provisional**; audit steps in `OPERATIONS.md`.
+- ☐ Real-device QA: create a player and play the cup, a 2008 matchday and a Road run on an iPhone (Safari) and an Android phone (Chrome). Check passkey prompts, landscape/portrait and sound.
+- ☐ Legal review of terms and privacy before introducing any prize or partnership.
+
+## Abuse protection
+- ✅ Rate limits (Workers Rate Limiting), origin checks, review holds, reports.
+- ☐ Optional: Cloudflare Turnstile on account creation (create a widget in the dashboard; send the site key and set the secret with `npx wrangler secret put TURNSTILE_SECRET`).
+- ☐ Optional: a WAF rate-limiting rule on `/api/v1/auth/*` in the Cloudflare dashboard as a second layer.
+
+## Operations
+- ✅ Hourly idempotent cron; D1 Time Travel restore and Worker rollback documented in `DEPLOYMENT.md`.
+- ☐ Fix Workers Builds settings so `main` deploys automatically (build command `npm run build`).
+- ☐ Turn on Cloudflare notifications for Worker errors and D1 usage.
+- ☐ Weekly: review `pending_review` runs and reports; confirm the weekly winner(s).
+
+## Performance
+- ✅ Homepage loads without the game engine (~105 KB JS gzip); the game chunk (~343 KB gzip) is lazy-loaded and preloaded on idle.
+- ✅ Leaderboards are cacheable for 30 s; submissions are one D1 batch per run.
+- Local load check (`npm run loadcheck`: real Worker handler and Miniflare D1 on one dev machine; 60 players, 240 fully re-simulated runs). Submit took 214 ms at p50 and 313 ms at p95, including re-simulating every shot. Weekly leaderboard 47/94 ms, country 46/91 ms, career 20/32 ms, Hall of Fame 16/21 ms, progress 51/70 ms (p50/p95). Production D1 performs differently, so treat these as a regression baseline, not a capacity figure. Watch D1 rows read per day as the ledger grows.

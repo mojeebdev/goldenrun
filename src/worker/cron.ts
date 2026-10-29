@@ -2,6 +2,7 @@
  * Hourly settlement (Cron Trigger on the same Worker). Idempotent: it reads all
  * deadlines from D1 and can run late, twice or concurrently without harm.
  */
+import { grantAwards } from './db/awards';
 import { ensureWeek } from './db/cup';
 import type { Env } from './env';
 
@@ -34,6 +35,8 @@ export async function settle(env: Env, now: number): Promise<{ expired: number; 
       await env.DB.prepare("UPDATE cup_weeks SET status = 'finalized', finalized_at = ? WHERE id = ? AND status = 'closed'").bind(now, w.id).run();
     }
   }
+  // Re-derive ledger awards for everyone (covers runs the owner accepted after review).
+  await grantAwards(env, now);
   if (expired.meta.changes || closed.meta.changes || awarded) {
     await env.DB.prepare('INSERT INTO audit_events (at, kind, detail) VALUES (?, ?, ?)')
       .bind(now, 'cron.settled', JSON.stringify({ expired: expired.meta.changes, closed: closed.meta.changes, awarded }))

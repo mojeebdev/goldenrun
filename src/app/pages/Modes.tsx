@@ -12,7 +12,7 @@ export function Modes() {
       <p className="label text-gold">2008 → 1,000</p>
       <h1 className="display text-5xl font-extrabold uppercase italic">Game modes</h1>
       <p className="mt-2 max-w-xl text-chalk/70">
-        Practice is playable today. Competitive modes arrive once player accounts and server-verified results are in place.
+        Practice is open to everyone. The story chapter, the Road to 1,000 and the weekly Golden Cup use a free player and server-verified results.
       </p>
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         <Link to="/play" className="rounded-2xl border border-gold/50 bg-gradient-to-br from-pitch-dark/60 to-midnight p-6 hover:border-gold">

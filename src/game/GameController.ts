@@ -85,6 +85,7 @@ export class GameController {
     this.opts = opts;
     const settings = loadSettings();
     this.session = new PracticeSession(settings.level, opts.course ?? null);
+    this.sound.setVolume(settings.volume);
     if (opts.restore?.length) {
       this.session.restore(opts.restore);
       this.shotsTaken = opts.restore.length;
@@ -231,6 +232,7 @@ export class GameController {
   updateSettings(patch: Partial<Settings>): void {
     const settings = { ...this.ui.settings, ...patch };
     saveSettings(settings);
+    if (patch.volume !== undefined) this.sound.setVolume(patch.volume);
     if (patch.sound !== undefined) {
       if (patch.sound) this.sound.enable();
       else this.sound.disable();

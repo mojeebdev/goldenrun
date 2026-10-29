@@ -12,7 +12,19 @@ import { SoftAuthenticator } from './authenticator';
 
 export const ORIGIN = 'http://localhost:5173';
 
-export async function startHarness() {
+/** Split a migration file into statements (comments stripped). */
+export function migrationStatements(file: string): string[] {
+  const sql = readFileSync(join('migrations', file), 'utf8')
+    .split('\n')
+    .filter((l) => !l.trim().startsWith('--'))
+    .join('\n');
+  return sql
+    .split(/;\s*\n/)
+    .map((x) => x.replace(/--.*$/gm, '').trim())
+    .filter(Boolean);
+}
+
+export async function startHarness(opts: { migrations?: string[] } = {}) {
   const proxy = await getPlatformProxy<Env>({ persist: { path: mkdtempSync(join(tmpdir(), 'gr-d1-')) } });
   const env: Env = {
     ...(proxy.env as Env),
@@ -23,14 +35,10 @@ export async function startHarness() {
     RP_NAME: 'The Golden Run',
     ALLOWED_ORIGINS: ORIGIN,
   };
-  for (const file of readdirSync('migrations').filter((f) => f.endsWith('.sql')).sort()) {
-    const sql = readFileSync(join('migrations', file), 'utf8')
-      .split('\n')
-      .filter((l) => !l.trim().startsWith('--'))
-      .join('\n');
-    for (const stmt of sql.split(/;\s*\n/).map((s) => s.trim()).filter(Boolean)) {
-      await env.DB.prepare(stmt).run();
-    }
+  const files = opts.migrations ?? readdirSync('migrations').filter((f) => f.endsWith('.sql')).sort();
+  for (const file of files) {
+    // One transaction per file, like `wrangler d1 migrations apply`.
+    await env.DB.batch(migrationStatements(file).map((stmt) => env.DB.prepare(stmt)));
   }
   return { env, dispose: () => proxy.dispose() };
 }

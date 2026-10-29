@@ -1,5 +1,27 @@
 # Changelog
 
+## Milestone 3 — Campaign modes, progression and launch prep (2026-10-29)
+
+### Added
+- **2008: The Beginning** (`/2008`): six original, fictional matchdays (Rookie → Legendary). Each is a server-issued, verified 10-shot run and counts up to 7 chapter goals. 42 chapter goals earn the 2008 badge. Matchdays unlock in order, and replays can't push a matchday past its quota.
+- **Road to 1,000** (`/road-to-1000`): unlimited verified 10-shot career runs on random courses chosen by the server. Six difficulty tiers (Academy → Legend) follow the career total. Milestone badges at 42, 100, 250, 500, 750 and 1,000.
+- **Founding Golden Fan:** awarded provisionally to the player whose 1,000th goal the server accepted first (goal-ledger order). The owner confirms it after an audit. A documented revoke step passes it on fairly.
+- **Single career ledger:** ranked cup goals, Road goals and in-quota chapter goals each count exactly once.
+- **Challenges and sharing:** `/c/:runId` lets anyone practise the exact 12 shots of a verified cup run and compare. Share cards are drawn on the device (no third-party image service). The Worker rewrites Open Graph tags for `/u/:handle` and `/c/:runId`, and there's a branded default `og.png`.
+- **Profiles:** badges and titles, share-profile button, report-a-player (nickname, cheating or other). Reports go to a `reports` table for owner review.
+- **Hall of Fame:** Founding Golden Fan card plus weekly winners.
+- **Launch pages:** `/terms`, `/privacy`, `/about` (non-affiliation, original art and sound inventory, licences). Footer links.
+- **Settings:** volume slider.
+- **Migration `0002_progression.sql`:** rebuilds `runs` for the new modes and preserves all data, including working around a SQLite cascade trap that would have deleted `run_shots`. Adds `reports` and a ledger-order index.
+- **Tests:** 97 in total. Integration tests cover the 42-goal badge awarded exactly once, quota caps under concurrency, locked matchdays, random Road courses, review holds for too-fast and all-top-corner runs, tier progression, first-to-1,000 ordering and the revoke hand-over, public challenges, idempotent reports, guest progress, and migration on a populated database.
+
+### Not done / limitations
+- **Real-phone passkey testing** is still outstanding.
+- **Turnstile** isn't wired up (needs an owner-created widget).
+- **Legal pages** are plain-language drafts; get legal review before any prizes or wider commercial use.
+- **Share cards** are generated on the player's device. Link previews use the static `og.png` with page-specific titles; there are no per-player images.
+- **Load testing** has only been run locally (see `docs/LAUNCH.md`). Production capacity is Cloudflare's, but D1 query costs should be watched as the ledger grows.
+
 ## Milestone 2 — Verified Competition (2026-10-29, live on goldenrun.fun)
 
 ### Added

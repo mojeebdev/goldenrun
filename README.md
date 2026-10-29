@@ -65,6 +65,8 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 **Milestone 2 — Verified competition: live since 2026-10-29.** Passkey accounts, the weekly Golden Cup with server-verified scores, and D1 leaderboards. The owner created the production D1 database (`goldenrun-db`, WEUR), applied migrations remotely and deployed. Checked over HTTPS: `/api/health` reports milestone 2 with digest `b21e6426`; the bootstrap and leaderboard endpoints read from D1; cross-origin writes are refused; passkey options use RP ID `goldenrun.fun`. See [CHANGELOG](CHANGELOG.md) for what shipped and what remains.
 
+**Milestone 3 — 2008 chapter, Road to 1,000, badges, challenges and launch pages:** built and tested locally; production needs migration `0002` (see [DEPLOYMENT](docs/DEPLOYMENT.md)).
+
 ## Run it locally
 
 Requires Node.js 20+ (tested on 22).
@@ -87,7 +89,7 @@ npm run dev          # http://localhost:5173 — React + Phaser + the Worker (/a
 
 First-time local setup for accounts: `cp .dev.vars.example .dev.vars` (sets the passkey origin to `localhost`), then `npm run db:migrate:local`. Open **http://localhost:5173** — passkeys don't work on `127.0.0.1`.
 
-Routes: `/` homepage · `/play` practice · `/cup` Golden Cup · `/leaderboard` · `/u/:username` · `/join` · `/login` · `/account` · `/rules` · `/modes` · `/2008` and `/road-to-1000` (labelled *coming later*) · `/api/health` and `/api/v1/*`.
+Routes: `/` homepage · `/play` practice · `/cup` Golden Cup · `/2008` chapter · `/road-to-1000` career · `/leaderboard` · `/u/:username` · `/c/:runId` challenges · `/join` · `/login` · `/account` · `/rules` · `/terms` · `/privacy` · `/about` · `/modes` · `/api/health` and `/api/v1/*`.
 
 ### How to play
 

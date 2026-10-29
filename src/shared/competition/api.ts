@@ -42,7 +42,9 @@ export interface RunShotSummary {
 
 export interface RunSummary {
   runId: string;
-  weekId: string;
+  mode: 'cup' | 'chapter' | 'road';
+  stage: number | null;
+  weekId: string | null;
   ranked: boolean;
   state: RunState;
   startedAt: number;
@@ -54,12 +56,16 @@ export interface RunSummary {
   misses: number | null;
   shots?: RunShotSummary[];
   rank?: number | null;
+  /** Career goals this run added to the ledger. */
+  creditedGoals?: number;
 }
 
 export interface StartedRun {
   runId: string;
   nonce: string;
-  weekId: string;
+  mode: 'cup' | 'chapter' | 'road';
+  stage: number | null;
+  weekId: string | null;
   rulesetVersion: string;
   scenarioIds: string[];
   scenarioSetHash: string;
@@ -107,11 +113,40 @@ export interface HallOfFameEntry {
   reviewState: 'provisional' | 'confirmed' | 'revoked';
 }
 
+export interface AwardView {
+  type: string;
+  label: string;
+  reviewState: 'provisional' | 'confirmed' | 'revoked';
+  awardedAt: number;
+}
+
+export interface Progress {
+  player: { handle: string } | null;
+  careerGoals: number;
+  tier: string;
+  nextMilestone: number | null;
+  awards: AwardView[];
+  chapter: { stages: { stage: number; goals: number; unlocked: boolean }[]; total: number; badge: boolean };
+  founding: { state: 'open' | 'provisional' | 'confirmed'; handle: string | null; country: string | null; awardedAt: number | null };
+}
+
+export interface Challenge {
+  runId: string;
+  weekId: string;
+  handle: string | null;
+  country: string | null;
+  score: number;
+  goals: number;
+  rank: number | null;
+  scenarioIds: string[];
+  weekIsCurrent: boolean;
+}
+
 export interface PlayerProfile {
   handle: string;
   country: string | null;
   joinedAt: number;
   careerGoals: number;
-  awards: { type: string; weekId: string | null; reviewState: string }[];
+  awards: AwardView[];
   cupResults: { weekId: string; score: number; goals: number; rank: number | null }[];
 }

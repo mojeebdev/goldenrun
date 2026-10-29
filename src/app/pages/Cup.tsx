@@ -8,6 +8,7 @@ import { getScenario } from '../../shared/rules';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { PageShell } from '../components/PageShell';
 import { GhostButton, GoldButton, Notice, Panel } from '../components/Ui';
+import { ShareButton } from '../components/ShareButton';
 import { ApiError, api } from '../lib/api';
 import { useAccount } from '../lib/account';
 import { localDateTime, relativeTime, utcDateTime } from '../lib/format';
@@ -303,8 +304,22 @@ function EntrySummary({ entry }: { entry: RunSummary }) {
         </p>
       )}
       <p className="mt-2 text-xs text-chalk/55">One ranked entry per week. Keep practising — a new cup opens every Monday 00:00 UTC.</p>
-      <Link to="/leaderboard" className="mt-2 inline-block text-sm text-gold underline">See the leaderboard</Link>
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        {entry.state === 'accepted' && <ChallengeShare run={entry} />}
+        <Link to="/leaderboard" className="text-sm text-gold underline">See the leaderboard</Link>
+      </div>
     </div>
+  );
+}
+
+function ChallengeShare({ run }: { run: RunSummary }) {
+  const url = `${location.origin}/c/${run.runId}`;
+  return (
+    <ShareButton
+      label="Challenge friends"
+      text={`I scored ${run.skillScore} in the Golden Cup ${run.weekId}. Beat my 12 shots:`}
+      spec={{ kicker: `Golden Cup ${run.weekId}`, title: 'Beat my 12 shots', big: (run.skillScore ?? 0).toLocaleString('en-US'), sub: `${run.goals}/12 goals${run.rank ? ` · rank #${run.rank}` : ''} · verified`, url }}
+    />
   );
 }
 
@@ -346,6 +361,11 @@ function ResultPanels({ view, onRetry }: { view: View; onRetry: (s: StoredRun, l
             <span className="display text-5xl font-extrabold italic text-gold">{s.skillScore.toLocaleString('en-US')}</span> pts · {s.goals}/12 goals
             {s.rank ? <> · rank <b>#{s.rank}</b></> : null}
           </p>
+        )}
+        {s.state === 'accepted' && (
+          <div className="mt-3">
+            <ChallengeShare run={s} />
+          </div>
         )}
         {view.local && s.skillScore !== null && view.local.skillScore !== s.skillScore && (
           <p className="mt-1 text-xs text-chalk/55">Your device showed {view.local.skillScore}; the server’s replay is the official result.</p>

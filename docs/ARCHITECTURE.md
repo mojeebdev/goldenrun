@@ -88,6 +88,15 @@ Create migrations in `migrations/` with rollback/safe-change notes. Index leader
 * **Cron** `17 * * * *`: ensure the current week, expire overdue runs, close finished weeks, and insert provisional winners (all rank-1 ties). Award keys are unique, so it is idempotent.
 * **Not built yet:** Turnstile (needs an owner-created widget), R2, Durable Objects.
 
+## As built in Milestone 3
+
+* **Run modes:** `runs.mode` is `cup | chapter | road`. Chapter and road runs store their own course (`scenario_ids`). Chapter runs carry a `stage` (1–6). Starting either is unlimited; submission and verification share the cup pipeline (exact course order, re-simulation, atomic idempotent acceptance, review holds: under 1.5 s per shot, or all goals with at most 2 non-top-corners).
+* **One career ledger:** `goal_ledger` rows come from accepted cup, road and chapter runs. A chapter goal is inserted only while `COUNT(ledger rows for that player and stage) < 7`, a condition evaluated inside the same batch transaction, so concurrent runs can't exceed the quota and replays add nothing.
+* **Awards** (`src/worker/db/awards.ts`): set-based, idempotent `INSERT OR IGNORE` keyed by `award_key`. Milestones `milestone-N:<player>` and `badge-2008:<player>` are `confirmed`. `founding-golden-fan` goes to the player whose 1,000th ledger row has the lowest ledger id (`ROW_NUMBER()` window, revoked players excluded) as `provisional`. It runs after each accepted run and in the hourly cron.
+* **Road courses:** chosen by the server with a random seed per run. The tier is set by the player's career total.
+* **Share previews:** `run_worker_first` includes `/u/*` and `/c/*`. The Worker fetches the SPA shell from `ASSETS` and rewrites `<title>` and the OG/Twitter tags with `HTMLRewriter`. The default image is the static `og.png`. Player share cards are drawn on the device with canvas.
+* **New endpoints:** `GET /api/v1/progress` (guest-safe), `GET /api/v1/challenges/:runId` (accepted ranked cup runs only), `POST /api/v1/reports`. The Hall of Fame response includes `founding`.
+
 ## Authentication without another provider
 
 - **Guest practice:** unsigned local practice play possible. If creating a guest session server-side, use an opaque, expiring session cookie.

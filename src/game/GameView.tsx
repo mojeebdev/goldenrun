@@ -21,6 +21,8 @@ export interface GameMode {
   onShotResolved?: GameOptions['onShotResolved'];
   onCourseComplete?: GameOptions['onCourseComplete'];
   exitTo?: string;
+  /** HUD mode label override (e.g. "2008 · Matchday 3"). */
+  label?: string;
 }
 
 export default function GameView({ mode = {} }: { mode?: GameMode }) {
@@ -71,7 +73,7 @@ function Hud({ controller, mode }: { controller: GameController; mode: GameMode 
   const { stats } = session;
   const scenario = getScenario(controller.session.scenarioId)!;
   const course = mode.course;
-  const modeLabel = course ? (mode.ranked ? 'Golden Cup · Ranked' : 'Cup practice · Unranked') : 'Unranked practice';
+  const modeLabel = mode.label ?? (course ? (mode.ranked ? 'Golden Cup · Ranked' : 'Cup practice · Unranked') : 'Unranked practice');
 
   useEffect(() => {
     controller.setPaused(settingsOpen);
@@ -435,6 +437,20 @@ function SettingsSheet({
           </div>
         </Section>
 
+        {ui.settings.sound && (
+          <Section title="Volume">
+            <input
+              type="range"
+              min={0}
+              max={100}
+              value={Math.round(ui.settings.volume * 100)}
+              onChange={(e) => controller.updateSettings({ volume: Number(e.target.value) / 100 })}
+              className="w-full accent-[var(--color-gold)]"
+              aria-label="Volume"
+            />
+          </Section>
+        )}
+
         <Section title="Motion">
           <div className="flex gap-1.5">
             {([
@@ -494,7 +510,7 @@ function SettingsSheet({
         </div>
         <p className="mt-4 text-[11px] leading-relaxed text-chalk/45">
           {controller.isRanked
-            ? 'Ranked run: only your 12 shot inputs are sent when you finish. The server replays them to score you.'
+            ? 'Verified run: only your shot inputs are sent when you finish. The server replays them to score you.'
             : 'Unranked practice: nothing is uploaded or saved except these settings on this device.'}
         </p>
       </div>

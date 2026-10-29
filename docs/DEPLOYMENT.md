@@ -55,3 +55,45 @@ Run these from the repository root on your machine, logged in with `npx wrangler
 No secrets are needed. Rate limiters (`ratelimits` in `wrangler.jsonc`) and the cron trigger are created by `wrangler deploy` itself; there is nothing to set up in the dashboard. Day-to-day review commands are in [OPERATIONS.md](OPERATIONS.md).
 
 **Order matters:** don't deploy Milestone 2 before step 2. Without the tables, the account and cup APIs will error, although practice still works.
+
+## Milestone 3: migration 0002, then deploy
+
+`0002_progression.sql` rebuilds the `runs` table (all data is kept; it has been tested on a database with Milestone 2 data). It is backward compatible, so **apply it before merging/deploying Milestone 3**:
+
+1. Note a restore point, just in case:
+
+   ```bash
+   npx wrangler d1 time-travel info goldenrun-db
+   ```
+
+2. Apply:
+
+   ```bash
+   npx wrangler d1 migrations apply goldenrun-db --remote
+   ```
+
+3. Check that `reports` exists and runs were kept:
+
+   ```bash
+   npx wrangler d1 execute goldenrun-db --remote --command "SELECT (SELECT COUNT(*) FROM runs) runs, (SELECT COUNT(*) FROM run_shots) shots, (SELECT COUNT(*) FROM goal_ledger) goals, (SELECT COUNT(*) FROM reports) reports"
+   ```
+
+4. Merge the pull request (Workers Builds deploys `main`) or deploy manually: `npm ci && npm run build && npx wrangler deploy`.
+
+## Rollback
+
+- **Code:** list versions and roll back the Worker without touching data:
+
+  ```bash
+  npx wrangler deployments list
+  ```
+
+  ```bash
+  npx wrangler rollback
+  ```
+
+- **Database:** restore D1 to a point in time (last 30 days). This overwrites everything written since then, so only use it for a broken migration:
+
+  ```bash
+  npx wrangler d1 time-travel restore goldenrun-db --timestamp=2026-10-29T12:00:00Z
+  ```
