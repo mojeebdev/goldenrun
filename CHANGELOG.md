@@ -1,5 +1,17 @@
 # Changelog
 
+## Run clock fix (2026-10-29)
+
+Found in real-phone testing on an iPhone 12: a finished Golden Cup run came back "expired".
+
+### Fixed
+- **Run windows were too short.** A ranked cup run had 120 s in total for 12 shots, and each shot's own animation takes 3–4 s, which left about 6 s per shot to line it up. Now the cup gets **4:00 on the clock plus 30 s of extra time**, and 2008 matchdays and Road runs (10 shots) get **3:30 plus 30 s**. Time still never affects score or ties. Runs already started keep their original deadline.
+- **The in-game clock is now explicit.** It counts down the time you actually have ("Time"), turns red with a "30s left" warning, then shows "Extra time · Ns to finish". When the window closes, a "Time's up" screen stops play straight away. Before, you could finish all your shots and only learn at submission that the run had expired.
+- **Exit didn't close hosted runs.** The in-game back arrow on the cup, 2008 and Road pages linked to the page you were already on, so it did nothing. Exiting now returns to that page's lobby, where an unfinished run can be resumed.
+- `/api/v1/me` now reports a cup entry past its deadline as expired straight away, instead of after the next hourly cron run, so the lobby never offers to resume a dead run.
+- Saved Road and 2008 runs are compared against the server's clock, not the device's.
+- The cup page, the rules and the settings sheet state the time limits and say that the clock keeps running while paused.
+
 ## Milestone 3 — Campaign modes, progression and launch prep (2026-10-29)
 
 ### Added
@@ -27,7 +39,7 @@
 ### Added
 - **D1 schema** (`migrations/0001_initial.sql`) with uniqueness guarantees for nicknames, the single ranked entry per week, per-shot results, career-goal ledger rows and awards.
 - **Passkey accounts** with no external identity provider: create a player (nickname plus optional country), discoverable passkey sign-in, extra passkeys, recovery codes, sign out / sign out everywhere, public/private profile, account deletion (competitive records kept anonymously).
-- **Golden Cup:** a deterministic 12-shot course per ISO week, practice mode, and one ranked entry per player per week. The server issues each ranked run (90 s target, 30 s grace) and re-simulates the 12 submitted shot inputs. Acceptance is atomic and idempotent, with review holds for implausible runs. Progress is saved locally so an interrupted run can resume or re-send.
+- **Golden Cup:** a deterministic 12-shot course per ISO week, practice mode, and one ranked entry per player per week. The server issues each ranked run (90 s target, 30 s grace; since the run clock fix, 4:00 plus 30 s) and re-simulates the 12 submitted shot inputs. Acceptance is atomic and idempotent, with review holds for implausible runs. Progress is saved locally so an interrupted run can resume or re-send.
 - **Leaderboards:** weekly global, weekly by self-chosen country, career goals and Hall of Fame. All are built from accepted runs only, with shared ranks for exact ties. Private and deleted players stay anonymous. Responses are cacheable for 30 s.
 - **Public profiles** at `/u/:handle`, published rules at `/rules`, and account management at `/account`.
 - **Security:** Origin checks on every write, body limits, Workers Rate Limiting bindings, hashed secrets everywhere, audit events without personal data.

@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import type { Progress } from '../../shared/competition/api';
-import { CHAPTER_2008, CHAPTER_QUOTA, CHAPTER_TARGET } from '../../shared/competition/progression';
+import { CHAPTER_2008, CHAPTER_QUOTA, CHAPTER_TARGET, ROAD } from '../../shared/competition/progression';
 import { getScenario } from '../../shared/rules';
 import { PageShell } from '../components/PageShell';
 import { loadRun, storageKey, useRunFlow } from '../components/RunFlow';
 import { GhostButton, GoldButton, Notice, Panel } from '../components/Ui';
 import { api } from '../lib/api';
 import { useAccount } from '../lib/account';
+import { durationLabel } from '../lib/format';
 
 export function Chapter2008() {
-  const { bootstrap } = useAccount();
+  const { bootstrap, clockOffset } = useAccount();
   const [progress, setProgress] = useState<Progress | null>(null);
   const reload = useCallback(() => {
     api.progress().then(setProgress, () => setProgress(null));
@@ -37,6 +38,7 @@ export function Chapter2008() {
         A breakthrough season told in six fictional matchdays. Each one counts up to {CHAPTER_QUOTA} verified goals toward the
         chapter. Reach {CHAPTER_TARGET} to earn the 2008 badge. These are original scenes, not recreations of real matches.
       </p>
+      <p className="mt-1 text-xs text-chalk/55">Each matchday has {durationLabel(ROAD.targetSeconds)} on the clock for 10 shots, plus {ROAD.graceSeconds} seconds of extra time.</p>
 
       <div className="mt-6 max-w-2xl">
         <div className="flex items-baseline justify-between text-sm">
@@ -67,7 +69,7 @@ export function Chapter2008() {
           const sp = progress?.chapter.stages.find((x) => x.stage === st.stage);
           const goals = sp?.goals ?? 0;
           const unlocked = sp?.unlocked ?? st.stage === 1;
-          const saved = signedIn ? loadRun(storageKey('chapter', st.stage), now) : null;
+          const saved = signedIn ? loadRun(storageKey('chapter', st.stage), now + clockOffset) : null;
           const legendary = st.scenarioIds.filter((id) => getScenario(id)?.keeper.level === 'legendary').length;
           return (
             <li key={st.stage}>

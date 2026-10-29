@@ -13,5 +13,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["tests", "src/shared", "src/worker", "src/game/input", "src/game/session.ts"]
+  "include": ["tests", "src/shared", "src/worker", "src/game/input", "src/game/session.ts", "src/game/clock.ts"]
 }

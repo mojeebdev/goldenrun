@@ -85,7 +85,7 @@ Structured scenario progression; successful verified goals increment chapter tot
 A successful accepted shot increments the account career goal ledger by **exactly 1**. Server controls eligibility, submission and idempotency. Reject duplicated shot IDs and replayed runs. Invalid attempts do not change totals.
 
 ### Golden Cup
-12 fixed shots, same order and scenario parameters for every participant per weekly ruleset. 90-second target window with server-authoritative start and finish bounds (allow a documented tolerance for network jitter). A client's time display alone never grants score or tie advantages. At most one eligible ranked run per verified account per cup week at MVP. All scores from deterministic server re-simulation. Do not claim that purely browser-generated inputs are impossible to automate: add abuse checks, review and contest safeguards.
+12 fixed shots, same order and scenario parameters for every participant per weekly ruleset. Time window with server-authoritative start and finish bounds (allow a documented tolerance for network jitter). *As built: 4:00 on the clock plus 30 s extra time. The original 90-second target was too tight on real phones.* A client's time display alone never grants score or tie advantages. At most one eligible ranked run per verified account per cup week at MVP. All scores from deterministic server re-simulation. Do not claim that purely browser-generated inputs are impossible to automate: add abuse checks, review and contest safeguards.
 
 ## Prototype scoring proposal
 

@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import type { Leaderboard, RunSummary, StartedRun } from '../../src/shared/competition/api';
+import type { Leaderboard, Me, RunSummary, StartedRun } from '../../src/shared/competition/api';
 import { runTotals } from '../../src/shared/competition/cup';
 import { makeCommand, simulateShot } from '../../src/shared/rules';
 import type { ShotCommand } from '../../src/shared/rules';
@@ -56,7 +56,7 @@ describe('Golden Cup ranked runs (local Worker + local D1)', () => {
     expect(ra.scenarioIds).toHaveLength(12);
     expect(rb.scenarioIds).toEqual(ra.scenarioIds);
     expect(rb.scenarioSetHash).toBe(ra.scenarioSetHash);
-    expect(ra.deadlineAt - ra.startedAt).toBe(120 * SECOND);
+    expect(ra.deadlineAt - ra.startedAt).toBe(270 * SECOND); // 4:00 on the clock + 30 s extra time
 
     // Identical commands from two players re-simulate to identical results.
     const cmds = commandsFor(ra, 3);
@@ -132,6 +132,15 @@ describe('Golden Cup ranked runs (local Worker + local D1)', () => {
     const st = await p.client.call<RunSummary>('GET', `/api/v1/runs/${run.runId}`);
     expect(st.body.state).toBe('expired');
     expect((await submit(p.client, run, commandsFor(run, 2), {}, run.deadlineAt + 2)).status).toBe(410);
+  });
+
+  it('reports an abandoned entry as expired once its deadline passes, before the cron runs', async () => {
+    const p = await registerPlayer(env, now, 'Wanderer');
+    const run = await start(p.client);
+    const before = await p.client.call<Me>('GET', '/api/v1/me', undefined, { now: run.deadlineAt - 1 });
+    expect(before.body.cupEntry?.state).toBe('started');
+    const after = await p.client.call<Me>('GET', '/api/v1/me', undefined, { now: run.deadlineAt + 1 });
+    expect(after.body.cupEntry?.state).toBe('expired');
   });
 
   it('holds implausibly fast runs for review: not ranked, no career goals', async () => {

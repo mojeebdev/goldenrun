@@ -18,7 +18,7 @@ A mobile-first, browser-based **precision-shooting football game** that is enjoy
 | --- | --- | --- |
 | **2008: The Beginning** | Complete a 42-goal progression chapter | Earn the 2008 badge |
 | **Road to 1,000** | Earn 1,000 verified career goals | First audited player receives the permanent *Founding Golden Fan* title |
-| **Golden Cup** | Weekly set of 12 standardized shots, with a 90-second target | Highest verified skill score is weekly champion |
+| **Golden Cup** | Weekly set of 12 standardized shots, with 4 minutes on the clock | Highest verified skill score is weekly champion |
 
 The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** recognitions; no real Ballon d'Or prize or endorsement is implied. Career goals count **one each**, independent of a shot's point value.
 

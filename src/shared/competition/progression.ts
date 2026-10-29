@@ -17,9 +17,9 @@ export const FOUNDING_GOALS = 1000;
 
 export const ROAD = {
   shots: 10,
-  /** Display-only target; the deadline adds the grace below. */
-  targetSeconds: 75,
-  graceSeconds: 45,
+  /** Shooting time on the in-game clock (s); the deadline adds the extra time below. */
+  targetSeconds: 210,
+  graceSeconds: 30,
 } as const;
 
 /** Runs faster than this per shot are held for review (ms). */

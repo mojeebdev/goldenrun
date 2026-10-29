@@ -25,11 +25,12 @@ export function storageKey(mode: 'chapter' | 'road', stage?: number) {
   return `goldenrun.run.${mode}${stage ? `.${stage}` : ''}.v1`;
 }
 
-export function loadRun(key: string, now: number): Stored | null {
+/** `serverNow` is the server's clock (device time + measured offset): deadlines are server times. */
+export function loadRun(key: string, serverNow: number): Stored | null {
   try {
     const raw = localStorage.getItem(key);
     const s = raw ? (JSON.parse(raw) as Stored) : null;
-    return s && s.run.deadlineAt > now ? s : null;
+    return s && s.run.deadlineAt > serverNow ? s : null;
   } catch {
     return null;
   }
@@ -111,6 +112,10 @@ export function useRunFlow(mode: 'chapter' | 'road', onSettled?: () => void) {
                 ranked: true,
                 restore: phase.stored.commands,
                 exitTo: mode === 'chapter' ? '/2008' : '/road-to-1000',
+                onExit: () => {
+                  setPhase({ kind: 'idle' });
+                  onSettled?.();
+                },
                 label: mode === 'chapter' ? `2008 · Matchday ${phase.stored.run.stage} · Verified` : 'Road to 1,000 · Verified',
                 timer: { targetEndsAt: phase.stored.run.targetEndsAt, deadlineAt: phase.stored.run.deadlineAt, clockOffset },
                 onShotResolved: (snap) => saveRun(storageKey(mode, phase.stored.run.stage ?? undefined), { ...phase.stored, commands: snap.commands }),

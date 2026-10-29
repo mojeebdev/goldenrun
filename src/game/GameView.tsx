@@ -8,6 +8,8 @@ import type { KeeperLevel, ShotCommand } from '../shared/rules';
 import { KEEPER_LEVELS, KEEPER_PROFILES, PRACTICE_SPOTS, getScenario } from '../shared/rules';
 import type { AimReadout, ControllerUi, GameOptions } from './GameController';
 import { GameController } from './GameController';
+import type { ClockState, RunTimer } from './clock';
+import { clockState, formatClock } from './clock';
 import type { ResolvedShot, SessionSnapshot } from './session';
 import type { Quality } from './settings';
 
@@ -17,10 +19,16 @@ export interface GameMode {
   ranked?: boolean;
   restore?: ShotCommand[];
   /** Display-only countdown; the server's deadline is what counts. */
-  timer?: { targetEndsAt: number; deadlineAt: number; clockOffset: number };
+  timer?: RunTimer;
   onShotResolved?: GameOptions['onShotResolved'];
   onCourseComplete?: GameOptions['onCourseComplete'];
   exitTo?: string;
+  /**
+   * Leave the game. Pages that host a run inside their own route (the cup,
+   * chapter and road pages) pass this, because linking to the route they are
+   * already on would not close the game.
+   */
+  onExit?: () => void;
   /** HUD mode label override (e.g. "2008 · Matchday 3"). */
   label?: string;
 }
@@ -74,10 +82,12 @@ function Hud({ controller, mode }: { controller: GameController; mode: GameMode 
   const scenario = getScenario(controller.session.scenarioId)!;
   const course = mode.course;
   const modeLabel = mode.label ?? (course ? (mode.ranked ? 'Golden Cup · Ranked' : 'Cup practice · Unranked') : 'Unranked practice');
+  const clock = useRunClock(mode.timer);
+  const closed = clock?.kind === 'closed' && session.phase !== 'complete';
 
   useEffect(() => {
-    controller.setPaused(settingsOpen);
-  }, [settingsOpen, controller]);
+    controller.setPaused(settingsOpen || closed);
+  }, [settingsOpen, closed, controller]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -98,11 +108,11 @@ function Hud({ controller, mode }: { controller: GameController; mode: GameMode 
       {/* Top bar */}
       <div className="pointer-events-auto absolute inset-x-0 top-0 flex items-start justify-between gap-2 px-[max(10px,var(--safe-left))] pt-[max(8px,var(--safe-top))] pr-[max(10px,var(--safe-right))]">
         <div className="flex min-w-0 items-center gap-2">
-          <Link to={mode.exitTo ?? '/'} aria-label="Exit" className="hud-btn">
+          <ExitControl mode={mode} aria-label="Exit" className="hud-btn">
             <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
               <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </Link>
+          </ExitControl>
           <div className="min-w-0 leading-tight">
             <p className="label truncate text-[10px] text-gold">{modeLabel}</p>
             <p className="display truncate text-[15px] font-semibold uppercase text-chalk/85">
@@ -111,7 +121,7 @@ function Hud({ controller, mode }: { controller: GameController; mode: GameMode 
           </div>
         </div>
         {course ? (
-          <CourseStats shot={Math.min(session.spotIndex + 1, course.length)} total={course.length} goals={stats.goals} score={stats.score} timer={mode.timer} />
+          <CourseStats shot={Math.min(session.spotIndex + 1, course.length)} total={course.length} goals={stats.goals} score={stats.score} clock={clock} />
         ) : (
           <Stats goals={stats.goals} attempts={stats.attempts} streak={stats.streak} score={stats.score} />
         )}
@@ -130,6 +140,18 @@ function Hud({ controller, mode }: { controller: GameController; mode: GameMode 
           </button>
         </div>
       </div>
+
+      {/* Run clock warnings */}
+      {clock && (clock.kind === 'extra' || (clock.kind === 'time' && clock.urgent)) && session.phase !== 'complete' && (
+        <p
+          role="status"
+          className="label absolute left-1/2 top-[calc(max(8px,var(--safe-top))+96px)] -translate-x-1/2 whitespace-nowrap rounded-full bg-[#e0563f] px-4 py-1.5 text-[11px] text-white shadow-lg sm:top-[calc(max(8px,var(--safe-top))+52px)]"
+        >
+          {clock.kind === 'extra' ? `Extra time · ${clock.seconds}s to finish` : `${clock.seconds}s left on the clock`}
+        </p>
+      )}
+
+      {closed && <TimeUp mode={mode} shot={session.spotIndex} total={course?.length ?? 0} />}
 
       {/* Hint (first shots) */}
       {ui.hint && hintTop !== null && !ui.aim && session.phase === 'ready' && (
@@ -162,6 +184,7 @@ function Hud({ controller, mode }: { controller: GameController; mode: GameMode 
           ui={ui}
           session={session}
           controller={controller}
+          timed={!!mode.timer}
           onClose={() => setSettingsOpen(false)}
         />
       )}
@@ -188,43 +211,41 @@ function Stats({ goals, attempts, streak, score }: { goals: number; attempts: nu
   );
 }
 
-function CourseStats({
-  shot,
-  total,
-  goals,
-  score,
-  timer,
-}: {
-  shot: number;
-  total: number;
-  goals: number;
-  score: number;
-  timer?: GameMode['timer'];
-}) {
+/** Ticks the run clock four times a second while a timed run is on screen. */
+function useRunClock(timer: RunTimer | undefined): ClockState | null {
   const [nowMs, setNow] = useState(() => Date.now());
   useEffect(() => {
     if (!timer) return;
     const id = window.setInterval(() => setNow(Date.now()), 250);
     return () => window.clearInterval(id);
   }, [timer]);
-  let clock: { text: string; tone: string } | null = null;
-  if (timer) {
-    const serverNow = nowMs + timer.clockOffset;
-    const left = Math.ceil((timer.targetEndsAt - serverNow) / 1000);
-    const grace = Math.ceil((timer.deadlineAt - serverNow) / 1000);
-    clock =
-      left > 0
-        ? { text: `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`, tone: left <= 15 ? 'text-[#e0563f]' : 'text-chalk' }
-        : grace > 0
-          ? { text: `+${grace}s`, tone: 'text-[#e0563f]' }
-          : { text: 'Closed', tone: 'text-[#e0563f]' };
-  }
+  return timer ? clockState(timer, nowMs) : null;
+}
+
+function CourseStats({
+  shot,
+  total,
+  goals,
+  score,
+  clock,
+}: {
+  shot: number;
+  total: number;
+  goals: number;
+  score: number;
+  clock: ClockState | null;
+}) {
   const items: [string, string, string][] = [
     ['Shot', `${shot}/${total}`, 'text-chalk'],
     ['Goals', String(goals), 'text-chalk'],
     ['Score', score.toLocaleString('en-US'), 'text-gold'],
   ];
-  if (clock) items.push([clock.text.startsWith('+') ? 'Grace' : 'Target', clock.text, clock.tone]);
+  if (clock) {
+    const red = 'text-[#e0563f]';
+    if (clock.kind === 'time') items.push(['Time', formatClock(clock.seconds), clock.urgent ? red : 'text-chalk']);
+    else if (clock.kind === 'extra') items.push(['Extra', `+${clock.seconds}s`, red]);
+    else items.push(['Time', '0:00', red]);
+  }
   return (
     <dl className="pointer-events-none absolute left-1/2 top-[calc(max(8px,var(--safe-top))+44px)] flex -translate-x-1/2 gap-1 sm:static sm:translate-x-0" aria-live="off">
       {items.map(([k, v, tone]) => (
@@ -234,6 +255,37 @@ function CourseStats({
         </div>
       ))}
     </dl>
+  );
+}
+
+function ExitControl({ mode, children, ...rest }: { mode: GameMode; children: React.ReactNode; className: string; 'aria-label'?: string }) {
+  if (mode.onExit) {
+    return (
+      <button type="button" onClick={mode.onExit} {...rest}>
+        {children}
+      </button>
+    );
+  }
+  return (
+    <Link to={mode.exitTo ?? '/'} {...rest}>
+      {children}
+    </Link>
+  );
+}
+
+function TimeUp({ mode, shot, total }: { mode: GameMode; shot: number; total: number }) {
+  return (
+    <div className="pointer-events-auto absolute inset-0 z-20 flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm">
+      <div role="alertdialog" aria-labelledby="timeup-title" aria-describedby="timeup-body" className="anim-rise w-full max-w-sm rounded-3xl border border-[#e0563f]/50 bg-night p-6 text-center">
+        <h2 id="timeup-title" className="display text-4xl font-extrabold uppercase italic text-[#e0563f]">Time’s up</h2>
+        <p id="timeup-body" className="mt-2 text-sm text-chalk/80">
+          The clock ran out after {shot} of {total} shots, so the server can’t accept this run any more. Nothing from it counts.
+        </p>
+        <ExitControl mode={mode} className="display mt-5 inline-block rounded-full bg-gold px-6 py-2 text-xl font-extrabold uppercase italic text-midnight">
+          Back
+        </ExitControl>
+      </div>
+    </div>
   );
 }
 
@@ -351,11 +403,13 @@ function SettingsSheet({
   ui,
   session,
   controller,
+  timed,
   onClose,
 }: {
   ui: ControllerUi;
   session: SessionSnapshot;
   controller: GameController;
+  timed: boolean;
   onClose: () => void;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -384,6 +438,7 @@ function SettingsSheet({
             ✕
           </button>
         </div>
+        {timed && <p className="-mt-2 mb-4 text-sm text-[#e0563f]">The run clock keeps running while this is open.</p>}
 
         {!controller.isCourse && (
         <>

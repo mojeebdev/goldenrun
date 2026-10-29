@@ -23,6 +23,14 @@ export function utcDateTime(ms: number): string {
   return new Date(ms).toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
 }
 
+/** 240 → "4 minutes", 210 → "3 min 30 s". */
+export function durationLabel(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  if (!s) return `${m} minute${m === 1 ? '' : 's'}`;
+  return `${m} min ${s} s`;
+}
+
 export function relativeTime(ms: number, now = Date.now()): string {
   const s = Math.round((ms - now) / 1000);
   const abs = Math.abs(s);

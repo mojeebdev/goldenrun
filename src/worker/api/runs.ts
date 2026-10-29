@@ -124,7 +124,7 @@ export async function runRank(env: Env, run: RunRow): Promise<number | null> {
 }
 
 /** Lazily expire a run whose deadline has passed without a submission. */
-async function expireIfLate(env: Env, run: RunRow, now: number): Promise<RunRow> {
+export async function expireIfLate(env: Env, run: RunRow, now: number): Promise<RunRow> {
   if (run.state === 'started' && now > run.deadline_at) {
     await env.DB.prepare("UPDATE runs SET state = 'expired' WHERE id = ? AND state = 'started'").bind(run.id).run();
     return { ...run, state: 'expired' };

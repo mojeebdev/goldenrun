@@ -9,7 +9,7 @@ import { HttpError, json, readJson } from '../http';
 import { randomToken } from '../security/crypto';
 import { clearSessionCookie, requireSession } from '../security/session';
 import type { RunRow } from './runs';
-import { runRank, runSummary } from './runs';
+import { expireIfLate, runRank, runSummary } from './runs';
 
 export async function getMe(request: Request, env: Env, now: number): Promise<Response> {
   const s = await requireSession(env, request, now);
@@ -26,9 +26,11 @@ export async function getMe(request: Request, env: Env, now: number): Promise<Re
     .bind(s.playerId)
     .first<{ n: number }>();
   const cup = await ensureWeek(env, now);
-  const entry = await env.DB.prepare('SELECT * FROM runs WHERE cup_week_id = ? AND player_id = ? AND ranked = 1')
+  const row = await env.DB.prepare('SELECT * FROM runs WHERE cup_week_id = ? AND player_id = ? AND ranked = 1')
     .bind(cup.weekId, s.playerId)
     .first<RunRow>();
+  // A run past its deadline reads as expired now, not when the cron next runs.
+  const entry = row ? await expireIfLate(env, row, now) : null;
   const me: Me = {
     player: {
       id: player!.id,
