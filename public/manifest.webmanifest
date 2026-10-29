@@ -1,0 +1,11 @@
+{
+  "name": "The Golden Run",
+  "short_name": "Golden Run",
+  "description": "Unofficial football arcade game. 2008 → 1,000.",
+  "start_url": "/play",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#05070d",
+  "theme_color": "#05070d",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

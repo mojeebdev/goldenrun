@@ -1,0 +1,134 @@
+@import 'tailwindcss';
+@import '@fontsource/barlow-condensed/600.css';
+@import '@fontsource/barlow-condensed/800.css';
+@import '@fontsource/barlow-condensed/800-italic.css';
+@import '@fontsource/figtree/400.css';
+@import '@fontsource/figtree/600.css';
+@import '@fontsource/azeret-mono/500.css';
+
+@theme {
+  --color-midnight: #05070d;
+  --color-night: #0b1220;
+  --color-gold: #e8b84a;
+  --color-gold-bright: #ffd877;
+  --color-gold-deep: #b8862b;
+  --color-pitch: #1f6b34;
+  --color-pitch-dark: #17552a;
+  --color-blood: #8e1b2a;
+  --color-chalk: #f2efe6;
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-body: 'Figtree', system-ui, sans-serif;
+  --font-accent: 'Azeret Mono', ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: dark;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-midnight);
+  color: var(--color-chalk);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.label {
+  font-family: var(--font-accent);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold-bright);
+  outline-offset: 2px;
+}
+
+/* Game surface: no scrolling, selection or callouts while playing. */
+.game-surface {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  overscroll-behavior: none;
+}
+
+@keyframes goal-pop {
+  0% { transform: scale(0.6) skewX(-8deg); opacity: 0; }
+  55% { transform: scale(1.08) skewX(-8deg); opacity: 1; }
+  100% { transform: scale(1) skewX(-8deg); opacity: 1; }
+}
+@keyframes rise-in {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+@keyframes floodlight {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+@keyframes drift {
+  from { transform: translateX(-3%); }
+  to { transform: translateX(3%); }
+}
+
+.anim-goal { animation: goal-pop 420ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+.anim-rise { animation: rise-in 300ms ease-out both; }
+.gold-text {
+  background: linear-gradient(100deg, #b8862b 0%, #ffd877 30%, #fff3c4 45%, #e8b84a 60%, #b8862b 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+}
+
+.hud-btn {
+  display: inline-flex;
+  height: 40px;
+  min-width: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: rgb(5 7 13 / 0.65);
+  color: var(--color-chalk);
+  backdrop-filter: blur(6px);
+  transition: background 150ms;
+}
+.hud-btn:hover {
+  background: rgb(232 184 74 / 0.18);
+}
