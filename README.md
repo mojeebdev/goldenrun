@@ -61,7 +61,9 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 ## Project status
 
-**Milestone 1 — The Perfect Shot: live at [goldenrun.fun](https://goldenrun.fun).** The owner deployed the Worker on 2026-10-29. `/`, `/play` and `/api/health` were checked over HTTPS and return 200. The production health digest (`b21e6426`) matches the test suite. Unranked guest practice only: there is no D1 database, no accounts and nothing ranked. `www.goldenrun.fun` doesn't resolve yet. See [CHANGELOG](CHANGELOG.md) for what shipped and what remains.
+**Milestone 1 — The Perfect Shot: live at [goldenrun.fun](https://goldenrun.fun).** The owner deployed the Worker on 2026-10-29. `/`, `/play` and `/api/health` were checked over HTTPS and return 200. The production health digest (`b21e6426`) matches the test suite. `www.goldenrun.fun` redirects to the apex.
+
+**Milestone 2 — Verified competition: built and tested locally, not yet in production.** Passkey accounts, the weekly Golden Cup with server-verified scores, and D1 leaderboards. Production needs the owner's D1 database first — see [DEPLOYMENT](docs/DEPLOYMENT.md). See [CHANGELOG](CHANGELOG.md) for what shipped and what remains.
 
 ## Run it locally
 
@@ -81,8 +83,11 @@ npm run dev          # http://localhost:5173 — React + Phaser + the Worker (/a
 | `npm run check` | All of the above in sequence |
 | `npm run balance` | Prints goal/save rates per keeper level on a shot grid |
 | `npm run deploy:dry-run` | Validates the Worker bundle with Wrangler **without deploying** |
+| `npm run db:migrate:local` | Applies D1 migrations to the local database used by `npm run dev` |
 
-Routes: `/` homepage · `/play` practice · `/modes` and `/2008`, `/road-to-1000`, `/cup`, `/leaderboard`, `/u/:username` (clearly labelled *coming later*) · `/api/health`.
+First-time local setup for accounts: `cp .dev.vars.example .dev.vars` (sets the passkey origin to `localhost`), then `npm run db:migrate:local`. Open **http://localhost:5173** — passkeys don't work on `127.0.0.1`.
+
+Routes: `/` homepage · `/play` practice · `/cup` Golden Cup · `/leaderboard` · `/u/:username` · `/join` · `/login` · `/account` · `/rules` · `/modes` · `/2008` and `/road-to-1000` (labelled *coming later*) · `/api/health` and `/api/v1/*`.
 
 ### How to play
 
@@ -95,8 +100,10 @@ Press on the ball, drag toward the goal and release. **Direction** aims, **lengt
 | `src/shared/rules/` | Pure, deterministic, Worker-compatible rules: `ShotCommand`, scenarios, keeper, simulation, scoring |
 | `src/game/` | Phaser scene, procedural rendering, input mapping, practice session, synthesized audio |
 | `src/app/` | React shell, routes, homepage |
-| `src/worker/` | The single application Worker (`/api/*`) |
-| `tests/` | Determinism, geometry, keeper fairness, input normalisation and session tests |
+| `src/shared/competition/` | Cup weeks, course generation, run totals and tie order, nickname/country validation, API types |
+| `src/worker/` | The single application Worker: `api/` (auth, runs, players, leaderboards), `security/`, `db/`, `cron.ts` |
+| `migrations/` | D1 schema migrations |
+| `tests/` | Unit tests; `tests/integration/` runs the real Worker against a local D1 with a software passkey |
 
 ---
 **Source of truth:** [github.com/mojeebdev/goldenrun](https://github.com/mojeebdev/goldenrun)

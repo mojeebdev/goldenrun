@@ -11,7 +11,8 @@ import type { GestureFrame, Point, ShotParams } from './input/gesture';
 import { KEY_STEPS, readGesture, referenceLength, resamplePath } from './input/gesture';
 import { StadiumScene } from './scenes/StadiumScene';
 import { PracticeSession } from './session';
-import type { ResolvedShot } from './session';
+import type { ResolvedShot, SessionSnapshot } from './session';
+import type { ShotCommand } from '../shared/rules';
 import type { Settings } from './settings';
 import { loadSettings, saveSettings, systemPrefersReducedMotion } from './settings';
 
@@ -34,6 +35,19 @@ export interface ControllerUi {
   paused: boolean;
   /** Layout anchors in CSS px for placing HUD elements around the play. */
   layout: { ball: { x: number; y: number }; goalTop: number; goalBottom: number; padRadius: number } | null;
+}
+
+export interface GameOptions {
+  /** Fixed course of scenario IDs (Golden Cup). Omit for free practice. */
+  course?: readonly string[];
+  /** Ranked courses cannot be restarted from the HUD. */
+  ranked?: boolean;
+  /** Commands already taken on this course (resume after reload). */
+  restore?: readonly ShotCommand[];
+  /** Called after every resolved shot (for saving progress locally). */
+  onShotResolved?: (snapshot: SessionSnapshot) => void;
+  /** Called once when the last course shot has played out. */
+  onCourseComplete?: (snapshot: SessionSnapshot) => void;
 }
 
 /** Difficulty-dependent preview honesty (spec: informative, not perfect, at high difficulty). */
@@ -64,10 +78,17 @@ export class GameController {
   private destroyed = false;
   private uiFrame = 0;
 
-  constructor(host: HTMLElement) {
+  private opts: GameOptions;
+
+  constructor(host: HTMLElement, opts: GameOptions = {}) {
     this.host = host;
+    this.opts = opts;
     const settings = loadSettings();
-    this.session = new PracticeSession(settings.level);
+    this.session = new PracticeSession(settings.level, opts.course ?? null);
+    if (opts.restore?.length) {
+      this.session.restore(opts.restore);
+      this.shotsTaken = opts.restore.length;
+    }
     if (import.meta.env.DEV) this.session.subscribe(() => this.exposeDebug());
     this.ui = {
       aim: null,
@@ -323,7 +344,8 @@ export class GameController {
   private showAim(params: ShotParams, source: 'pointer' | 'keyboard', strike: number, path: Point[] | null): void {
     const cmd = makeCommand(this.session.scenarioId, params);
     const preview = previewShot(cmd);
-    const level = this.ui.settings.level;
+    // In a course the keeper level comes from the scenario, not the settings.
+    const level = this.session.scenario.keeper.level;
     this.scene?.setAim({
       preview,
       power: cmd.power,
@@ -377,6 +399,7 @@ export class GameController {
   private onDecisive(shotId: number): void {
     const resolved = this.session.resolve(shotId);
     if (!resolved) return;
+    this.opts.onShotResolved?.(this.session.getSnapshot());
     const r: ShotResult = resolved.result;
     if (r.goal) this.sound.play('goal');
     else this.sound.play('groan');
@@ -388,8 +411,13 @@ export class GameController {
     this.session.next();
     this.setUi({ banner: null });
     this.scene?.resetBall();
-    if (this.session.getSnapshot().spotIndex !== prevSpot) this.relayout(true);
-    if (this.shotsTaken === 1 && this.session.getSnapshot().stats.goals === 0) {
+    const snap = this.session.getSnapshot();
+    if (snap.phase === 'complete') {
+      this.opts.onCourseComplete?.(snap);
+      return;
+    }
+    if (snap.spotIndex !== prevSpot) this.relayout(true);
+    if (this.shotsTaken === 1 && snap.stats.goals === 0 && !this.opts.course) {
       this.flashHint('Curve your drag to bend it · strike low on the ball to lift it');
     }
   }
@@ -406,7 +434,16 @@ export class GameController {
     if (phase === 'flight' || phase === 'resolution') this.scene?.skip();
   }
 
+  get isCourse(): boolean {
+    return !!this.opts.course;
+  }
+
+  get isRanked(): boolean {
+    return !!this.opts.ranked;
+  }
+
   restart(): void {
+    if (this.opts.ranked) return; // a ranked course can't be restarted
     this.cancelAim();
     this.scene?.abandon();
     this.session.reset();

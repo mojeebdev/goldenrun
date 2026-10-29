@@ -1,5 +1,28 @@
 # Changelog
 
+## Milestone 2 — Verified Competition (2026-10-29, local; production pending owner D1 setup)
+
+### Added
+- **D1 schema** (`migrations/0001_initial.sql`) with uniqueness guarantees for nicknames, the single ranked entry per week, per-shot results, career-goal ledger rows and awards.
+- **Passkey accounts** with no external identity provider: create a player (nickname plus optional country), discoverable passkey sign-in, extra passkeys, recovery codes, sign out / sign out everywhere, public/private profile, account deletion (competitive records kept anonymously).
+- **Golden Cup:** a deterministic 12-shot course per ISO week, practice mode, and one ranked entry per player per week. The server issues each ranked run (90 s target, 30 s grace) and re-simulates the 12 submitted shot inputs. Acceptance is atomic and idempotent, with review holds for implausible runs. Progress is saved locally so an interrupted run can resume or re-send.
+- **Leaderboards:** weekly global, weekly by self-chosen country, career goals and Hall of Fame. All are built from accepted runs only, with shared ranks for exact ties. Private and deleted players stay anonymous. Responses are cacheable for 30 s.
+- **Public profiles** at `/u/:handle`, published rules at `/rules`, and account management at `/account`.
+- **Security:** Origin checks on every write, body limits, Workers Rate Limiting bindings, hashed secrets everywhere, audit events without personal data.
+- **Hourly cron** to open, close and expire weeks and runs and record provisional weekly winners (idempotent).
+- **Tests:** 82 in total. Integration tests run the real Worker handler against a local D1 with a software ES256 passkey authenticator. They cover registration, login, counter regression, origin and user-verification checks, challenge replay and expiry, session revocation and expiry, recovery codes, privacy and deletion, forged scores, wrong order or ranges, nonce checks, idempotent and concurrent submissions (exactly one acceptance), expiry, review holds, ownership, tie ranking, country filtering, anonymisation and cron idempotency.
+
+### Verified
+- `npm run typecheck`, `lint`, `test` (82/82), `build`, `wrangler deploy --dry-run` (D1, rate limiters and variables bound).
+- Real browser (Chromium with a virtual WebAuthn authenticator) against `vite dev` with the Worker and local D1: create player → recovery codes → ranked run of 12 real mouse shots → server-verified result and rank → leaderboard → account → sign out → passkey sign-in → profile. No console errors. Phone layouts checked for overflow.
+
+### Not done / limitations
+- **Not in production yet:** needs the owner's D1 database ID and a remote migration (see `docs/DEPLOYMENT.md`).
+- **Turnstile** isn't wired up. It needs a widget and secret created by the owner. Rate limits and review holds are the current defences.
+- **Passkeys haven't been tested on real phones** (iOS/Android biometrics); only Chromium's virtual authenticator.
+- **Bots:** shot inputs can be scripted. Server replay stops invented scores, but not skilled automation; top results rely on review.
+- Career goals currently come only from ranked cup goals. Road to 1,000 progression is Milestone 3.
+
 ## Milestone 1 — The Perfect Shot (2026-10-29)
 
 A playable, guest-first, unranked football shooting game running on the one-Worker Cloudflare stack. Local preview only — nothing has been deployed.

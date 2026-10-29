@@ -77,6 +77,17 @@ If Cloudflare's recommended starter differs, preserve the logical separation rat
 
 Create migrations in `migrations/` with rollback/safe-change notes. Index leaderboard queries by `(cup_week_id, validation_state, skill_score)`, career totals, user handle and run ownership. Archive winners rather than rewriting historical standings.
 
+## As built in Milestone 2
+
+* **Worker routes** (`src/worker/index.ts`): `GET /api/v1/bootstrap`, `/auth/{registration,login,passkeys}/{options,verify}`, `/auth/recover`, `/auth/recovery-codes`, `/auth/logout`, `/auth/logout-all`, `GET|PATCH|DELETE /me`, `POST /runs/start`, `POST /runs/:id/submit`, `GET /runs/:id`, `GET /leaderboard?kind=weekly|country|career|hall`, `GET /players/:handle`. Every non-GET request must carry an allowed `Origin` (CSRF), a JSON body ≤ 32 KB, and passes the Workers Rate Limiting bindings (`AUTH_LIMITER` 20/min per client, `WRITE_LIMITER` 60/min per player).
+* **Passkeys:** `@simplewebauthn/server` (a verification library, not an identity service) running inside the Worker. Resident keys + required user verification, `none` attestation, ES256/RS256. Challenges are stored hashed, expire after 5 minutes and are consumed atomically. Signature-counter regressions are refused. Recovery: eight 80-bit codes, SHA-256 hashed, single use. Session cookie `__Host-gr_session` (HttpOnly, Secure, SameSite=Lax, 30 days); D1 stores only SHA-256 of the secret.
+* **Cup weeks:** ISO weeks in UTC. The 12-shot course is derived from `fnv1a(ruleset:week)`. Shots 1–4 face a Professional keeper from the four short spots, 5–8 Professional with one long-range shot, and 9–12 Legendary with one long-range shot. Weeks are created lazily with `INSERT OR IGNORE`, so concurrent creation is harmless.
+* **Runs:** starting a ranked run inserts a row under a partial unique index `(cup_week_id, player_id) WHERE ranked = 1`, so the entry is consumed. The deadline is start + 90 s + 30 s grace. Submissions contain only 12 commands, which are validated, checked against the course order and re-simulated.
+* **Exactly-once acceptance:** one `D1.batch` (a transaction) claims the run with `UPDATE … WHERE state = 'started'`. It then inserts `run_shots` and `goal_ledger` rows with `INSERT … SELECT … WHERE <claim landed>`, protected by `PRIMARY KEY(run_id, idx)` and `UNIQUE(run_id, shot_index)`. A concurrent duplicate aborts the whole batch, and a retry with the same idempotency key returns the stored result.
+* **Review holds:** a run is held for review instead of ranked if it finished in under 18 s or scored 12 goals with at least 10 top corners. It is held, never auto-rejected. Owners review with SQL (see `docs/OPERATIONS.md`).
+* **Cron** `17 * * * *`: ensure the current week, expire overdue runs, close finished weeks, and insert provisional winners (all rank-1 ties). Award keys are unique, so it is idempotent.
+* **Not built yet:** Turnstile (needs an owner-created widget), R2, Durable Objects.
+
 ## Authentication without another provider
 
 - **Guest practice:** unsigned local practice play possible. If creating a guest session server-side, use an opaque, expiring session cookie.

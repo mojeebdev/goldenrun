@@ -36,16 +36,19 @@ Every milestone must be independently shippable/testable, with tests and a short
 
 ## Milestone 2 — Verified Competition & Accounts
 
-- [ ] Create D1 migrations for minimal players, passkey credentials, sessions, cup, runs, shots, goal ledger, awards.
-- [ ] Implement account claim and passkey auth entirely in same Cloudflare Worker + D1.
-- [ ] Server issues runs, independently validates every shot, handles duplicates and replay attempts.
-- [ ] Implement 12-shot standardized weekly cup with UTC schedule, practice and one ranked attempt.
-- [ ] D1-backed verified leaderboard; global, optional country and lifetime goals. Define tie semantics.
-- [ ] Create anti-abuse limits, origin/CSRF checks, minimal logging and risk-based Turnstile.
-- [ ] Verify race-free accepted goals and provisional winner determination in tests.
-- [ ] No public "live" ranking is presented from client estimates.
+- [x] Create D1 migrations for minimal players, passkey credentials, sessions, cup, runs, shots, goal ledger, awards (`migrations/0001_initial.sql`, tested on local D1).
+- [x] Implement account claim and passkey auth entirely in same Cloudflare Worker + D1 (plus extra passkeys, recovery codes, logout-all, privacy, deletion).
+- [x] Server issues runs, independently validates every shot, handles duplicates and replay attempts.
+- [x] Implement 12-shot standardized weekly cup with UTC schedule, practice and one ranked attempt.
+- [x] D1-backed verified leaderboard; global, optional country and lifetime goals. Tie semantics published on `/rules`.
+- [~] Anti-abuse limits, origin/CSRF checks and minimal audit logging are done (Workers Rate Limiting bindings, review holds). **Turnstile is not wired yet** — it needs an owner-created widget and secret.
+- [x] Verify race-free accepted goals and provisional winner determination in tests.
+- [x] No public "live" ranking is presented from client estimates.
+- [ ] Production: owner creates the D1 database, applies migrations remotely, deploys (commands in `docs/DEPLOYMENT.md`).
 
 **Gate:** Two browsers playing same shot sequence get same outcome; manipulated scores cannot enter D1; duplicate submit does not increment a goal twice; credentials and session handling pass security checks.
+
+**Status (2026-10-29):** gate met against the local Worker + local D1 (integration tests and a real-browser passkey run). Production rollout waits on the owner's D1 setup.
 
 ## Milestone 3 — Progression, 2008 & Road to 1,000
 
