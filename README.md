@@ -18,7 +18,7 @@ A mobile-first, browser-based **precision-shooting football game** that is enjoy
 | --- | --- | --- |
 | **2008: The Beginning** | Complete a 42-goal progression chapter | Earn the 2008 badge |
 | **Road to 1,000** | Earn 1,000 verified career goals | First audited player receives the permanent *Founding Golden Fan* title |
-| **Golden Cup** | Weekly set of 12 standardized shots, with a 90-second target | Highest verified skill score is weekly champion |
+| **Golden Cup** | Weekly set of 12 standardized shots, with 4 minutes on the clock | Highest verified skill score is weekly champion |
 
 The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** recognitions; no real Ballon d'Or prize or endorsement is implied. Career goals count **one each**, independent of a shot's point value.
 
@@ -65,7 +65,7 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 **Milestone 2 — Verified competition: live since 2026-10-29.** Passkey accounts, the weekly Golden Cup with server-verified scores, and D1 leaderboards. The owner created the production D1 database (`goldenrun-db`, WEUR), applied migrations remotely and deployed. Checked over HTTPS: `/api/health` reports milestone 2 with digest `b21e6426`; the bootstrap and leaderboard endpoints read from D1; cross-origin writes are refused; passkey options use RP ID `goldenrun.fun`. See [CHANGELOG](CHANGELOG.md) for what shipped and what remains.
 
-**Milestone 3 — 2008 chapter, Road to 1,000, badges, challenges and launch pages:** built and tested locally; production needs migration `0002` (see [DEPLOYMENT](docs/DEPLOYMENT.md)).
+**Milestone 3 — 2008 chapter, Road to 1,000, badges, challenges and launch pages: live since 2026-10-29.** The owner applied migration `0002` remotely (a Time Travel bookmark was recorded first). Merging PR #2 deployed it automatically through Workers Builds. Checked over HTTPS: `/api/health` reports milestone 3; `/2008`, `/road-to-1000`, the legal pages, `og.png` and the `/u/*` and `/c/*` share routes all return 200; progress and Hall of Fame are served from D1.
 
 ## Run it locally
 

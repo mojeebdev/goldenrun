@@ -10,9 +10,12 @@ import type { ShotResult } from '../rules/simulate';
 
 export const CUP = {
   shots: 12,
-  /** Target round length shown to players (s). Not a score input. */
-  targetSeconds: 90,
-  /** Extra server-side allowance for network and device delays (s). */
+  /**
+   * Shooting time on the in-game clock (s). Not a score input. A shot's own
+   * animation takes 3-4 s, so this leaves ~16 s per shot to line it up.
+   */
+  targetSeconds: 240,
+  /** Extra time after the clock runs out, for slow devices and connections (s). */
   graceSeconds: 30,
   /** Runs completed faster than this are held for review (ms). */
   minPlausibleMs: 18_000,

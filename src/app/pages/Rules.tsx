@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { CUP } from '../../shared/competition/cup';
 import { POINTS } from '../../shared/rules';
 import { PageShell } from '../components/PageShell';
+import { durationLabel } from '../lib/format';
 
 export function Rules() {
   useEffect(() => {
@@ -32,7 +33,7 @@ export function Rules() {
             <li>Runs from Monday 00:00 UTC to the next Monday 00:00 UTC. Your local times are shown on the cup page.</li>
             <li>{CUP.shots} fixed shots: the same spots, keepers and order for every player that week.</li>
             <li>One ranked entry per player per week. Starting a ranked run uses it, even if you leave.</li>
-            <li>Target round time is {CUP.targetSeconds} seconds. The server accepts the run for {CUP.targetSeconds + CUP.graceSeconds} seconds after it issues it ({CUP.graceSeconds}s allowance for slow connections). Time never affects your score or ties.</li>
+            <li>You have {durationLabel(CUP.targetSeconds)} on the in-game clock for all {CUP.shots} shots, then {CUP.graceSeconds} seconds of extra time for slow devices and connections. After that the server no longer accepts the run. The clock starts when the server issues the run and keeps running if you pause or leave. Time never affects your score or ties.</li>
             <li>Your device only sends your 12 shot inputs. Our server replays every shot with the same physics and keeper and decides the score.</li>
             <li>Ranking: points, then goals, then precision subtotal, then fewer misses. If still level, players share the rank.</li>
             <li>Practice runs are unlimited, unranked and never sent to the server.</li>

@@ -8,9 +8,10 @@ import { loadRun, storageKey, useRunFlow } from '../components/RunFlow';
 import { GoldButton, Notice, Panel } from '../components/Ui';
 import { api } from '../lib/api';
 import { useAccount } from '../lib/account';
+import { durationLabel } from '../lib/format';
 
 export function Road() {
-  const { bootstrap } = useAccount();
+  const { bootstrap, clockOffset } = useAccount();
   const [progress, setProgress] = useState<Progress | null>(null);
   const reload = useCallback(() => {
     api.progress().then(setProgress, () => setProgress(null));
@@ -26,7 +27,7 @@ export function Road() {
   if (flow.view) return flow.view;
   const signedIn = !!bootstrap?.player;
   const goals = progress?.careerGoals ?? 0;
-  const saved = signedIn ? loadRun(storageKey('road'), now) : null;
+  const saved = signedIn ? loadRun(storageKey('road'), now + clockOffset) : null;
   const founding = progress?.founding;
   const earned = new Set(progress?.awards.filter((a) => a.type === 'milestone').map((a) => a.label));
 
@@ -76,6 +77,7 @@ export function Road() {
               {ROAD.shots} shots on a course our server picks at random. Keepers get tougher as your total grows. Every goal the
               server verifies is yours for good: one goal, one step. Also counts: ranked Golden Cup goals and the first 7 goals on each 2008 matchday.
             </p>
+            <p className="mt-2 text-xs text-chalk/55">Each run has {durationLabel(ROAD.targetSeconds)} on the clock, plus {ROAD.graceSeconds} seconds of extra time.</p>
             <div className="mt-4">
               {!signedIn ? (
                 <Notice tone="info">

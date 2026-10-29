@@ -61,7 +61,7 @@ Every milestone must be independently shippable/testable, with tests and a short
 
 **Gate:** Completing 42 validated chapter goals earns exactly one badge, 1,000 validated career goals trigger review path, and no stage can be farmed by resubmitting past shots.
 
-**Status (2026-10-29):** gate met in integration tests against local D1. The badge is awarded once even after replays and repeated settlement. Matchday quotas hold under concurrent runs. Resubmitted or replayed inputs are refused. The first 1,000th goal by ledger order gets the provisional title. Milestone 4 items delivered early with Milestone 3: challenge links, share cards, Open Graph previews, terms and privacy.
+**Status (2026-10-29):** gate met in integration tests against local D1. The badge is awarded once even after replays and repeated settlement. Matchday quotas hold under concurrent runs. Resubmitted or replayed inputs are refused. The first 1,000th goal by ledger order gets the provisional title. Live in production on 2026-10-29. Milestone 4 items delivered early with Milestone 3: challenge links, share cards, Open Graph previews, terms and privacy.
 
 ## Milestone 4 — Social & Release Readiness
 

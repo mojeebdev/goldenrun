@@ -11,7 +11,7 @@ import { GhostButton, GoldButton, Notice, Panel } from '../components/Ui';
 import { ShareButton } from '../components/ShareButton';
 import { ApiError, api } from '../lib/api';
 import { useAccount } from '../lib/account';
-import { localDateTime, relativeTime, utcDateTime } from '../lib/format';
+import { durationLabel, localDateTime, relativeTime, utcDateTime } from '../lib/format';
 
 const GameView = lazy(() => import('../../game/GameView'));
 
@@ -130,6 +130,10 @@ export function Cup() {
                 ranked,
                 restore: ranked ? s!.commands : undefined,
                 exitTo: '/cup',
+                onExit: () => {
+                  setView({ kind: 'lobby' });
+                  void loadMe();
+                },
                 timer: ranked ? { targetEndsAt: s!.run.targetEndsAt, deadlineAt: s!.run.deadlineAt, clockOffset } : undefined,
                 onShotResolved: (snap) => {
                   if (ranked) saveStored({ ...s!, commands: snap.commands });
@@ -153,7 +157,14 @@ export function Cup() {
   }
 
   const entry = me?.cupEntry ?? null;
-  const resumable = !!(stored && entry && entry.runId === stored.run.runId && entry.state === 'started' && !stored.result);
+  const resumable = !!(
+    stored &&
+    entry &&
+    entry.runId === stored.run.runId &&
+    entry.state === 'started' &&
+    !stored.result &&
+    stored.run.deadlineAt > renderNow + clockOffset
+  );
   const signedIn = !!bootstrap?.player;
   const closesIn = relativeTime(cup.endsAt, renderNow + clockOffset);
 
@@ -179,8 +190,8 @@ export function Cup() {
       <p className="label text-gold">Week {cup.weekId} · closes {closesIn}</p>
       <h1 className="display text-5xl font-extrabold uppercase italic sm:text-6xl">The Golden Cup</h1>
       <p className="mt-2 max-w-2xl text-chalk/75">
-        Twelve standardised shots — the same spots, keepers and order for everyone this week. Aim for 90 seconds. Your
-        ranked score only counts once our server has replayed every shot.
+        Twelve standardised shots — the same spots, keepers and order for everyone this week, with {durationLabel(cup.targetSeconds)} on
+        the clock. Your ranked score only counts once our server has replayed every shot.
       </p>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-[1.3fr_1fr]">
@@ -217,8 +228,9 @@ export function Cup() {
             ) : view.kind === 'confirm' ? (
               <>
                 <Notice tone="warn">
-                  Starting uses your <b>one ranked entry</b> for {cup.weekId}. The clock starts now: aim for 90 seconds; the server
-                  stops accepting this run {cup.targetSeconds + cup.graceSeconds} seconds after it starts. Leaving doesn’t give you another entry.
+                  Starting uses your <b>one ranked entry</b> for {cup.weekId}. You get {durationLabel(cup.targetSeconds)} for all 12 shots,
+                  plus {cup.graceSeconds} seconds of extra time, and the clock starts as soon as you kick off. It keeps running if you
+                  pause or leave, and leaving doesn’t give you another entry.
                 </Notice>
                 <div className="mt-4 flex flex-wrap gap-3">
                   <GoldButton disabled={busy} onClick={startRanked}>{busy ? 'Starting…' : 'Kick off'}</GoldButton>
