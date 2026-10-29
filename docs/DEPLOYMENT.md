@@ -20,6 +20,10 @@ npm run deploy:dry-run   # validates the Worker bundle; uploads nothing
 
 ## Milestone 2: database and redeploy (run in this order)
 
+**Status:** all steps done on 2026-10-29. Tables were verified with `SELECT name FROM sqlite_master`, and the live API was checked.
+
+**Workers Builds:** Git-triggered builds failed on the PR branch even though the same commits build locally. Check that Worker → Settings → Build uses build command `npm run build`, deploy command `npx wrangler deploy`, and non-production deploy command `npx wrangler versions upload`. Until those builds pass, deploy manually with step 3.
+
 Run these from the repository root on your machine, logged in with `npx wrangler login`.
 
 1. **Create the production database** (done 2026-10-29: `goldenrun-db`, region WEUR, ID committed in `wrangler.jsonc`):

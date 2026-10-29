@@ -63,7 +63,7 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 **Milestone 1 — The Perfect Shot: live at [goldenrun.fun](https://goldenrun.fun).** The owner deployed the Worker on 2026-10-29. `/`, `/play` and `/api/health` were checked over HTTPS and return 200. The production health digest (`b21e6426`) matches the test suite. `www.goldenrun.fun` redirects to the apex.
 
-**Milestone 2 — Verified competition: built and tested locally, not yet in production.** Passkey accounts, the weekly Golden Cup with server-verified scores, and D1 leaderboards. Production needs the owner's D1 database first — see [DEPLOYMENT](docs/DEPLOYMENT.md). See [CHANGELOG](CHANGELOG.md) for what shipped and what remains.
+**Milestone 2 — Verified competition: live since 2026-10-29.** Passkey accounts, the weekly Golden Cup with server-verified scores, and D1 leaderboards. The owner created the production D1 database (`goldenrun-db`, WEUR), applied migrations remotely and deployed. Checked over HTTPS: `/api/health` reports milestone 2 with digest `b21e6426`; the bootstrap and leaderboard endpoints read from D1; cross-origin writes are refused; passkey options use RP ID `goldenrun.fun`. See [CHANGELOG](CHANGELOG.md) for what shipped and what remains.
 
 ## Run it locally
 

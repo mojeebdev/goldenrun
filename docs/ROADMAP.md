@@ -44,11 +44,11 @@ Every milestone must be independently shippable/testable, with tests and a short
 - [~] Anti-abuse limits, origin/CSRF checks and minimal audit logging are done (Workers Rate Limiting bindings, review holds). **Turnstile is not wired yet** — it needs an owner-created widget and secret.
 - [x] Verify race-free accepted goals and provisional winner determination in tests.
 - [x] No public "live" ranking is presented from client estimates.
-- [ ] Production: owner creates the D1 database, applies migrations remotely, deploys (commands in `docs/DEPLOYMENT.md`).
+- [x] Production: owner created D1 `goldenrun-db` (WEUR), applied `0001_initial.sql` remotely and deployed (2026-10-29). Live API checks passed. Passkeys still need testing on real phones.
 
 **Gate:** Two browsers playing same shot sequence get same outcome; manipulated scores cannot enter D1; duplicate submit does not increment a goal twice; credentials and session handling pass security checks.
 
-**Status (2026-10-29):** gate met against the local Worker + local D1 (integration tests and a real-browser passkey run). Production rollout waits on the owner's D1 setup.
+**Status (2026-10-29):** gate met against the local Worker + local D1 (integration tests and a real-browser passkey run). Deployed to production the same day.
 
 ## Milestone 3 — Progression, 2008 & Road to 1,000
 

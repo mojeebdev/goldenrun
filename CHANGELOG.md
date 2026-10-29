@@ -1,6 +1,6 @@
 # Changelog
 
-## Milestone 2 — Verified Competition (2026-10-29, local; production pending owner D1 setup)
+## Milestone 2 — Verified Competition (2026-10-29, live on goldenrun.fun)
 
 ### Added
 - **D1 schema** (`migrations/0001_initial.sql`) with uniqueness guarantees for nicknames, the single ranked entry per week, per-shot results, career-goal ledger rows and awards.
@@ -17,7 +17,7 @@
 - Real browser (Chromium with a virtual WebAuthn authenticator) against `vite dev` with the Worker and local D1: create player → recovery codes → ranked run of 12 real mouse shots → server-verified result and rank → leaderboard → account → sign out → passkey sign-in → profile. No console errors. Phone layouts checked for overflow.
 
 ### Not done / limitations
-- **Not in production yet:** needs the owner's D1 database ID and a remote migration (see `docs/DEPLOYMENT.md`).
+- **Cloudflare Workers Builds** fail for this branch while local builds pass; check the build settings (see `docs/DEPLOYMENT.md`). Production was deployed manually with `wrangler deploy`.
 - **Turnstile** isn't wired up. It needs a widget and secret created by the owner. Rate limits and review holds are the current defences.
 - **Passkeys haven't been tested on real phones** (iOS/Android biometrics); only Chromium's virtual authenticator.
 - **Bots:** shot inputs can be scripted. Server replay stops invented scores, but not skilled automation; top results rely on review.
