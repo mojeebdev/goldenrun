@@ -35,7 +35,7 @@ export function Login() {
               try {
                 await signInWithPasskey();
                 await refresh();
-                navigate('/cup');
+                navigate('/modes');
               } catch (e) {
                 setError((e as Error).message);
               } finally {

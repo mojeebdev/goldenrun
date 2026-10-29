@@ -4,14 +4,16 @@
  */
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Link } from 'react-router';
-import type { KeeperLevel, ShotCommand } from '../shared/rules';
-import { KEEPER_LEVELS, KEEPER_PROFILES, PRACTICE_SPOTS, getScenario } from '../shared/rules';
+import type { ShotCommand } from '../shared/rules';
+import { getScenario } from '../shared/rules';
 import type { AimReadout, ControllerUi, GameOptions } from './GameController';
 import { GameController } from './GameController';
 import type { ClockState, RunTimer } from './clock';
 import { clockState, formatClock } from './clock';
 import type { ResolvedShot, SessionSnapshot } from './session';
 import type { Quality } from './settings';
+import { hasOnboarded } from './settings';
+import { PracticeSetup } from './PracticeSetup';
 
 export interface GameMode {
   /** Golden Cup course (scenario IDs). Omit for free practice. */
@@ -62,10 +64,10 @@ export default function GameView({ mode = {} }: { mode?: GameMode }) {
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden bg-midnight">
+    <main className="absolute inset-0 overflow-hidden bg-midnight">
       <div ref={hostRef} className="game-surface absolute inset-0" aria-label="Football pitch. Drag from the ball toward the goal to shoot, or use the keyboard." role="application" />
       {controller && <Hud controller={controller} mode={mode} />}
-    </div>
+    </main>
   );
 }
 
@@ -78,6 +80,9 @@ function useController(c: GameController): [ControllerUi, SessionSnapshot] {
 function Hud({ controller, mode }: { controller: GameController; mode: GameMode }) {
   const [ui, session] = useController(controller);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  // Practice opens on its setup card (keeper, spot, sound); first-timers see the how-to steps first.
+  const [setupOpen, setSetupOpen] = useState(!mode.course);
+  const [firstTime, setFirstTime] = useState(() => !hasOnboarded());
   const { stats } = session;
   const scenario = getScenario(controller.session.scenarioId)!;
   const course = mode.course;
@@ -86,19 +91,19 @@ function Hud({ controller, mode }: { controller: GameController; mode: GameMode 
   const closed = clock?.kind === 'closed' && session.phase !== 'complete';
 
   useEffect(() => {
-    controller.setPaused(settingsOpen || closed);
-  }, [settingsOpen, closed, controller]);
+    controller.setPaused(settingsOpen || setupOpen || closed);
+  }, [settingsOpen, setupOpen, closed, controller]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (e.key === 'm' || e.key === 'M') controller.toggleSound();
       else if (e.key === 'Escape' && settingsOpen) setSettingsOpen(false);
-      else if ((e.key === 'p' || e.key === 'P') && !settingsOpen) setSettingsOpen(true);
+      else if ((e.key === 'p' || e.key === 'P') && !settingsOpen && !setupOpen) setSettingsOpen(true);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [controller, settingsOpen]);
+  }, [controller, settingsOpen, setupOpen]);
 
   const layout = ui.layout;
   const hintTop = layout ? Math.max(layout.goalBottom + 12, layout.ball.y - layout.padRadius - 92) : null;
@@ -115,9 +120,23 @@ function Hud({ controller, mode }: { controller: GameController; mode: GameMode 
           </ExitControl>
           <div className="min-w-0 leading-tight">
             <p className="label truncate text-[10px] text-gold">{modeLabel}</p>
-            <p className="display truncate text-[15px] font-semibold uppercase text-chalk/85">
-              {scenario.label} · <span className="text-chalk/60">{scenario.keeper.label} keeper</span>
-            </p>
+            {course ? (
+              <p className="display truncate text-[15px] font-semibold uppercase text-chalk/85">
+                {scenario.label} · <span className="text-chalk/60">{scenario.keeper.label} keeper</span>
+              </p>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setSetupOpen(true)}
+                className="display flex max-w-full items-center gap-1 truncate text-[15px] font-semibold uppercase text-chalk/85 hover:text-gold"
+                aria-label={`${scenario.label}, ${scenario.keeper.label} keeper. Change keeper or spot`}
+              >
+                <span className="truncate">
+                  {scenario.label} · <span className="text-chalk/60">{scenario.keeper.label} keeper</span>
+                </span>
+                <span aria-hidden="true" className="text-gold">▾</span>
+              </button>
+            )}
           </div>
         </div>
         {course ? (
@@ -182,10 +201,26 @@ function Hud({ controller, mode }: { controller: GameController; mode: GameMode 
       {settingsOpen && (
         <SettingsSheet
           ui={ui}
-          session={session}
           controller={controller}
           timed={!!mode.timer}
           onClose={() => setSettingsOpen(false)}
+          onOpenSetup={() => {
+            setSettingsOpen(false);
+            setSetupOpen(true);
+          }}
+        />
+      )}
+
+      {setupOpen && !course && (
+        <PracticeSetup
+          controller={controller}
+          settings={ui.settings}
+          session={session}
+          firstTime={firstTime}
+          onDone={() => {
+            setFirstTime(false);
+            setSetupOpen(false);
+          }}
         />
       )}
     </div>
@@ -401,22 +436,21 @@ function Announcer({ shot }: { shot: ResolvedShot | null }) {
 
 function SettingsSheet({
   ui,
-  session,
   controller,
   timed,
   onClose,
+  onOpenSetup,
 }: {
   ui: ControllerUi;
-  session: SessionSnapshot;
   controller: GameController;
   timed: boolean;
   onClose: () => void;
+  onOpenSetup: () => void;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     closeRef.current?.focus();
   }, []);
-  const level = ui.settings.level;
   const rm = ui.settings.reducedMotion;
   const segment = 'flex-1 rounded-lg px-2 py-2 text-sm font-semibold transition';
   const on = 'bg-gold text-midnight';
@@ -442,41 +476,10 @@ function SettingsSheet({
 
         {!controller.isCourse && (
         <>
-        <Section title="Goalkeeper">
-          <div className="flex gap-1.5">
-            {KEEPER_LEVELS.map((l: KeeperLevel) => (
-              <button
-                key={l}
-                type="button"
-                aria-pressed={level === l}
-                disabled={session.phase === 'flight'}
-                className={`${segment} ${level === l ? on : off}`}
-                onClick={() => controller.updateSettings({ level: l })}
-              >
-                {KEEPER_PROFILES[l].label}
-              </button>
-            ))}
-          </div>
-          <p className="mt-1.5 text-xs text-chalk/55">
-            Higher levels react faster, reach further and read curl. The aiming guide also gets less precise.
-          </p>
-        </Section>
-
-        <Section title="Shooting spot">
-          <div className="grid grid-cols-2 gap-1.5">
-            {PRACTICE_SPOTS.map((s, i) => (
-              <button
-                key={s.id}
-                type="button"
-                aria-pressed={session.spotIndex === i}
-                className={`${segment} ${session.spotIndex === i ? on : off}`}
-                onClick={() => controller.selectSpot(i)}
-              >
-                {s.label}
-              </button>
-            ))}
-          </div>
-          <p className="mt-1.5 text-xs text-chalk/55">Scoring moves you to the next spot automatically.</p>
+        <Section title="Practice">
+          <button type="button" onClick={onOpenSetup} className={`${segment} ${off} w-full`}>
+            Keeper & shooting spot…
+          </button>
         </Section>
         </>
         )}

@@ -49,7 +49,7 @@ export function Road() {
                 <p className="display text-2xl font-extrabold uppercase italic">{progress?.tier ?? 'Academy'}</p>
               </div>
             </div>
-            <div className="relative mt-4 h-3 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-valuemin={0} aria-valuemax={1000} aria-valuenow={goals}>
+            <div className="relative mt-4 h-3 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label="Career goals toward 1,000" aria-valuemin={0} aria-valuemax={1000} aria-valuenow={goals}>
               <div className="h-full bg-gradient-to-r from-gold-deep to-gold-bright" style={{ width: `${Math.min(100, goals / 10)}%` }} />
               {MILESTONES.slice(0, -1).map((m) => (
                 <span key={m} className="absolute top-0 h-full w-px bg-midnight/70" style={{ left: `${m / 10}%` }} />
