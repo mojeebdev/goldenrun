@@ -5,7 +5,7 @@ import { CHAPTER_2008, CHAPTER_QUOTA, CHAPTER_TARGET, ROAD } from '../../shared/
 import { getScenario } from '../../shared/rules';
 import { PageShell } from '../components/PageShell';
 import { loadRun, storageKey, useRunFlow } from '../components/RunFlow';
-import { GhostButton, GoldButton, Notice, Panel } from '../components/Ui';
+import { GoldButton, Notice, Panel } from '../components/Ui';
 import { api } from '../lib/api';
 import { useAccount } from '../lib/account';
 import { durationLabel } from '../lib/format';
@@ -47,7 +47,7 @@ export function Chapter2008() {
             {total}/{CHAPTER_TARGET}
           </span>
         </div>
-        <div className="mt-1 h-2.5 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-valuemin={0} aria-valuemax={CHAPTER_TARGET} aria-valuenow={total}>
+        <div className="mt-1 h-2.5 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label="Chapter goals" aria-valuemin={0} aria-valuemax={CHAPTER_TARGET} aria-valuenow={total}>
           <div className="h-full bg-gradient-to-r from-gold-deep to-gold-bright" style={{ width: `${(total / CHAPTER_TARGET) * 100}%` }} />
         </div>
         {progress?.chapter.badge && <p className="mt-3 text-gold">🏅 2008 badge earned — it’s on your profile.</p>}
@@ -77,7 +77,7 @@ export function Chapter2008() {
                 <p className="label text-chalk/55">Matchday {st.stage}{legendary ? ` · ${legendary} legendary keepers` : ''}</p>
                 <h2 className="display mt-1 text-3xl font-extrabold uppercase italic">{st.title}</h2>
                 <p className="mt-1 text-sm text-chalk/70">{st.blurb}</p>
-                <div className="mt-3 flex items-center gap-1" aria-label={`${goals} of ${CHAPTER_QUOTA} chapter goals`}>
+                <div className="mt-3 flex items-center gap-1" role="img" aria-label={`${goals} of ${CHAPTER_QUOTA} chapter goals`}>
                   {Array.from({ length: CHAPTER_QUOTA }, (_, i) => (
                     <span key={i} className={`h-2 flex-1 rounded-full ${i < goals ? 'bg-gold' : 'bg-white/10'}`} />
                   ))}
@@ -87,8 +87,12 @@ export function Chapter2008() {
                     <span className="text-sm text-chalk/55">🔒 Score {CHAPTER_QUOTA} on matchday {st.stage - 1} to unlock</span>
                   ) : saved ? (
                     <GoldButton onClick={() => flow.resume(saved)}>Resume ({saved.commands.length}/10)</GoldButton>
+                  ) : !signedIn ? (
+                    <Link to="/join" className="display rounded-full border-2 border-gold/70 px-5 py-1.5 text-lg font-extrabold uppercase italic text-gold hover:border-gold">
+                      Create a player to play
+                    </Link>
                   ) : (
-                    <GoldButton disabled={!signedIn || flow.busy} onClick={() => void flow.start(st.stage)}>
+                    <GoldButton disabled={flow.busy} onClick={() => void flow.start(st.stage)}>
                       {goals >= CHAPTER_QUOTA ? 'Replay' : 'Kick off'}
                     </GoldButton>
                   )}
@@ -102,7 +106,6 @@ export function Chapter2008() {
       <p className="mt-6 text-xs text-chalk/50">
         Want to rehearse first? <Link to="/play" className="underline">Practice is free and unlimited.</Link> Matchdays have no daily limit; replays don’t add goals past each quota.
       </p>
-      <div className="mt-2"><GhostButton onClick={reload}>Refresh progress</GhostButton></div>
     </PageShell>
   );
 }

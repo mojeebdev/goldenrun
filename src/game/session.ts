@@ -52,6 +52,8 @@ export class PracticeSession {
   private nextId = 1;
   private pending: { shotId: number; result: ShotResult; command: ShotCommand } | null = null;
   private resolved = new Set<number>();
+  /** Practice only: a goal moves you on to the next spot. Off = stay on one spot. */
+  private rotate = true;
   readonly course: readonly string[] | null;
 
   constructor(level: KeeperLevel = 'rookie', course: readonly string[] | null = null) {
@@ -78,6 +80,10 @@ export class PracticeSession {
 
   get scenario(): Scenario {
     return getScenario(this.scenarioId)!;
+  }
+
+  setRotate(rotate: boolean): void {
+    this.rotate = rotate;
   }
 
   setPhase(phase: Phase): void {
@@ -136,7 +142,7 @@ export class PracticeSession {
       this.set({ phase: index >= this.course.length ? 'complete' : 'ready', spotIndex: Math.min(index, this.course.length) });
       return;
     }
-    const advance = this.snapshot.last?.result.goal && this.pending ? 1 : 0;
+    const advance = this.rotate && this.snapshot.last?.result.goal && this.pending ? 1 : 0;
     this.pending = null;
     this.set({
       phase: 'ready',

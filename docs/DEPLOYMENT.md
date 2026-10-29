@@ -82,6 +82,22 @@ No secrets are needed. Rate limiters (`ratelimits` in `wrangler.jsonc`) and the 
 
 4. Merge the pull request (Workers Builds deploys `main`) or deploy manually: `npm ci && npm run build && npx wrangler deploy`.
 
+## Cloudflare dashboard checklist (no command line)
+
+Everything production needs is already set up. Use this list to check it, or to rebuild it from the dashboard. Don't buy the domain again or change nameservers: goldenrun.fun is already on Cloudflare.
+
+1. **Worker and builds:** Workers & Pages → `goldenrun` → Settings → Build.
+   - Git repository `mojeebdev/goldenrun`, production branch `main`.
+   - Build command `npm run build`.
+   - Deploy command `npx wrangler deploy`.
+2. **Preview builds (optional):** on the same page, under "Builds for non-production branches", either turn them off or set a non-production deploy command such as `npx wrangler versions upload`. PR previews have failed in about a second on every PR, which points at this setting. Production isn't affected.
+3. **D1 binding:** Workers & Pages → `goldenrun` → Settings → Bindings should list `DB` → `goldenrun-db`. It comes from `wrangler.jsonc` on every deploy, so don't add it by hand. The database is under Storage & Databases → D1. The Console tab runs SQL, and Time Travel restores to a point in time.
+4. **Custom domain:** Workers & Pages → `goldenrun` → Settings → Domains & Routes should list `goldenrun.fun` as a Custom Domain. It also comes from `wrangler.jsonc`; Cloudflare creates the DNS record and the certificate. The `www` redirect is your existing redirect rule.
+5. **SSL/TLS:** goldenrun.fun → SSL/TLS → Overview: **Full (strict)**. Edge Certificates: **Always Use HTTPS** on, minimum TLS 1.2.
+6. **Rate limits and cron** are created by `wrangler deploy` from `wrangler.jsonc`; there's nothing to set up. Settings → Trigger Events should list the cron `17 * * * *`.
+7. **Notifications (recommended):** Notifications → Add → Workers: weekly summary or error alerts for `goldenrun`.
+8. **Analytics (owner decision):** Cloudflare Web Analytics (goldenrun.fun → Analytics & Logs → Web Analytics) is cookieless and needs no code. The privacy page currently says "no analytics service", so **update `/privacy` before turning it on**.
+
 ## Rollback
 
 - **Code:** list versions and roll back the Worker without touching data:

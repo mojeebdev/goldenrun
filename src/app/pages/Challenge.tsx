@@ -38,6 +38,7 @@ export function Challenge() {
                 course: c.scenarioIds,
                 label: 'Challenge · Practice · Unranked',
                 exitTo: `/c/${c.runId}`,
+                onExit: () => setPlaying(false),
                 onCourseComplete: (snap) => {
                   setMine(runTotals(snap.results));
                   setPlaying(false);

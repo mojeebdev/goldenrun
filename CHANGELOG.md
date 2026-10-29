@@ -1,5 +1,34 @@
 # Changelog
 
+## Milestone 4 — Onboarding and release readiness (2026-10-29)
+
+The owner reported that the home page made you scroll to find how to join, that the how-to tips sat on the page instead of in onboarding, and that joining felt awkward. The audit is in [docs/UX_AUDIT.md](docs/UX_AUDIT.md).
+
+### Changed
+- **Home:** a full-screen hero with **two buttons**. Guests get **Play now** and **Create free player**. Signed-in players get **Continue** (their next 2008 matchday, or Road to 1,000 once the badge is earned) and **Practice**. The static how-to cards and the duplicate mode list are gone.
+- **Practice onboarding:**
+  - The first visit shows three short animated steps: Drag, Bend, Strike.
+  - Every visit opens a **setup card**: keeper (each level explained), spot ("Tour all five" or "Stay on one", a new option), sound, then **Kick off**.
+  - Tapping the spot and keeper line in the HUD reopens the card. Settings keeps only sound, motion, graphics and controls.
+- **Join:**
+  - Three steps with progress dots: nickname and country → passkey, explained in plain words → backup codes.
+  - Then a **"You're in — where to start"** screen. It recommends 2008 Matchday 1 and no longer drops new players into their one weekly Cup entry.
+  - A taken nickname sends you back to step 1 with the message.
+- **Phone navigation:** a bottom tab bar (Play, Modes, Cup, Ranks, Join/Me) on every content page.
+- **Modes hub:** an "Up next" card, plus your own status on each mode: chapter goals, career goals and tier, and this week's cup entry.
+- Signing in now lands on the modes hub instead of the cup.
+
+### Fixed
+- On phones, the home page header overflowed and pushed **Sign in** off-screen.
+- The Golden Cup blurb still said "90-second target".
+- Guests on `/2008` saw a dead "Kick off" button. They now get "Create a player to play".
+- The in-game exit arrow on challenge links (`/c/…`) did nothing. This is the same bug as the cup, 2008 and Road exits fixed earlier.
+- Accessibility: unnamed progress bars, `aria-label` on plain `div`s, and content outside landmarks. axe-core now reports no violations on every page.
+
+### Release readiness
+- The Milestone 4 checklist is closed (see ROADMAP): cheap-device and slow-network timings, an asset and licence check, Cloudflare dashboard instructions, accessibility tests, and notes on the migration rehearsal and rollback.
+- Tests: 106, including new ones for fixed-spot practice and next-step selection.
+
 ## Run clock fix (2026-10-29)
 
 Found in real-phone testing on an iPhone 12: a finished Golden Cup run came back "expired".

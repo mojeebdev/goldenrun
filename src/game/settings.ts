@@ -11,11 +11,13 @@ export interface Settings {
   level: KeeperLevel;
   /** 0..1 master volume. */
   volume: number;
+  /** Practice: move to the next spot after a goal (true) or stay on one spot. */
+  rotate: boolean;
 }
 
 const KEY = 'goldenrun.settings.v1';
 
-export const DEFAULT_SETTINGS: Settings = { sound: false, reducedMotion: null, quality: 'auto', level: 'rookie', volume: 0.8 };
+export const DEFAULT_SETTINGS: Settings = { sound: false, reducedMotion: null, quality: 'auto', level: 'rookie', volume: 0.8, rotate: true };
 
 export function loadSettings(): Settings {
   try {
@@ -28,6 +30,7 @@ export function loadSettings(): Settings {
       quality: v.quality === 'high' || v.quality === 'low' ? v.quality : 'auto',
       level: v.level === 'professional' || v.level === 'legendary' ? v.level : 'rookie',
       volume: typeof v.volume === 'number' && v.volume >= 0 && v.volume <= 1 ? v.volume : 0.8,
+      rotate: v.rotate !== false,
     };
   } catch {
     return { ...DEFAULT_SETTINGS };
@@ -39,6 +42,25 @@ export function saveSettings(s: Settings): void {
     localStorage.setItem(KEY, JSON.stringify(s));
   } catch {
     /* storage unavailable (private mode) — preferences just won't persist */
+  }
+}
+
+const ONBOARDED_KEY = 'goldenrun.onboarded.v1';
+
+/** Whether this device has seen the "how to shoot" steps. */
+export function hasOnboarded(): boolean {
+  try {
+    return localStorage.getItem(ONBOARDED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function markOnboarded(): void {
+  try {
+    localStorage.setItem(ONBOARDED_KEY, '1');
+  } catch {
+    /* storage unavailable — the steps will just show again next time */
   }
 }
 

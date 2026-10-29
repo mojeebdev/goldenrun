@@ -23,7 +23,7 @@ type Handler = (request: Request, env: Env, now: number, params: string[]) => Pr
 const routes: [method: string, pattern: RegExp, handler: Handler][] = [
   ['GET', /^\/api\/health$/, async () => {
     const result = simulateShot(CANONICAL_SHOT);
-    return json({ ok: true, service: 'goldenrun', milestone: 3, rulesetVersion: RULESET_VERSION, canonicalShot: { outcome: result.outcome, digest: resultDigest(result) } });
+    return json({ ok: true, service: 'goldenrun', milestone: 4, rulesetVersion: RULESET_VERSION, canonicalShot: { outcome: result.outcome, digest: resultDigest(result) } });
   }],
   ['GET', /^\/api\/v1\/bootstrap$/, async (req, env, now) => {
     const [cup, session] = await Promise.all([ensureWeek(env, now), currentSession(env, req, now)]);

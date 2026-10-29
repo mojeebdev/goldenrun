@@ -75,6 +75,20 @@ describe('practice session', () => {
     expect(s.getSnapshot().stats.goals).toBe(goals);
   });
 
+  it('moves on after a goal when touring, and stays put on a fixed spot', () => {
+    const tour = new PracticeSession('rookie');
+    tour.resolve(tour.shoot(makeCommand(tour.scenarioId, GOAL_FIELDS))!.shotId);
+    tour.next();
+    expect(tour.getSnapshot().spotIndex).toBe(1);
+
+    const fixed = new PracticeSession('rookie');
+    fixed.setRotate(false);
+    fixed.resolve(fixed.shoot(makeCommand(fixed.scenarioId, GOAL_FIELDS))!.shotId);
+    fixed.next();
+    expect(fixed.getSnapshot().spotIndex).toBe(0);
+    expect(fixed.getSnapshot().stats.goals).toBe(1);
+  });
+
   it('caps the provisional streak bonus', () => {
     expect([1, 2, 3, 5, 9].map(streakBonus)).toEqual([0, 25, 50, 100, 100]);
   });

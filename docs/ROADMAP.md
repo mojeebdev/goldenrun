@@ -66,15 +66,17 @@ Every milestone must be independently shippable/testable, with tests and a short
 ## Milestone 4 — Social & Release Readiness
 
 - [x] Challenge deep links (`/c/:runId`) and original share cards (rendered on the player's device); public URL previews via Worker HTMLRewriter.
-- [ ] Localized public rankings and country boards with opt-in country choices.
-- [ ] UX onboarding polish, analytics through privacy-conscious Cloudflare capabilities, accessibility tests.
-- [ ] Load / stress tests, cheap device tests, slow 3G/4G assets review.
-- [ ] D1 migration rehearsal on non-production DB; backup/rollback notes.
+- [x] Localized public rankings and country boards with opt-in country choices. Weekly country boards, an opt-in country at sign-up, and dates shown in your own time zone with UTC alongside.
+- [x] UX onboarding polish: two-button home, practice how-to plus setup, stepped join, phone tab bar, a modes hub showing your progress ([UX_AUDIT](UX_AUDIT.md)). Accessibility tested with axe-core: no violations. Analytics: documented as an owner decision (Cloudflare Web Analytics, cookieless; update `/privacy` first).
+- [x] Load / stress tests (`npm run loadcheck`), cheap-device and slow 3G/4G tests (an emulated 4× CPU slowdown against production; see LAUNCH.md), and a review of asset sizes.
+- [x] D1 migration rehearsal on a non-production DB (an integration test runs `0002` on a populated local D1), plus backup and rollback notes (Time Travel bookmark taken before `0002`; DEPLOYMENT.md).
 - [x] Terms, Privacy, contest rules, reporting, moderation and deletion request experience (plain-language drafts; legal review still recommended).
-- [ ] Written Cloudflare dashboard deployment instructions for owner, including D1 binding, Worker build, custom-domain route and SSL. Domain is already purchased and Cloudflare-connected; do not instruct repurchase or unnecessary nameserver changes.
-- [ ] Verify no unlicensed branding, imagery, SFX or implied endorsements.
+- [x] Written Cloudflare dashboard deployment instructions for owner, including D1 binding, Worker build, custom-domain route and SSL. Domain is already purchased and Cloudflare-connected; do not instruct repurchase or unnecessary nameserver changes.
+- [x] Verify no unlicensed branding, imagery, SFX or implied endorsements. Fonts are OFL-1.1 (Fontsource); every sound is synthesised in code (Web Audio); art is code or SVG from this repo; a scan finds no player, club, league, award or sponsor names.
 
 **Gate:** Automated builds pass; security and legal checklist reviewed; clear public onboarding; first shot within seconds on realistic hardware; Cloudflare production deployment requires explicit owner approval.
+
+**Status (2026-10-29):** gate met. Builds and 106 tests pass. Onboarding has been reworked (home, practice, join, phone navigation). Emulated cheap-phone tests show the first shot is possible about 5–7 s after a cold load on slow networks. Accessibility and asset checks are clean. Every production deploy is the owner merging to `main`. Still open, all owner items: real-phone QA, a legal review of terms and privacy, Phase 0 brand and IP clearance, and the analytics decision.
 
 ## Phase 5 — Only after retention evidence
 

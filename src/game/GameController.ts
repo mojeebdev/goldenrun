@@ -85,6 +85,7 @@ export class GameController {
     this.opts = opts;
     const settings = loadSettings();
     this.session = new PracticeSession(settings.level, opts.course ?? null);
+    this.session.setRotate(settings.rotate);
     this.sound.setVolume(settings.volume);
     if (opts.restore?.length) {
       this.session.restore(opts.restore);
@@ -241,6 +242,7 @@ export class GameController {
       this.session.setLevel(patch.level);
       this.cancelAim();
     }
+    if (patch.rotate !== undefined) this.session.setRotate(patch.rotate);
     if (patch.quality) this.autoLow = false;
     this.setUi({
       settings,

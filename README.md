@@ -67,6 +67,13 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 **Milestone 3 — 2008 chapter, Road to 1,000, badges, challenges and launch pages: live since 2026-10-29.** The owner applied migration `0002` remotely (a Time Travel bookmark was recorded first). Merging PR #2 deployed it automatically through Workers Builds. Checked over HTTPS: `/api/health` reports milestone 3; `/2008`, `/road-to-1000`, the legal pages, `og.png` and the `/u/*` and `/c/*` share routes all return 200; progress and Hall of Fame are served from D1.
 
+**Milestone 4 — Onboarding and release readiness: ready to merge.**
+- A two-button home page, practice how-to plus setup, a stepped join, phone tab bar navigation and a modes hub showing your progress.
+- The audit fixes and a clean axe-core accessibility run.
+- Cheap-device timings, asset licence checks and Cloudflare dashboard instructions.
+- No migration and no new Cloudflare resources. Merging to `main` deploys it.
+- See [docs/UX_AUDIT.md](docs/UX_AUDIT.md) and the [CHANGELOG](CHANGELOG.md).
+
 ## Run it locally
 
 Requires Node.js 20+ (tested on 22).

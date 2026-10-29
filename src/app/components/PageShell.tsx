@@ -2,15 +2,17 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 import { useAccount } from '../lib/account';
 import { Unofficial, Wordmark } from './Brand';
+import { TabBar } from './TabBar';
 
 export function PageShell({ children }: { children: ReactNode }) {
   const { bootstrap } = useAccount();
   const player = bootstrap?.player;
   return (
-    <div className="min-h-full bg-[radial-gradient(ellipse_at_top,#14203a_0%,#05070d_60%)]">
+    <div className="min-h-full bg-[radial-gradient(ellipse_at_top,#14203a_0%,#05070d_60%)] pb-[calc(64px+var(--safe-bottom))] sm:pb-0">
       <header className="mx-auto flex max-w-5xl items-center justify-between px-4 pt-[max(14px,var(--safe-top))] sm:px-8">
         <Wordmark />
-        <nav className="flex items-center gap-1 text-sm" aria-label="Main">
+        <nav className="flex items-center gap-1 text-sm" aria-label="Site">
+          <Link to="/modes" className="hidden rounded-full px-3 py-2 text-chalk/80 hover:text-gold sm:inline">Modes</Link>
           <Link to="/cup" className="hidden rounded-full px-3 py-2 text-chalk/80 hover:text-gold sm:inline">Cup</Link>
           <Link to="/leaderboard" className="hidden rounded-full px-3 py-2 text-chalk/80 hover:text-gold sm:inline">Leaderboards</Link>
           <Link to={player ? '/account' : '/login'} className="rounded-full px-3 py-2 text-chalk/80 hover:text-gold">
@@ -35,6 +37,7 @@ export function PageShell({ children }: { children: ReactNode }) {
         </nav>
         <Unofficial />
       </footer>
+      <TabBar />
     </div>
   );
 }
