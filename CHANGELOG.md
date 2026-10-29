@@ -1,5 +1,13 @@
 # Changelog
 
+## Apache 2.0 licence (2026-10-29)
+
+- The source code is now licensed under the **Apache License 2.0**:
+  - `LICENSE` holds the official text from apache.org.
+  - `package.json` declares `"license": "Apache-2.0"`.
+  - `NOTICE` records the copyright (BlindspotLab Limited), the creator, the third-party licences, and what the licence doesn't cover: the creator portrait, and The Golden Run name and branding (section 6 grants no trademark rights).
+- The footer, About page, Terms and the VideoGame JSON-LD (`license`) now state the licence. The copyright line "© 2026 BlindspotLab Limited. All rights reserved." stays: the licence grants permissions, and the copyright stays with BlindspotLab Limited.
+
 ## The story, the creator and the company (2026-10-29)
 
 ### Added

@@ -1,7 +1,7 @@
 /** /terms and /privacy. Plain-language documents that describe how the game actually works. */
 import { useEffect } from 'react';
 import { Link } from 'react-router';
-import { COPYRIGHT, CREATOR, SITE, STUDIO } from '../../shared/site';
+import { CODE_LICENSE, COPYRIGHT, CREATOR, SITE, STUDIO } from '../../shared/site';
 import { PageShell } from '../components/PageShell';
 
 const UPDATED = '29 October 2026';
@@ -48,6 +48,10 @@ function Terms() {
         <h2>Ownership</h2>
         <ul>
           <li>{COPYRIGHT} This covers the game’s original code, artwork, sound and writing.</li>
+          <li>
+            The source code is licensed under the <a href={CODE_LICENSE.url} target="_blank" rel="noopener noreferrer">{CODE_LICENSE.name}</a>. That licence doesn’t
+            cover the creator portrait, and it grants no rights to The Golden Run name or branding.
+          </li>
           <li>Open-source software and fonts used by the game remain under their own licences (listed on <Link to="/about">About & credits</Link>).</li>
           <li>Names of real players, clubs, competitions and awards, and other third-party trademarks, belong to their respective owners. They are used only to describe the history that inspired the game.</li>
         </ul>

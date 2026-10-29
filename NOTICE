@@ -1,0 +1,22 @@
+The Golden Run
+Copyright 2026 BlindspotLab Limited
+
+This product was conceived and built by Mojeeb Titilayo (https://mojeeb.xyz)
+and is published by BlindspotLab Limited (https://blindspotlab.xyz).
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Not covered by the Apache License:
+- The creator portrait in public/media/ (mojeeb-titilayo-*), which may only be
+  used to identify the creator of The Golden Run.
+- "The Golden Run" name, wordmark and branding. As section 6 of the License
+  states, it grants no permission to use the Licensor's trade names or marks,
+  except as needed to describe the origin of the Work.
+
+Third-party software and fonts are used under their own licences, including
+React, React Router, Phaser, Tailwind CSS and SimpleWebAuthn (MIT) and
+Barlow Condensed, Figtree and Azeret Mono (SIL Open Font License 1.1).
+
+The Golden Run is an unofficial, independent fan game. It is not affiliated
+with, endorsed by or connected to any player, club, league, competition or
+award. Third-party names and trademarks belong to their respective owners.

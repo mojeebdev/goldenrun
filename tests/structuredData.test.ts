@@ -48,6 +48,7 @@ describe('structured data', () => {
       copyrightYear: 2026,
       isAccessibleForFree: true,
       gamePlatform: 'Web browser',
+      license: 'https://www.apache.org/licenses/LICENSE-2.0',
     });
     expect(byId(g, IDS.person)).toMatchObject({ '@type': 'Person', name: 'Mojeeb Titilayo', url: 'https://mojeeb.xyz', worksFor: { '@id': STUDIO.id } });
     expect(byId(g, IDS.person).sameAs).toEqual(['https://x.com/MojeebMotion', 'https://github.com/mojeebdev']);

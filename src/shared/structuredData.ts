@@ -7,7 +7,7 @@
  * Football figures that inspired the story appear only as `mentions` of the
  * About page, never as creator, publisher, sponsor or sameAs.
  */
-import { COPYRIGHT_YEAR, CREATOR, SITE, STUDIO } from './site';
+import { CODE_LICENSE, COPYRIGHT_YEAR, CREATOR, SITE, STUDIO } from './site';
 
 export type StructuredPage = 'home' | 'about';
 
@@ -90,6 +90,7 @@ function game() {
     publisher: ref(IDS.organization),
     copyrightHolder: ref(IDS.organization),
     copyrightYear: COPYRIGHT_YEAR,
+    license: CODE_LICENSE.url,
   };
 }
 

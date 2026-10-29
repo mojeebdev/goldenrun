@@ -34,5 +34,12 @@ export const STUDIO = {
   id: 'https://blindspotlab.xyz/#organization',
 } as const;
 
+/** The source code's licence (see LICENSE and NOTICE; the creator portrait and the brand are excluded). */
+export const CODE_LICENSE = {
+  name: 'Apache License 2.0',
+  spdx: 'Apache-2.0',
+  url: 'https://www.apache.org/licenses/LICENSE-2.0',
+} as const;
+
 export const COPYRIGHT_YEAR = 2026;
 export const COPYRIGHT = `© ${COPYRIGHT_YEAR} ${STUDIO.name}. All rights reserved.`;

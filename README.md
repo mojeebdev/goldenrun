@@ -121,4 +121,8 @@ Press on the ball, drag toward the goal and release. **Direction** aims, **lengt
 
 The Golden Run was conceived and built by [Mojeeb Titilayo](https://mojeeb.xyz) ([@MojeebMotion](https://x.com/MojeebMotion)) and is published by [BlindspotLab Limited](https://blindspotlab.xyz). © 2026 BlindspotLab Limited. All rights reserved. Third-party software and fonts remain under their own licences. Support: mojeeb@blindspotlab.xyz.
 
+## License
+
+The source code is licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for attribution and exclusions: the licence doesn't cover the creator portrait in `public/media/`, and it grants no rights to The Golden Run name or branding (Apache 2.0, section 6).
+
 The Golden Run is an unofficial, independent fan game, not affiliated with or endorsed by any player, club, league, competition or award.
