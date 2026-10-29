@@ -2,8 +2,11 @@
   "name": "goldenrun",
   "private": true,
   "version": "0.1.0",
-  "description": "The Golden Run — an unofficial football arcade game. 2008 → 1,000.",
+  "description": "The Golden Run \u2014 an unofficial football arcade game. 2008 \u2192 1,000.",
   "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
