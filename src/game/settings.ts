@@ -9,11 +9,13 @@ export interface Settings {
   reducedMotion: boolean | null;
   quality: Quality;
   level: KeeperLevel;
+  /** 0..1 master volume. */
+  volume: number;
 }
 
 const KEY = 'goldenrun.settings.v1';
 
-export const DEFAULT_SETTINGS: Settings = { sound: false, reducedMotion: null, quality: 'auto', level: 'rookie' };
+export const DEFAULT_SETTINGS: Settings = { sound: false, reducedMotion: null, quality: 'auto', level: 'rookie', volume: 0.8 };
 
 export function loadSettings(): Settings {
   try {
@@ -25,6 +27,7 @@ export function loadSettings(): Settings {
       reducedMotion: typeof v.reducedMotion === 'boolean' ? v.reducedMotion : null,
       quality: v.quality === 'high' || v.quality === 'low' ? v.quality : 'auto',
       level: v.level === 'professional' || v.level === 'legendary' ? v.level : 'rookie',
+      volume: typeof v.volume === 'number' && v.volume >= 0 && v.volume <= 1 ? v.volume : 0.8,
     };
   } catch {
     return { ...DEFAULT_SETTINGS };

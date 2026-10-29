@@ -7,8 +7,10 @@
   "main": "./src/worker/index.ts",
   "compatibility_date": "2026-10-01",
   "assets": {
+    // Needed so the Worker can serve the SPA shell for /u/* and /c/* share previews.
+    "binding": "ASSETS",
     "not_found_handling": "single-page-application",
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": ["/api/*", "/u/*", "/c/*"]
   },
   "routes": [{ "pattern": "goldenrun.fun", "custom_domain": true }],
   "d1_databases": [

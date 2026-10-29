@@ -2,6 +2,7 @@
 import type { Me, PlayerProfile } from '../../shared/competition/api';
 import { validateCountry } from '../../shared/competition/identity';
 import { auditStatement } from '../db/audit';
+import { playerAwards } from '../db/awards';
 import { ensureWeek } from '../db/cup';
 import type { Env } from '../env';
 import { HttpError, json, readJson } from '../http';
@@ -106,13 +107,9 @@ export async function getProfile(env: Env, handle: string): Promise<Response> {
     .first<{ id: string; handle: string; country_code: string | null; created_at: number }>();
   if (!p) throw new HttpError(404, 'not_found', 'No public player with that nickname.');
   const goals = await env.DB.prepare('SELECT COUNT(*) AS n FROM goal_ledger WHERE player_id = ?').bind(p.id).first<{ n: number }>();
-  const awards = await env.DB.prepare(
-    "SELECT award_type, award_key, review_state FROM awards WHERE player_id = ? AND review_state != 'revoked' ORDER BY awarded_at DESC LIMIT 50",
-  )
-    .bind(p.id)
-    .all<{ award_type: string; award_key: string; review_state: string }>();
+  const awards = await playerAwards(env, p.id);
   const runs = await env.DB.prepare(
-    "SELECT * FROM runs WHERE player_id = ? AND ranked = 1 AND state = 'accepted' ORDER BY started_at DESC LIMIT 20",
+    "SELECT * FROM runs WHERE player_id = ? AND mode = 'cup' AND ranked = 1 AND state = 'accepted' ORDER BY started_at DESC LIMIT 20",
   )
     .bind(p.id)
     .all<RunRow>();
@@ -121,9 +118,9 @@ export async function getProfile(env: Env, handle: string): Promise<Response> {
     country: p.country_code,
     joinedAt: p.created_at,
     careerGoals: goals?.n ?? 0,
-    awards: awards.results.map((a) => ({ type: a.award_type, weekId: a.award_key.split(':')[1] ?? null, reviewState: a.review_state })),
+    awards,
     cupResults: await Promise.all(
-      runs.results.map(async (r) => ({ weekId: r.cup_week_id, score: r.skill_score ?? 0, goals: r.goals ?? 0, rank: await runRank(env, r) })),
+      runs.results.map(async (r) => ({ weekId: r.cup_week_id ?? '', score: r.skill_score ?? 0, goals: r.goals ?? 0, rank: await runRank(env, r) })),
     ),
   };
   return json(profile, 200, { 'cache-control': 'public, max-age=30' });

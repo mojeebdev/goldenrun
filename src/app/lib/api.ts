@@ -1,5 +1,5 @@
 /** Typed client for the Worker API. Same-origin only; cookies carry the session. */
-import type { Bootstrap, HallOfFameEntry, Leaderboard, Me, PlayerProfile, RunSummary, StartedRun } from '../../shared/competition/api';
+import type { Bootstrap, Challenge, HallOfFameEntry, Leaderboard, Me, PlayerProfile, Progress, RunSummary, StartedRun } from '../../shared/competition/api';
 import type { ShotCommand } from '../../shared/rules';
 
 export class ApiError extends Error {
@@ -54,11 +54,15 @@ export const api = {
   newRecoveryCodes: () => call<{ recoveryCodes: string[] }>('POST', '/api/v1/auth/recovery-codes', {}),
   logout: () => call<{ ok: true }>('POST', '/api/v1/auth/logout', {}),
   logoutAll: () => call<{ ok: true }>('POST', '/api/v1/auth/logout-all', {}),
-  startRun: () => call<StartedRun>('POST', '/api/v1/runs/start', { ranked: true }),
+  startRun: () => call<StartedRun>('POST', '/api/v1/runs/start', { mode: 'cup', ranked: true }),
+  startTraining: (mode: 'chapter' | 'road', stage?: number) => call<StartedRun>('POST', '/api/v1/runs/start', { mode, stage }),
+  progress: () => call<Progress>('GET', '/api/v1/progress'),
+  challenge: (runId: string) => call<Challenge>('GET', `/api/v1/challenges/${runId}`),
+  report: (handle: string, reason: 'nickname' | 'cheating' | 'other', note?: string) => call<{ ok: true }>('POST', '/api/v1/reports', { handle, reason, note }),
   submitRun: (runId: string, nonce: string, idempotencyKey: string, commands: ShotCommand[]) =>
     call<RunSummary>('POST', `/api/v1/runs/${runId}/submit`, { nonce, idempotencyKey, commands }),
   getRun: (runId: string) => call<RunSummary>('GET', `/api/v1/runs/${runId}`),
   leaderboard: (params: Record<string, string>) => call<Leaderboard>('GET', `/api/v1/leaderboard?${new URLSearchParams(params)}`),
-  hallOfFame: () => call<{ entries: HallOfFameEntry[]; generatedAt: number }>('GET', '/api/v1/leaderboard?kind=hall'),
+  hallOfFame: () => call<{ entries: HallOfFameEntry[]; generatedAt: number; founding: Progress['founding'] }>('GET', '/api/v1/leaderboard?kind=hall'),
   player: (handle: string) => call<PlayerProfile>('GET', `/api/v1/players/${encodeURIComponent(handle)}`),
 };

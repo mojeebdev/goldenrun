@@ -3,6 +3,7 @@ import type { HallOfFameEntry, Leaderboard, LeaderboardRow } from '../../shared/
 import { isWeekId } from '../../shared/competition/week';
 import { validateCountry } from '../../shared/competition/identity';
 import { RULESET_VERSION } from '../../shared/rules';
+import { foundingStatus } from '../db/awards';
 import { ensureWeek } from '../db/cup';
 import type { Env } from '../env';
 import { HttpError, json } from '../http';
@@ -124,7 +125,7 @@ export async function leaderboard(request: Request, env: Env, now: number): Prom
         reviewState: r.review_state,
       };
     });
-    return json({ kind: 'hall', generatedAt: now, entries }, 200, { 'cache-control': `public, max-age=${CACHE_SECONDS}` });
+    return json({ kind: 'hall', generatedAt: now, entries, founding: await foundingStatus(env) }, 200, { 'cache-control': `public, max-age=${CACHE_SECONDS}` });
   }
 
   throw new HttpError(400, 'bad_kind', 'Unknown leaderboard.');

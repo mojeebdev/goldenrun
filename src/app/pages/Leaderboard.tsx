@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
-import type { HallOfFameEntry, Leaderboard as Board } from '../../shared/competition/api';
+import type { HallOfFameEntry, Leaderboard as Board, Progress } from '../../shared/competition/api';
 import { flagEmoji } from '../../shared/competition/identity';
 import { CountrySelect } from '../components/CountrySelect';
 import { PageShell } from '../components/PageShell';
@@ -26,6 +26,7 @@ export function Leaderboard() {
   const offset = Number(params.get('offset') ?? '0') || 0;
   const [board, setBoard] = useState<Board | null>(null);
   const [hall, setHall] = useState<HallOfFameEntry[] | null>(null);
+  const [founding, setFounding] = useState<Progress['founding'] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +42,10 @@ export function Leaderboard() {
       try {
         if (tab === 'hall') {
           const h = await api.hallOfFame();
-          if (!cancelled) setHall(h.entries);
+          if (!cancelled) {
+            setHall(h.entries);
+            setFounding(h.founding);
+          }
         } else if (tab === 'country' && !country) {
           if (!cancelled) setBoard(null);
         } else {
@@ -95,7 +99,7 @@ export function Leaderboard() {
       <div className="mt-5">
         {error && <Notice tone="error">{error}</Notice>}
         {loading && <p role="status" className="text-sm text-chalk/60">Loading…</p>}
-        {!loading && tab === 'hall' && hall && <Hall entries={hall} />}
+        {!loading && tab === 'hall' && hall && <Hall entries={hall} founding={founding} />}
         {!loading && tab !== 'hall' && board && <Table board={board} me={me} onPage={(o) => set({ offset: String(o) })} />}
         {!loading && tab === 'country' && !country && <p className="text-chalk/60">Pick a country to see its ranking.</p>}
       </div>
@@ -156,11 +160,34 @@ function Table({ board, me, onPage }: { board: Board; me?: string; onPage: (offs
   );
 }
 
-function Hall({ entries }: { entries: HallOfFameEntry[] }) {
+function Hall({ entries, founding }: { entries: HallOfFameEntry[]; founding: Progress['founding'] | null }) {
+  const foundingCard = (
+    <div className="mb-4 rounded-2xl border border-gold/50 bg-gradient-to-br from-gold/15 to-night/60 p-5">
+      <p className="label text-gold">👑 Founding Golden Fan · first to 1,000 verified goals</p>
+      <p className="display mt-1 text-3xl font-extrabold uppercase italic">
+        {!founding || founding.state === 'open'
+          ? 'Unclaimed'
+          : founding.handle
+            ? <Link to={`/u/${founding.handle}`}>{founding.country ? `${flagEmoji(founding.country)} ` : ''}{founding.handle}</Link>
+            : 'Private player'}
+      </p>
+      {founding && founding.state !== 'open' && (
+        <p className="text-sm text-chalk/70">{founding.state === 'confirmed' ? 'Confirmed after audit.' : 'Provisional — awaiting audit.'}</p>
+      )}
+      {(!founding || founding.state === 'open') && <Link to="/road-to-1000" className="text-sm text-gold underline">Start your Road to 1,000</Link>}
+    </div>
+  );
   if (entries.length === 0) {
-    return <div className="rounded-2xl border border-white/10 bg-night/60 p-6 text-chalk/70">No Golden Cup has been settled yet. Weekly winners appear here after each cup closes.</div>;
+    return (
+      <>
+        {foundingCard}
+        <div className="rounded-2xl border border-white/10 bg-night/60 p-6 text-chalk/70">No Golden Cup has been settled yet. Weekly winners appear here after each cup closes.</div>
+      </>
+    );
   }
   return (
+    <>
+    {foundingCard}
     <ul className="grid gap-2 sm:grid-cols-2">
       {entries.map((e, i) => (
         <li key={i} className="rounded-xl border border-gold/25 bg-night/60 p-4">
@@ -172,5 +199,6 @@ function Hall({ entries }: { entries: HallOfFameEntry[] }) {
         </li>
       ))}
     </ul>
+    </>
   );
 }

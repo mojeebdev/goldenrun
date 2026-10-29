@@ -12,6 +12,12 @@ export class SoundEngine {
   private crowdFilter: BiquadFilterNode | null = null;
   private noise: AudioBuffer | null = null;
   private enabled = false;
+  private volume = 0.8;
+
+  setVolume(v: number): void {
+    this.volume = Math.max(0, Math.min(1, v));
+    if (this.enabled) this.fade(this.master, 0.9 * this.volume, 0.1);
+  }
 
   get isEnabled(): boolean {
     return this.enabled;
@@ -23,7 +29,7 @@ export class SoundEngine {
     try {
       if (!this.ctx) this.init();
       void this.ctx?.resume();
-      this.fade(this.master, 0.9, 0.25);
+      this.fade(this.master, 0.9 * this.volume, 0.25);
     } catch {
       this.enabled = false;
     }

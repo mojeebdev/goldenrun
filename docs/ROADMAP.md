@@ -52,23 +52,25 @@ Every milestone must be independently shippable/testable, with tests and a short
 
 ## Milestone 3 — Progression, 2008 & Road to 1,000
 
-- [ ] Mode selection, narrative 2008 chapter (42 verified goals), optional stage-level variants.
-- [ ] Persistent 42/100/250/500/750/1,000 career milestones.
-- [ ] Founding Golden Fan provisional/verified title workflow and audit trail.
-- [ ] Player profiles, privacy controls and Hall of Fame.
-- [ ] Short, accessible goal celebration, progression visuals and earned badges.
-- [ ] Document and test published competition terms, first-finish order and title ownership.
+- [x] Mode selection, narrative 2008 chapter (six original matchdays, 7-goal quota each = 42 verified goals), sequential unlocks.
+- [x] Persistent 42/100/250/500/750/1,000 career milestones (from the immutable goal ledger) with Road to 1,000 difficulty tiers.
+- [x] Founding Golden Fan: provisional on the first 1,000th ledger goal (server order), owner audit to confirm, documented revoke path that passes the title to the next player.
+- [x] Player profiles with badges and titles, privacy controls, report button and Hall of Fame (weekly winners + Founding Golden Fan).
+- [x] Accessible celebrations (existing), progression bars and earned badges; volume control added.
+- [x] Published rules, terms, privacy and first-finish order; covered by integration tests.
 
 **Gate:** Completing 42 validated chapter goals earns exactly one badge, 1,000 validated career goals trigger review path, and no stage can be farmed by resubmitting past shots.
 
+**Status (2026-10-29):** gate met in integration tests against local D1. The badge is awarded once even after replays and repeated settlement. Matchday quotas hold under concurrent runs. Resubmitted or replayed inputs are refused. The first 1,000th goal by ledger order gets the provisional title. Milestone 4 items delivered early with Milestone 3: challenge links, share cards, Open Graph previews, terms and privacy.
+
 ## Milestone 4 — Social & Release Readiness
 
-- [ ] Challenge deep links and original share cards; public URL previews.
+- [x] Challenge deep links (`/c/:runId`) and original share cards (rendered on the player's device); public URL previews via Worker HTMLRewriter.
 - [ ] Localized public rankings and country boards with opt-in country choices.
 - [ ] UX onboarding polish, analytics through privacy-conscious Cloudflare capabilities, accessibility tests.
 - [ ] Load / stress tests, cheap device tests, slow 3G/4G assets review.
 - [ ] D1 migration rehearsal on non-production DB; backup/rollback notes.
-- [ ] Terms, Privacy, contest rules, reporting, moderation and deletion request experience.
+- [x] Terms, Privacy, contest rules, reporting, moderation and deletion request experience (plain-language drafts; legal review still recommended).
 - [ ] Written Cloudflare dashboard deployment instructions for owner, including D1 binding, Worker build, custom-domain route and SSL. Domain is already purchased and Cloudflare-connected; do not instruct repurchase or unnecessary nameserver changes.
 - [ ] Verify no unlicensed branding, imagery, SFX or implied endorsements.
 
