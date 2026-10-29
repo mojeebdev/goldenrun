@@ -15,9 +15,9 @@
     {
       "binding": "DB",
       "database_name": "goldenrun-db",
-      // Production ID from `npx wrangler d1 create goldenrun-db` (owner-provided).
+      // Production database (created by the owner in WEUR, 2026-10-29).
       // Local dev and tests use a local SQLite copy and ignore this value.
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "acadb1fc-2db5-4563-a1a4-48d211f1cfeb",
       "migrations_dir": "migrations"
     }
   ],

@@ -22,7 +22,7 @@ npm run deploy:dry-run   # validates the Worker bundle; uploads nothing
 
 Run these from the repository root on your machine, logged in with `npx wrangler login`.
 
-1. **Create the production database** (free tier is enough). Copy the `database_id` it prints and send it to Claude, who commits it to `wrangler.jsonc`:
+1. **Create the production database** (done 2026-10-29: `goldenrun-db`, region WEUR, ID committed in `wrangler.jsonc`):
 
    ```bash
    npx wrangler d1 create goldenrun-db
