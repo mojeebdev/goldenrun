@@ -251,7 +251,9 @@ export class GameController {
     if (!force && rect.width === this.size.w && rect.height === this.size.h && dpr === this.size.dpr && this.scene.projection) {
       return;
     }
-    if (this.pointerId !== null) this.cancelAim();
+    const resized = rect.width !== this.size.w || rect.height !== this.size.h || dpr !== this.size.dpr;
+    // A real viewport change invalidates an in-progress drag; a quality-only refresh must not.
+    if (resized && this.pointerId !== null) this.cancelAim();
     this.size = { w: rect.width, h: rect.height, dpr };
     const w = Math.max(2, Math.round(rect.width * dpr));
     const h = Math.max(2, Math.round(rect.height * dpr));
@@ -282,6 +284,12 @@ export class GameController {
     this.fpsSamples.push(delta);
     if (this.fpsSamples.length < 180) return;
     const avg = this.fpsSamples.reduce((a, b) => a + b, 0) / this.fpsSamples.length;
+    const busy = this.pointerId !== null || this.keyAim !== null || this.session.getSnapshot().phase !== 'ready';
+    if (avg > 26 && busy) {
+      // Never swap quality mid-gesture or mid-shot: re-check on the next calm frame.
+      this.fpsSamples.shift();
+      return;
+    }
     this.fpsSamples = [];
     if (avg > 26) {
       // Sustained < ~38 fps: shed decorative work, keep gameplay identical.

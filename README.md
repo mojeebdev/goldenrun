@@ -43,6 +43,8 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 | [Experience & Storyboard](docs/UX_STORYBOARD.md) | Screens, user journey and cinematic visual system |
 | [Architecture](docs/ARCHITECTURE.md) | Cloudflare resources, persistence, authentication, scoring integrity and operations |
 | [Roadmap](docs/ROADMAP.md) | Incremental milestones, tests and acceptance gates |
+| [Deployment notes](docs/DEPLOYMENT.md) | Owner-run Cloudflare steps (not yet performed) |
+| [Changelog](CHANGELOG.md) | What each milestone shipped, verified and left open |
 | [Master Agent Prompt](prompts/00_MASTER_PROMPT.md) | Repository-wide engineering instructions |
 | [Milestone 1 Prompt](prompts/01_PERFECT_SHOT.md) | First playable vertical slice |
 | [Milestone 2 Prompt](prompts/02_COMPETITIVE_FOUNDATION.md) | Profiles, persistence and verified competition |
@@ -59,7 +61,42 @@ The *Founding Golden Fan* and weekly Golden Cup are **in-game, unofficial** reco
 
 ## Project status
 
-**Planning/specifications.** Domain **purchased** and **connected to Cloudflare** (owner-confirmed). No gameplay implementation, Worker deployment, production custom-domain binding, or public website availability has been verified.
+**Milestone 1 — The Perfect Shot: implemented as a local, playable preview.** Unranked guest practice runs end to end in the browser on the Cloudflare Worker toolchain. **Not deployed:** no Worker deployment, custom-domain route, D1 database or public availability exists yet. Domain **purchased** and **connected to Cloudflare** (owner-confirmed). See [CHANGELOG](CHANGELOG.md) for what shipped and what remains.
+
+## Run it locally
+
+Requires Node.js 20+ (tested on 22).
+
+```bash
+npm ci
+npm run dev          # http://localhost:5173 — React + Phaser + the Worker (/api/health) in workerd
+```
+
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Vite dev server with the Cloudflare plugin (Worker runs locally in workerd) |
+| `npm run build` | Typecheck + production build (`dist/client` assets, `dist/goldenrun` Worker) |
+| `npm run preview` | Serve the production build through the local Worker runtime |
+| `npm run typecheck` / `npm run lint` / `npm test` | Static checks and the Vitest suite |
+| `npm run check` | All of the above in sequence |
+| `npm run balance` | Prints goal/save rates per keeper level on a shot grid |
+| `npm run deploy:dry-run` | Validates the Worker bundle with Wrangler **without deploying** |
+
+Routes: `/` homepage · `/play` practice · `/modes` and `/2008`, `/road-to-1000`, `/cup`, `/leaderboard`, `/u/:username` (clearly labelled *coming later*) · `/api/health`.
+
+### How to play
+
+Press on the ball, drag toward the goal and release. **Direction** aims, **length** is power, **curving the drag** adds curl, and **where you strike the ball** sets the height (low on the ball lifts it, high on the ball keeps it down). Keyboard: ← → aim · ↑ ↓ height · W/S power · Q/E curl · Enter/Space shoot · Esc cancel · M sound · P settings.
+
+### Code map
+
+| Path | Purpose |
+| --- | --- |
+| `src/shared/rules/` | Pure, deterministic, Worker-compatible rules: `ShotCommand`, scenarios, keeper, simulation, scoring |
+| `src/game/` | Phaser scene, procedural rendering, input mapping, practice session, synthesized audio |
+| `src/app/` | React shell, routes, homepage |
+| `src/worker/` | The single application Worker (`/api/*`) |
+| `tests/` | Determinism, geometry, keeper fairness, input normalisation and session tests |
 
 ---
 **Source of truth:** [github.com/mojeebdev/goldenrun](https://github.com/mojeebdev/goldenrun)

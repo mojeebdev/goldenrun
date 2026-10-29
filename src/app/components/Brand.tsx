@@ -5,7 +5,7 @@ export function Wordmark({ size = 'sm' }: { size?: 'sm' | 'lg' }) {
     return (
       <h1 className="display text-center font-extrabold italic uppercase leading-[0.82]">
         <span className="block text-[clamp(18px,3.4vw,30px)] tracking-[0.42em] text-chalk/80 not-italic font-semibold">The</span>
-        <span className="gold-text block text-[clamp(64px,15vw,168px)]">Golden Run</span>
+        <span className="gold-text block text-[clamp(64px,min(15vw,15vh),168px)]">Golden Run</span>
       </h1>
     );
   }

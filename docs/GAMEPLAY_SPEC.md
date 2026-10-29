@@ -66,7 +66,7 @@ Implement **pure TypeScript** simulation in a shared module used by gameplay and
 
 ## Goalkeeper behavior
 
-Three initial deterministic skills: novice, standard and expert.
+Three initial deterministic skills: novice, standard and expert — implemented as **Rookie**, **Professional** and **Legendary** (see *Milestone 1 implementation notes* below).
 - Position/starting delay defined by scenario.
 - Keeper observes shot after a defined reaction delay; chooses reachable interception path based on bounded lateral velocity and dive duration.
 - Can save or parry, dive, stand still, or miss; give readable animations for each outcome.
@@ -113,3 +113,39 @@ All modifier eligibility must be independently derived by `simulateShot()` from 
 - Orientation and input-scaling test: same normalized gesture intention → same outcome across display sizes.
 - Gameplay tests verify no double-count, no score change on miss, and no score submitted by practice.
 - Real-phone user test: first shot without explanation, readable aiming feedback, responsive save/goal feel.
+
+## Milestone 1 implementation notes (ruleset `gr-1.0.0`)
+
+These record where the playable prototype made a concrete choice the spec left open, or deliberately deviated, and why.
+
+### Input mapping (deviation, documented)
+The spec says gesture *angle* selects the horizontal/vertical target and *distance* selects power. A single drag only offers two independent quantities (direction and length) plus curvature, so it cannot independently set horizontal aim, height **and** power. To keep every parameter independent and learnable, Milestone 1 uses:
+
+| Gesture property | Shot parameter |
+| --- | --- |
+| Direction of the drag (relative to straight up) | `aimX` — left/right |
+| Length of the drag (normalised by viewport) | `power` |
+| Curvature of the drag (enclosed-area measure) | `spin` — curl |
+| **Where the drag starts on the ball** (the strike pad) | `aimY` — height: strike low to lift, high to drive low |
+
+This mirrors real football technique, keeps the one-finger *touch → drag → release* flow, and is shown live (strike dot, power ring, curl arrow, trajectory and goal-plane reticle). Lengths are divided by a reference length derived from `min(viewport width, height)`, and the path is resampled by arc length before measuring curvature, so the same intention gives the same command on any screen or touch sampling rate (covered by tests). Release near the start or drag downward to cancel.
+
+`aimY` is the intended height at the goal line: the launch angle that reaches it (ignoring curl, with a drag allowance) is solved, then the physics runs freely. Power therefore changes speed, arc shape and the keeper's time — not where "up" points.
+
+### Simulation
+* Fixed 240 Hz step, semi-implicit Euler; gravity, quadratic drag, Magnus curl decaying over time, ground bounce/roll, post and crossbar cylinders, nets.
+* Determinism: only `+ − × ÷ √` and explicit rounding; all state snapped to a 1 µm grid each step; transcendental `Math` functions and `Math.random` are lint-banned in `src/shared`. The canonical shot's digest is identical in Node and the Worker (`/api/health`).
+* A goal requires the ball centre to pass `goalLine + ballRadius` while between the posts and below the bar; post/bar collisions are resolved first, so "post and in" is real.
+* Replay samples at 60 Hz drive rendering; the renderer never decides outcomes.
+
+### Goalkeeper
+Reads the ball state once at its reaction time (anticipating only `curlRead` of the current curl), then either sets (shot at the body), dives left/right toward the read point limited by `reach` and `maxHandHeight`, or watches a shot going wide. On slow shots it waits so the dive completes as the ball arrives. Collisions use a feet→hands capsule; contact below `catchSpeed` near the gloves is a catch, otherwise a parry (which can still go in). Profiles live in `src/shared/rules/scenarios.ts`. Hard shots into the top corners are unsaveable at every level (tested).
+
+### Aiming guide honesty
+Rookie shows the full predicted path and an exact reticle; Professional shows ~70 % of the path with a wider reticle; Legendary ~45 % with the widest reticle.
+
+### Scoring (practice)
+Goal +100, top corner +150 (within 1.06 m of a post and the top 0.89 m), curl +200 (|spin| ≥ 450 and ≥ 0.9 m of curl at the line), long range +250 (28 m spot), capped at 700 — all derived inside `simulateShot()`. The practice streak bonus (+25 per consecutive goal after the first, max +100) is **provisional, practice-only** and not part of the shared ruleset.
+
+### Practice spots
+Centre 18 m, Left channel 20 m, Top of the D 23 m, Right channel 19 m, Long range 28 m. A goal advances to the next spot; a miss repeats it. Scenario IDs: `practice.<spot>.<level>`.

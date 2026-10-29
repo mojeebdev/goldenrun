@@ -275,9 +275,11 @@ export class StadiumScene extends Phaser.Scene {
         this.onDecisiveVisual(f.result);
         this.events$.onDecisive?.(f.shotId);
       }
-      if (f.t >= f.result.duration) {
+      // Misses can roll on for seconds; don't make the player wait for them.
+      const playEnd = f.result.goal ? f.result.duration : Math.min(f.result.duration, d + 1.2);
+      if (f.t >= playEnd) {
         if (f.endAt === null) f.endAt = this.clock;
-        const hold = f.result.goal ? 1.5 : 0.9;
+        const hold = f.result.goal ? 1.4 : 0.6;
         if (this.clock - f.endAt >= hold) this.finish();
       }
     }

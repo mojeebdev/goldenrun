@@ -231,7 +231,7 @@ function Banner({
           {text.title}
         </span>
       </button>
-      <div className="pointer-events-none absolute inset-x-0 flex flex-col items-center gap-1.5 px-3" style={{ top: goalBottom + 10 }}>
+      <div className="pointer-events-none absolute inset-x-0 flex flex-col items-center gap-1.5 px-3" style={{ top: goalBottom + 14 + (goalBottom - goalTop) * 0.2 }}>
         {r.goal && (
           <span className="anim-rise flex flex-wrap justify-center gap-1.5">
             {r.modifiers.map((m) => (

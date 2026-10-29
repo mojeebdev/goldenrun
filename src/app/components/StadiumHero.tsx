@@ -34,7 +34,7 @@ function line(x1: number, z1: number, x2: number, z2: number, w = 0.14) {
   return [pt(x1 + nx, 0, z1 + nz), pt(x2 + nx, 0, z2 + nz), pt(x2 - nx, 0, z2 - nz), pt(x1 - nx, 0, z1 - nz)].join(' ');
 }
 
-export function StadiumHero({ className = '' }: { className?: string }) {
+export function StadiumHero({ className = '', preserve = 'xMidYMid slice' }: { className?: string; preserve?: string }) {
   const netLines: string[] = [];
   for (let x = -3.66; x <= 3.67; x += 0.4) netLines.push(`M${pt(x, 0, D + 1.9)} L${pt(x, 2.44, D + 0.9)} L${pt(x, 2.44, D)}`);
   for (let y = 0.2; y < 2.44; y += 0.4) {
@@ -45,7 +45,7 @@ export function StadiumHero({ className = '' }: { className?: string }) {
     <svg
       className={className}
       viewBox={`0 0 ${W} ${H}`}
-      preserveAspectRatio="xMidYMid slice"
+      preserveAspectRatio={preserve}
       role="img"
       aria-label="A floodlit night stadium seen from behind the ball, facing the goal"
     >
@@ -110,7 +110,7 @@ export function StadiumHero({ className = '' }: { className?: string }) {
       />
       <polygon points={[pt(-70, 13.4, D + 31), pt(70, 13.4, D + 31), pt(70, 14.6, D + 31.6), pt(-70, 14.6, D + 31.6)].join(' ')} fill="#5c0f1b" />
       {/* Floodlight banks */}
-      {[160, 560, 1040, 1440].map((x) => (
+      {[180, 620, 980, 1420].map((x) => (
         <g key={x} className="hero-flood">
           <circle cx={x} cy={175} r={150} fill="url(#flood)" />
           <rect x={x - 46} y={164} width={92} height={22} rx={3} fill="#fff6dc" />
@@ -125,11 +125,6 @@ export function StadiumHero({ className = '' }: { className?: string }) {
       {/* Boards */}
       <polygon points={[pt(-80, 0, D + 4), pt(80, 0, D + 4), pt(80, 0.95, D + 4), pt(-80, 0.95, D + 4)].join(' ')} fill="#07080b" />
       <polygon points={[pt(-80, 0.82, D + 4), pt(80, 0.82, D + 4), pt(80, 0.95, D + 4), pt(-80, 0.95, D + 4)].join(' ')} fill="#8e1b2a" />
-      {[-24, 0, 24].map((x, i) => (
-        <text key={x} x={sx(x, D + 4)} y={sy(0.42, D + 4) + 7} textAnchor="middle" fontFamily="Barlow Condensed, sans-serif" fontWeight={800} fontSize={20} fill={i === 1 ? '#f2efe6' : '#e8b84a'} letterSpacing="2">
-          {i === 1 ? '2008 → 1,000' : 'THE GOLDEN RUN'}
-        </text>
-      ))}
       {/* Markings */}
       <g fill="rgba(242,239,230,0.8)">
         <polygon points={line(-60, D, 60, D)} />

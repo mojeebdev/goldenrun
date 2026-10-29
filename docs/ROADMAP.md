@@ -15,22 +15,24 @@ Every milestone must be independently shippable/testable, with tests and a short
 - [x] Owner confirmed purchase of `goldenrun.fun`.
 - [x] Owner confirmed `goldenrun.fun` is connected to Cloudflare.
 - [ ] Verify DNS/SSL resolution and custom-domain Worker route when deployment is authorized; not yet independently verified.
-- [ ] Owner authorizes actual gameplay implementation and any production deployment separately.
+- [x] Owner authorized Milestone 1 gameplay implementation (production deployment still requires separate approval).
 
 ## Milestone 1 — The Perfect Shot (playable prototype)
 
 **Objective:** One awesome shot feels like a game, not a website demo.
 
-- [ ] Set up React + Vite, Phaser, TypeScript and Tailwind under current Cloudflare Worker tooling.
-- [ ] Build responsive stadium, goal, ball, goalkeeper, clean HUD and immediate guest play.
-- [ ] Map touch/mouse and keyboard commands to deterministic fixed-point input.
-- [ ] Shared simulation for shot arc, spin, goal-plane collision, keeper saves, points.
-- [ ] Goal/miss/save animation, efficient reset, original sound with mute and reduced motion.
-- [ ] Pure unit tests for physics, same-command replay, geometry and bounds.
-- [ ] Mobile portrait and landscape, small laptop, desktop and keyboard QA.
-- [ ] Document preview-only local run/build steps.
+- [x] Set up React + Vite, Phaser, TypeScript and Tailwind under current Cloudflare Worker tooling.
+- [x] Build responsive stadium, goal, ball, goalkeeper, clean HUD and immediate guest play.
+- [x] Map touch/mouse and keyboard commands to deterministic fixed-point input.
+- [x] Shared simulation for shot arc, spin, goal-plane collision, keeper saves, points.
+- [x] Goal/miss/save animation, efficient reset, original sound with mute and reduced motion.
+- [x] Pure unit tests for physics, same-command replay, geometry and bounds.
+- [~] Mobile portrait and landscape, small laptop, desktop and keyboard QA — done in emulated Chromium viewports (Pixel 5, 390×844, 844×390, 1280×720/800, 1440×900) with real pointer, touch and keyboard events. **Real-device QA on budget Android and iPhone Safari is still outstanding.**
+- [x] Document preview-only local run/build steps.
 
 **Gate:** Can play consecutive shots in browser with clear aim/goal/keeper feedback, without accounts, D1 or live domain. Repeatability and responsiveness tests pass.
+
+**Status (2026-10-29):** gate met in local/emulated testing; see [CHANGELOG](../CHANGELOG.md). Owner hands-on review of play feel and real-phone QA remain before Milestone 2.
 
 ## Milestone 2 — Verified Competition & Accounts
 

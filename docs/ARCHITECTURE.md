@@ -58,6 +58,8 @@ prompts/
 
 If Cloudflare's recommended starter differs, preserve the logical separation rather than forcing exact folders.
 
+**As built in Milestone 1:** `src/app` (React shell), `src/game` (Phaser scene in `scenes/`, input in `input/`, procedural art in `rendering/`, synthesized audio in `audio/`, `session.ts` for local practice), `src/shared/rules` (pure rules), `src/worker/index.ts` (`/api/health` only). Wrangler config: `wrangler.jsonc` with `assets.not_found_handling = "single-page-application"` and `run_worker_first = ["/api/*"]`. No D1 binding, routes, custom domain or cron are configured. `/api/health` simulates a canonical shot through the shared rules and returns its digest, which matches the Node test suite — the first evidence for cross-runtime determinism.
+
 ## D1 relational model (design target, not a migration yet)
 
 1. `players`: id (opaque ULID/UUID), display_name, normalized_handle (unique), country_code (nullable), created_at, visibility, account_state.
