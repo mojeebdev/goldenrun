@@ -1,6 +1,7 @@
-/** Future game modes. Shown as previews only — none are live in Milestone 1. */
+/** Game modes. `live` ones are playable; the rest are clearly labelled as coming later. */
 export interface ModePreview {
   path: string;
+  live?: boolean;
   title: string;
   kicker: string;
   blurb: string;
@@ -21,12 +22,14 @@ export const UPCOMING_MODES: ModePreview[] = [
   },
   {
     path: '/cup',
+    live: true,
     title: 'Golden Cup',
     kicker: 'Weekly · 12 shots',
     blurb: 'The same 12 standardised shots for everyone each week, with a 90-second target.',
   },
   {
     path: '/leaderboard',
+    live: true,
     title: 'Leaderboards',
     kicker: 'Verified only',
     blurb: 'Weekly, country and career rankings built only from server-verified results.',

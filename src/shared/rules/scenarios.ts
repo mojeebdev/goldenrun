@@ -87,8 +87,13 @@ export function scenarioIdFor(spotId: string, level: KeeperLevel): string {
   return `practice.${spotId}.${level}`;
 }
 
+/**
+ * Scenario IDs: `practice.<spot>.<level>` for free practice and
+ * `cup.<spot>.<level>` for Golden Cup courses. Both resolve to the same
+ * geometry and keeper, so adding the `cup` prefix changed no existing result.
+ */
 export function getScenario(scenarioId: string): Scenario | null {
-  const m = /^practice\.([a-z0-9-]+)\.(rookie|professional|legendary)$/.exec(scenarioId);
+  const m = /^(?:practice|cup)\.([a-z0-9-]+)\.(rookie|professional|legendary)$/.exec(scenarioId);
   if (!m) return null;
   const spot = PRACTICE_SPOTS.find((s) => s.id === m[1]);
   if (!spot) return null;

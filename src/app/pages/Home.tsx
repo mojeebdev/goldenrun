@@ -3,8 +3,19 @@ import { Link } from 'react-router';
 import { BallMark, Unofficial, Wordmark } from '../components/Brand';
 import { StadiumHero } from '../components/StadiumHero';
 import { UPCOMING_MODES } from '../modes';
+import { useAccount } from '../lib/account';
 
 const preloadGame = () => import('../../game/GameView');
+
+function HomeAccountLink() {
+  const { bootstrap } = useAccount();
+  const p = bootstrap?.player;
+  return (
+    <Link className="whitespace-nowrap rounded-full px-3 py-2 text-chalk/80 hover:text-gold" to={p ? '/account' : '/login'}>
+      {p ? p.handle : 'Sign in'}
+    </Link>
+  );
+}
 
 export function Home() {
   useEffect(() => {
@@ -32,9 +43,13 @@ export function Home() {
             <Link className="rounded-full px-3 py-2 text-chalk/80 hover:text-gold" to="/modes">
               Modes
             </Link>
-            <Link className="whitespace-nowrap rounded-full px-3 py-2 text-chalk/80 hover:text-gold" to="/leaderboard">
-              Leaderboard <span className="label ml-1 text-[9px] text-gold/80">soon</span>
+            <Link className="rounded-full px-3 py-2 text-chalk/80 hover:text-gold" to="/cup">
+              Cup
             </Link>
+            <Link className="whitespace-nowrap rounded-full px-3 py-2 text-chalk/80 hover:text-gold" to="/leaderboard">
+              Leaderboards
+            </Link>
+            <HomeAccountLink />
           </nav>
         </header>
 
@@ -100,7 +115,7 @@ export function Home() {
           </Link>
           {UPCOMING_MODES.map((m) => (
             <Link key={m.path} to={m.path} className="rounded-2xl border border-white/10 bg-night/60 p-5 hover:border-white/25">
-              <p className="label text-chalk/50">Coming later · {m.kicker}</p>
+              <p className={`label ${m.live ? 'text-gold' : 'text-chalk/50'}`}>{m.live ? 'Live now' : 'Coming later'} · {m.kicker}</p>
               <p className="display mt-1 text-2xl font-extrabold uppercase italic text-chalk/90">{m.title}</p>
               <p className="mt-1 text-sm text-chalk/60">{m.blurb}</p>
             </Link>

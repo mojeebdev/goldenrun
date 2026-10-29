@@ -22,7 +22,7 @@ export function Modes() {
         </Link>
         {UPCOMING_MODES.map((m) => (
           <Link key={m.path} to={m.path} className="rounded-2xl border border-white/10 bg-night/60 p-6 hover:border-white/25">
-            <p className="label text-chalk/50">Coming later · {m.kicker}</p>
+            <p className={`label ${m.live ? 'text-gold' : 'text-chalk/50'}`}>{m.live ? 'Live now' : 'Coming later'} · {m.kicker}</p>
             <p className="display mt-1 text-3xl font-extrabold uppercase italic text-chalk/90">{m.title}</p>
             <p className="mt-2 text-sm text-chalk/60">{m.blurb}</p>
           </Link>

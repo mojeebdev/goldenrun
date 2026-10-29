@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.test.tsbuildinfo",
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["@cloudflare/workers-types", "node"],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUncheckedIndexedAccess": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["tests", "src/shared", "src/worker", "src/game/input", "src/game/session.ts"]
+}

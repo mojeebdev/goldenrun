@@ -4,21 +4,45 @@
  */
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Link } from 'react-router';
-import type { KeeperLevel } from '../shared/rules';
-import { KEEPER_LEVELS, KEEPER_PROFILES, PRACTICE_SPOTS } from '../shared/rules';
-import type { AimReadout, ControllerUi } from './GameController';
+import type { KeeperLevel, ShotCommand } from '../shared/rules';
+import { KEEPER_LEVELS, KEEPER_PROFILES, PRACTICE_SPOTS, getScenario } from '../shared/rules';
+import type { AimReadout, ControllerUi, GameOptions } from './GameController';
 import { GameController } from './GameController';
 import type { ResolvedShot, SessionSnapshot } from './session';
 import type { Quality } from './settings';
 
-export default function GameView() {
+export interface GameMode {
+  /** Golden Cup course (scenario IDs). Omit for free practice. */
+  course?: string[];
+  ranked?: boolean;
+  restore?: ShotCommand[];
+  /** Display-only countdown; the server's deadline is what counts. */
+  timer?: { targetEndsAt: number; deadlineAt: number; clockOffset: number };
+  onShotResolved?: GameOptions['onShotResolved'];
+  onCourseComplete?: GameOptions['onCourseComplete'];
+  exitTo?: string;
+}
+
+export default function GameView({ mode = {} }: { mode?: GameMode }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [controller, setController] = useState<GameController | null>(null);
+  // Mode is fixed for the lifetime of the view; callbacks read the latest props.
+  const modeRef = useRef(mode);
+  useEffect(() => {
+    modeRef.current = mode;
+  });
 
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-    const c = new GameController(host);
+    const m = modeRef.current;
+    const c = new GameController(host, {
+      course: m.course,
+      ranked: m.ranked,
+      restore: m.restore,
+      onShotResolved: (snap) => modeRef.current.onShotResolved?.(snap),
+      onCourseComplete: (snap) => modeRef.current.onCourseComplete?.(snap),
+    });
     c.mount();
     setController(c);
     return () => {
@@ -30,7 +54,7 @@ export default function GameView() {
   return (
     <div className="absolute inset-0 overflow-hidden bg-midnight">
       <div ref={hostRef} className="game-surface absolute inset-0" aria-label="Football pitch. Drag from the ball toward the goal to shoot, or use the keyboard." role="application" />
-      {controller && <Hud controller={controller} />}
+      {controller && <Hud controller={controller} mode={mode} />}
     </div>
   );
 }
@@ -41,11 +65,13 @@ function useController(c: GameController): [ControllerUi, SessionSnapshot] {
   return [ui, session];
 }
 
-function Hud({ controller }: { controller: GameController }) {
+function Hud({ controller, mode }: { controller: GameController; mode: GameMode }) {
   const [ui, session] = useController(controller);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { stats } = session;
-  const spot = PRACTICE_SPOTS[session.spotIndex]!;
+  const scenario = getScenario(controller.session.scenarioId)!;
+  const course = mode.course;
+  const modeLabel = course ? (mode.ranked ? 'Golden Cup · Ranked' : 'Cup practice · Unranked') : 'Unranked practice';
 
   useEffect(() => {
     controller.setPaused(settingsOpen);
@@ -70,19 +96,23 @@ function Hud({ controller }: { controller: GameController }) {
       {/* Top bar */}
       <div className="pointer-events-auto absolute inset-x-0 top-0 flex items-start justify-between gap-2 px-[max(10px,var(--safe-left))] pt-[max(8px,var(--safe-top))] pr-[max(10px,var(--safe-right))]">
         <div className="flex min-w-0 items-center gap-2">
-          <Link to="/" aria-label="Exit to home" className="hud-btn">
+          <Link to={mode.exitTo ?? '/'} aria-label="Exit" className="hud-btn">
             <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
               <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
           <div className="min-w-0 leading-tight">
-            <p className="label truncate text-[10px] text-gold">Unranked practice</p>
+            <p className="label truncate text-[10px] text-gold">{modeLabel}</p>
             <p className="display truncate text-[15px] font-semibold uppercase text-chalk/85">
-              {spot.label} · <span className="text-chalk/60">{KEEPER_PROFILES[session.level].label} keeper</span>
+              {scenario.label} · <span className="text-chalk/60">{scenario.keeper.label} keeper</span>
             </p>
           </div>
         </div>
-        <Stats goals={stats.goals} attempts={stats.attempts} streak={stats.streak} score={stats.score} />
+        {course ? (
+          <CourseStats shot={Math.min(session.spotIndex + 1, course.length)} total={course.length} goals={stats.goals} score={stats.score} timer={mode.timer} />
+        ) : (
+          <Stats goals={stats.goals} attempts={stats.attempts} streak={stats.streak} score={stats.score} />
+        )}
         <div className="flex shrink-0 items-center gap-1.5">
           <button
             type="button"
@@ -150,6 +180,55 @@ function Stats({ goals, attempts, streak, score }: { goals: number; attempts: nu
         <div key={k} className="min-w-[54px] rounded-lg border border-white/10 bg-midnight/65 px-2 py-1 text-center backdrop-blur">
           <dt className="label text-[9px] text-chalk/55">{k}</dt>
           <dd className={`display text-lg font-extrabold leading-none ${k === 'Score' ? 'text-gold' : 'text-chalk'}`}>{v}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+function CourseStats({
+  shot,
+  total,
+  goals,
+  score,
+  timer,
+}: {
+  shot: number;
+  total: number;
+  goals: number;
+  score: number;
+  timer?: GameMode['timer'];
+}) {
+  const [nowMs, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!timer) return;
+    const id = window.setInterval(() => setNow(Date.now()), 250);
+    return () => window.clearInterval(id);
+  }, [timer]);
+  let clock: { text: string; tone: string } | null = null;
+  if (timer) {
+    const serverNow = nowMs + timer.clockOffset;
+    const left = Math.ceil((timer.targetEndsAt - serverNow) / 1000);
+    const grace = Math.ceil((timer.deadlineAt - serverNow) / 1000);
+    clock =
+      left > 0
+        ? { text: `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`, tone: left <= 15 ? 'text-[#e0563f]' : 'text-chalk' }
+        : grace > 0
+          ? { text: `+${grace}s`, tone: 'text-[#e0563f]' }
+          : { text: 'Closed', tone: 'text-[#e0563f]' };
+  }
+  const items: [string, string, string][] = [
+    ['Shot', `${shot}/${total}`, 'text-chalk'],
+    ['Goals', String(goals), 'text-chalk'],
+    ['Score', score.toLocaleString('en-US'), 'text-gold'],
+  ];
+  if (clock) items.push([clock.text.startsWith('+') ? 'Grace' : 'Target', clock.text, clock.tone]);
+  return (
+    <dl className="pointer-events-none absolute left-1/2 top-[calc(max(8px,var(--safe-top))+44px)] flex -translate-x-1/2 gap-1 sm:static sm:translate-x-0" aria-live="off">
+      {items.map(([k, v, tone]) => (
+        <div key={k} className="min-w-[54px] rounded-lg border border-white/10 bg-midnight/65 px-2 py-1 text-center backdrop-blur">
+          <dt className="label text-[9px] text-chalk/55">{k}</dt>
+          <dd className={`display text-lg font-extrabold leading-none tabular-nums ${tone}`}>{v}</dd>
         </div>
       ))}
     </dl>
@@ -304,6 +383,8 @@ function SettingsSheet({
           </button>
         </div>
 
+        {!controller.isCourse && (
+        <>
         <Section title="Goalkeeper">
           <div className="flex gap-1.5">
             {KEEPER_LEVELS.map((l: KeeperLevel) => (
@@ -340,6 +421,8 @@ function SettingsSheet({
           </div>
           <p className="mt-1.5 text-xs text-chalk/55">Scoring moves you to the next spot automatically.</p>
         </Section>
+        </>
+        )}
 
         <Section title="Sound">
           <div className="flex gap-1.5">
@@ -393,22 +476,26 @@ function SettingsSheet({
         </Section>
 
         <div className="mt-5 flex gap-2">
-          <button
-            type="button"
-            className="flex-1 rounded-xl border border-white/15 px-4 py-3 text-sm font-semibold text-chalk/85 hover:bg-white/5"
-            onClick={() => {
-              controller.restart();
-              onClose();
-            }}
-          >
-            Restart practice
-          </button>
+          {!controller.isRanked && (
+            <button
+              type="button"
+              className="flex-1 rounded-xl border border-white/15 px-4 py-3 text-sm font-semibold text-chalk/85 hover:bg-white/5"
+              onClick={() => {
+                controller.restart();
+                onClose();
+              }}
+            >
+              {controller.isCourse ? 'Restart course' : 'Restart practice'}
+            </button>
+          )}
           <button type="button" className="flex-1 rounded-xl bg-gold px-4 py-3 text-sm font-bold text-midnight" onClick={onClose}>
             Back to the pitch
           </button>
         </div>
         <p className="mt-4 text-[11px] leading-relaxed text-chalk/45">
-          Unranked practice: nothing is uploaded or saved except these settings on this device.
+          {controller.isRanked
+            ? 'Ranked run: only your 12 shot inputs are sent when you finish. The server replays them to score you.'
+            : 'Unranked practice: nothing is uploaded or saved except these settings on this device.'}
         </p>
       </div>
     </div>

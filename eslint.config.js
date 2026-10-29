@@ -17,6 +17,12 @@ export default tseslint.config(
     },
   },
   {
+    // Page-level data loading (fetch on mount / on URL change) intentionally
+    // resets loading state inside effects; this project has no data library.
+    files: ['src/app/pages/**/*.tsx', 'src/app/lib/**/*.tsx'],
+    rules: { 'react-hooks/set-state-in-effect': 'off' },
+  },
+  {
     // The shared rules must stay deterministic: forbid unseeded randomness and
     // transcendental Math functions whose results may differ across engines.
     files: ['src/shared/**/*.ts'],

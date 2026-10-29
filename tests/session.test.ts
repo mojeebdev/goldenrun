@@ -79,3 +79,46 @@ describe('practice session', () => {
     expect([1, 2, 3, 5, 9].map(streakBonus)).toEqual([0, 25, 50, 100, 100]);
   });
 });
+
+describe('course mode (Golden Cup)', () => {
+  const course = ['cup.center-18.professional', 'cup.left-20.professional', 'cup.long-28.legendary'];
+
+  it('walks the course in order, records commands and completes once', () => {
+    const s = new PracticeSession('rookie', course);
+    for (let i = 0; i < course.length; i++) {
+      expect(s.scenarioId).toBe(course[i]);
+      const shot = s.shoot(makeCommand(s.scenarioId, WIDE_FIELDS))!;
+      s.resolve(shot.shotId);
+      s.next(); // a miss still advances in a course
+    }
+    const snap = s.getSnapshot();
+    expect(snap.phase).toBe('complete');
+    expect(snap.commands.map((c) => c.scenarioId)).toEqual(course);
+    expect(s.shoot(makeCommand(course[2]!, WIDE_FIELDS))).toBeNull();
+  });
+
+  it('scores skill points only (no practice streak bonus) and refuses spot/level changes', () => {
+    const s = new PracticeSession('rookie', course);
+    for (let i = 0; i < 2; i++) {
+      const shot = s.shoot(makeCommand(s.scenarioId, GOAL_FIELDS))!;
+      s.resolve(shot.shotId);
+      s.next();
+    }
+    const snap = s.getSnapshot();
+    expect(snap.stats.score).toBe(snap.results.reduce((a, r) => a + r.skillPoints, 0));
+    s.selectSpot(0);
+    s.setLevel('legendary');
+    expect(s.getSnapshot().spotIndex).toBe(2);
+  });
+
+  it('restores progress from saved commands deterministically', () => {
+    const a = new PracticeSession('rookie', course);
+    const cmds = course.slice(0, 2).map((id) => makeCommand(id, GOAL_FIELDS));
+    a.restore(cmds);
+    expect(a.getSnapshot().spotIndex).toBe(2);
+    expect(a.getSnapshot().commands).toEqual(cmds);
+    const b = new PracticeSession('rookie', course);
+    b.restore(cmds);
+    expect(b.getSnapshot().stats).toEqual(a.getSnapshot().stats);
+  });
+});
