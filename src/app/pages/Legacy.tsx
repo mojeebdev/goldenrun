@@ -130,6 +130,7 @@ export function Legacy() {
               }} text={message} />
               <a className={goldButton} href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(message + ' ' + url)}`} target="_blank" rel="noopener noreferrer">Challenge X</a>
               <button type="button" className={outlineButton} onClick={() => {
+                if (!navigator.clipboard?.writeText) { setCopyStatus('manual'); return; }
                 void navigator.clipboard.writeText(url).then(() => setCopyStatus('copied'), () => setCopyStatus('manual'));
               }}>{copyStatus === 'copied' ? 'Challenge link copied ✓' : 'Copy challenge link'}</button>
               <button type="button" onClick={start} className={outlineButton}>Try again</button>
