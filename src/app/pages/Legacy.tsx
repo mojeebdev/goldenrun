@@ -17,6 +17,7 @@ export function Legacy() {
   const challenge = readTributeTarget(new URLSearchParams(search));
   const [playing, setPlaying] = useState(false);
   const [result, setResult] = useState<RunTotals | null>(null);
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'manual'>('idle');
 
   useEffect(() => {
     document.title = 'The No. 7 Tribute — Seven Shots · The Golden Run';
@@ -24,6 +25,7 @@ export function Legacy() {
 
   const start = () => {
     setResult(null);
+    setCopyStatus('idle');
     setPlaying(true);
   };
 
@@ -127,8 +129,17 @@ export function Legacy() {
                 url,
               }} text={message} />
               <a className={goldButton} href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(message + ' ' + url)}`} target="_blank" rel="noopener noreferrer">Challenge X</a>
+              <button type="button" className={outlineButton} onClick={() => {
+                void navigator.clipboard.writeText(url).then(() => setCopyStatus('copied'), () => setCopyStatus('manual'));
+              }}>{copyStatus === 'copied' ? 'Challenge link copied ✓' : 'Copy challenge link'}</button>
               <button type="button" onClick={start} className={outlineButton}>Try again</button>
             </div>
+            {copyStatus === 'manual' && (
+              <label className="mt-4 block max-w-xl text-sm text-chalk/75">
+                Select and copy your challenge link:
+                <input type="text" readOnly value={url} onFocus={(event) => event.currentTarget.select()} className="mt-2 w-full rounded-lg border border-white/20 bg-midnight p-3 text-xs text-gold" />
+              </label>
+            )}
             <p className="mt-4 text-xs text-chalk/55">Tribute scores are local and unranked, not validated or saved by the server. The Golden Cup offers server-verified competition.</p>
             <Link className="mt-5 inline-block text-sm font-semibold text-gold underline underline-offset-4" to="/cup">Enter the verified Golden Cup →</Link>
           </section>
