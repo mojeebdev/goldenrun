@@ -70,6 +70,10 @@ export function Home() {
             2008 <span className="text-gold">→</span> 1,000
           </p>
           <p className="mt-1 max-w-md text-[15px] text-chalk/80 sm:text-base">The road to greatness starts with one goal.</p>
+          <Link to="/legacy" className="mt-5 flex max-w-[360px] flex-col items-center gap-1 rounded-2xl border border-gold/50 bg-midnight/75 px-5 py-3 text-center shadow-[0_0_35px_rgba(232,184,74,0.15)] backdrop-blur transition hover:border-gold hover:bg-midnight/90">
+            <span className="label text-gold">New · A tribute to Portugal’s No. 7</span>
+            <span className="display text-2xl font-extrabold uppercase italic text-chalk">7 shots. One legacy. ↗</span>
+          </Link>
 
           <div className="mt-auto mb-[6vh] flex w-full max-w-sm flex-col items-stretch gap-3 sm:mb-[10vh] [@media(max-height:520px)]:mt-4 [@media(max-height:520px)]:max-w-xl [@media(max-height:520px)]:flex-row [@media(max-height:520px)]:flex-wrap [@media(max-height:520px)]:justify-center [@media(max-height:520px)]:[&>a]:flex-1">
             {player ? (
@@ -85,14 +89,14 @@ export function Home() {
               </>
             ) : (
               <>
-                <Link to="/play" onMouseEnter={() => void preloadGame()} onFocus={() => void preloadGame()} className={primary}>
-                  Play now
+                <Link to="/legacy" onMouseEnter={() => void preloadGame()} onFocus={() => void preloadGame()} className={primary}>
+                  Play the tribute
                   <span aria-hidden="true" className="transition group-hover:translate-x-1">▶</span>
                 </Link>
-                <Link to="/join" className={secondary}>
-                  Create free player
+                <Link to="/play" className={secondary}>
+                  Free practice
                 </Link>
-                <p className="label text-chalk/70 [@media(max-height:520px)]:basis-full">Practice needs no sign-up · a player keeps your goals</p>
+                <p className="text-sm text-chalk/75 [@media(max-height:520px)]:basis-full">No sign-up to play · <Link to="/join" className="text-gold underline underline-offset-4">Create a player</Link> to keep verified goals</p>
               </>
             )}
           </div>

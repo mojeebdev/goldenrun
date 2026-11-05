@@ -15,12 +15,14 @@ import { Road } from './pages/Road';
 import { Challenge } from './pages/Challenge';
 import { Legal } from './pages/Legal';
 import { About } from './pages/About';
+import { Legacy } from './pages/Legacy';
 
 export function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/play" element={<Play />} />
+      <Route path="/legacy" element={<Legacy />} />
       <Route path="/modes" element={<Modes />} />
       <Route path="/2008" element={<Chapter2008 />} />
       <Route path="/road-to-1000" element={<Road />} />

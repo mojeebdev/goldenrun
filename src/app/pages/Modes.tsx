@@ -90,6 +90,13 @@ export function Modes() {
 
       <ul className="mt-6 grid gap-3 sm:grid-cols-2">
         <li>
+          <Link to="/legacy" className="block h-full rounded-2xl border border-gold/45 bg-gradient-to-br from-[#3e3019] to-midnight p-5 transition hover:border-gold">
+            <p className="label text-gold">New · No account · 7 shots</p>
+            <p className="display mt-1 text-3xl font-extrabold uppercase italic">The No. 7 Tribute</p>
+            <p className="mt-1 text-sm text-chalk/75">A short tribute to Ronaldo’s Portugal chapter. Play seven identical shots, then challenge another fan to beat your practice score.</p>
+          </Link>
+        </li>
+        <li>
           <Link to="/play" className="block h-full rounded-2xl border border-white/10 bg-gradient-to-br from-pitch-dark/60 to-midnight p-5 hover:border-gold">
             <p className="label text-gold">Open to everyone · unranked</p>
             <p className="display mt-1 text-3xl font-extrabold uppercase italic">Practice</p>

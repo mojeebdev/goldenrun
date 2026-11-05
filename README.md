@@ -43,6 +43,10 @@ Put your finger (or mouse) on the ball, drag toward the goal and let go.
 
 The game teaches all three in a few seconds the first time you play. On a keyboard: ← → aim · ↑ ↓ height · W/S power · Q/E curl · Enter to shoot.
 
+## The No. 7 Tribute (November 2026)
+
+[Ronaldo's Portugal farewell](https://goldenrun.fun/legacy) inspired a seven-shot fan tribute. It is free, needs no account, uses the same deterministic course for every fan, and lets players share a claimed score to challenge friends. Tribute scores stay on the device and are **not server-verified**; the Golden Cup and career leaderboards remain verified and separate. Ronaldo is retiring from international football, not club football. No endorsement or affiliation is implied.
+
 ## Ways to play
 
 | | |
