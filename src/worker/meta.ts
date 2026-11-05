@@ -30,6 +30,11 @@ const PAGES: Record<string, Meta> = {
     canonical: `${SITE_INFO.url}/`,
     structured: 'home',
   },
+  '/legacy': {
+    title: 'The No. 7 Tribute — Seven Shots · The Golden Run',
+    description: '23 years. 146 international goals. One iconic No. 7. Play the same seven football shots, share your result and challenge a friend. Free, no signup. Independent fan tribute.',
+    canonical: `${SITE_INFO.url}/legacy`,
+  },
   '/about': {
     title: 'About The Golden Run — the story, the creator and the studio',
     description: ABOUT_DESCRIPTION,
