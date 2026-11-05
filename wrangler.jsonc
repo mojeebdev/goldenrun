@@ -11,7 +11,7 @@
     // share previews for /u/* and /c/*, canonical URL + JSON-LD for / and /about.
     "binding": "ASSETS",
     "not_found_handling": "single-page-application",
-    "run_worker_first": ["/api/*", "/u/*", "/c/*", "/", "/about"]
+    "run_worker_first": ["/api/*", "/u/*", "/c/*", "/", "/about", "/legacy"]
   },
   "routes": [{ "pattern": "goldenrun.fun", "custom_domain": true }],
   "d1_databases": [
