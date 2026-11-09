@@ -51,3 +51,30 @@ describe('GET /api/v1/birthday/:mmdd', () => {
     expect(row).toEqual({ n: 985, days: 288 });
   });
 });
+
+describe('without migration 0003 (self-healing seed)', () => {
+  let bare: Env;
+  let disposeBare: () => Promise<void>;
+  beforeAll(async () => {
+    resetBirthdayCache();
+    ({ env: bare, dispose: disposeBare } = await startHarness({ migrations: ['0001_initial.sql', '0002_progression.sql'] }));
+  });
+  afterAll(async () => disposeBare());
+
+  it('creates and seeds cr7_goals on the first request', async () => {
+    const res = await handleApi(new Request('http://localhost/api/v1/birthday/05-02'), bare, Date.now());
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as BirthdayResponse;
+    expect(body.total).toBe(12);
+    expect(body.career.total).toBe(985);
+    const row = await bare.DB.prepare('SELECT COUNT(*) AS n FROM cr7_goals').first<{ n: number }>();
+    expect(row?.n).toBe(985);
+  });
+
+  it('lets migration 0003 apply cleanly afterwards', async () => {
+    const { migrationStatements } = await import('./harness');
+    await bare.DB.batch(migrationStatements('0003_birthday_goals.sql').map((q) => bare.DB.prepare(q)));
+    const row = await bare.DB.prepare('SELECT COUNT(*) AS n FROM cr7_goals').first<{ n: number }>();
+    expect(row?.n).toBe(985);
+  });
+});

@@ -84,7 +84,7 @@ No secrets are needed. Rate limiters (`ratelimits` in `wrangler.jsonc`) and the 
 
 ## Birthday page: migration 0003, then deploy (birthday.goldenrun.fun)
 
-"Has Ronaldo scored on your birthday?" uses the same Worker and the same D1. Migration `0003_birthday_goals.sql` creates `cr7_goals` and loads all 985 official goals up to 29 Oct 2026. It only adds a table, so it's safe to apply before the code ships.
+"Has Ronaldo scored on your birthday?" uses the same Worker and the same D1. **No manual step is required:** if `cr7_goals` is missing or short, the Worker creates and seeds it from the bundled `data/birthday/goals.json` on the first birthday request (idempotent `INSERT OR IGNORE`). Applying the migration is still the tidy path, and is safe before or after a self-seed. Migration `0003_birthday_goals.sql` creates `cr7_goals` and loads all 985 official goals up to 29 Oct 2026. It only adds a table, so it's safe to apply before the code ships.
 
 1. Apply: `npx wrangler d1 migrations apply goldenrun-db --remote`
 2. Check: `npx wrangler d1 execute goldenrun-db --remote --command "SELECT COUNT(*) goals, COUNT(DISTINCT month_day) days FROM cr7_goals"`. Expect `985` and `288`.

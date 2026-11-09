@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS cr7_goals (
 );
 CREATE INDEX IF NOT EXISTS idx_cr7_goals_month_day ON cr7_goals (month_day, date);
 DELETE FROM cr7_goals;
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (1,'2002-10-07','10-07','Sporting CP','Moreirense','H','Estádio José Alvalade','34',3,0,'Liga Portugal',0),
 (2,'2002-10-07','10-07','Sporting CP','Moreirense','H','Estádio José Alvalade','90+5',3,0,'Liga Portugal',0),
 (3,'2002-10-26','10-26','Sporting CP','Boavista','A','Estádio do Bessa','88',2,1,'Liga Portugal',0),
@@ -67,7 +67,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (48,'2006-10-07','10-07','Portugal','Azerbaijan','H','Estádio do Bessa',NULL,3,0,'Euro Qualifier',0),
 (49,'2006-10-28','10-28','Manchester United','Bolton Wanderers','A','Reebok Stadium','82',4,0,'Premier League',0),
 (50,'2006-11-04','11-04','Manchester United','Portsmouth','H','Old Trafford','10',3,0,'Premier League',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (51,'2006-11-15','11-15','Portugal','Kazakhstan','H','Estádio Cidade de Coimbra',NULL,3,0,'Euro Qualifier',0),
 (52,'2006-11-29','11-29','Manchester United','Everton','H','Old Trafford','39',3,0,'Premier League',0),
 (53,'2006-12-09','12-09','Manchester United','Manchester City','H','Old Trafford','84',3,1,'Premier League',0),
@@ -118,7 +118,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (98,'2008-01-19','01-19','Manchester United','Reading','A','Madejski Stadium','90+2',2,0,'Premier League',0),
 (99,'2008-01-27','01-27','Manchester United','Tottenham Hotspur','H','Old Trafford','69',3,1,'FA Cup · Fourth round',1),
 (100,'2008-01-27','01-27','Manchester United','Tottenham Hotspur','H','Old Trafford','88',3,1,'FA Cup · Fourth round',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (101,'2008-01-30','01-30','Manchester United','Portsmouth','H','Old Trafford','10',2,0,'Premier League',0),
 (102,'2008-01-30','01-30','Manchester United','Portsmouth','H','Old Trafford','12',2,0,'Premier League',0),
 (103,'2008-02-23','02-23','Manchester United','Newcastle United','A','St James'' Park','45',5,1,'Premier League',0),
@@ -169,7 +169,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (148,'2009-09-15','09-15','Real Madrid','FC Zürich','A','Letzigrund','27',5,2,'Champions League · Group',0),
 (149,'2009-09-15','09-15','Real Madrid','FC Zürich','A','Letzigrund','89',5,2,'Champions League · Group',0),
 (150,'2009-09-20','09-20','Real Madrid','Xerez','H','Santiago Bernabéu','1',5,0,'La Liga',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (151,'2009-09-20','09-20','Real Madrid','Xerez','H','Santiago Bernabéu','75',5,0,'La Liga',0),
 (152,'2009-09-23','09-23','Real Madrid','Villarreal','A','El Madrigal','2',2,0,'La Liga',0),
 (153,'2009-09-30','09-30','Real Madrid','Marseille','H','Santiago Bernabéu','58',3,0,'Champions League · Group',0),
@@ -220,7 +220,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (198,'2010-11-23','11-23','Real Madrid','Ajax','A','Amsterdam Arena','70',4,0,'Champions League · Group',0),
 (199,'2010-11-23','11-23','Real Madrid','Ajax','A','Amsterdam Arena','81',4,0,'Champions League · Group',1),
 (200,'2010-12-04','12-04','Real Madrid','Valencia','H','Santiago Bernabéu','72',2,0,'La Liga',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (201,'2010-12-04','12-04','Real Madrid','Valencia','H','Santiago Bernabéu','86',2,0,'La Liga',0),
 (202,'2010-12-08','12-08','Real Madrid','AJ Auxerre','H','Santiago Bernabéu','49',4,0,'Champions League · Group',0),
 (203,'2010-12-12','12-12','Real Madrid','Real Zaragoza','A','La Romareda','43',3,1,'La Liga',0),
@@ -271,7 +271,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (248,'2011-10-11','10-11','Portugal','Denmark','A','Parken Stadium',NULL,1,2,'Euro Qualifier',0),
 (249,'2011-10-22','10-22','Real Madrid','Málaga','A','La Rosaleda','24',4,0,'La Liga',0),
 (250,'2011-10-22','10-22','Real Madrid','Málaga','A','La Rosaleda','28',4,0,'La Liga',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (251,'2011-10-22','10-22','Real Madrid','Málaga','A','La Rosaleda','38',4,0,'La Liga',0),
 (252,'2011-11-02','11-02','Real Madrid','Lyon','A','Stade de Gerland','25',2,0,'Champions League · Group',0),
 (253,'2011-11-02','11-02','Real Madrid','Lyon','A','Stade de Gerland','69',2,0,'Champions League · Group',1),
@@ -322,7 +322,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (298,'2012-04-29','04-29','Real Madrid','Sevilla','H','Santiago Bernabéu','19',3,0,'La Liga',0),
 (299,'2012-05-02','05-02','Real Madrid','Athletic Bilbao','A','San Mamés (old)','49',3,0,'La Liga',0),
 (300,'2012-05-05','05-05','Real Madrid','Granada','A','Nuevo Los Cármenes','81',2,1,'La Liga',1);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (301,'2012-05-13','05-13','Real Madrid','Mallorca','H','Santiago Bernabéu','18',4,1,'La Liga',0),
 (302,'2012-06-17','06-17','Portugal','Netherlands','N','Metalist Stadium',NULL,2,1,'UEFA Euro 2012',0),
 (303,'2012-06-17','06-17','Portugal','Netherlands','N','Metalist Stadium',NULL,2,1,'UEFA Euro 2012',0),
@@ -373,7 +373,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (348,'2013-03-10','03-10','Real Madrid','Celta Vigo','A','Balaídos','61',2,1,'La Liga',0),
 (349,'2013-03-10','03-10','Real Madrid','Celta Vigo','A','Balaídos','71',2,1,'La Liga',1),
 (350,'2013-03-16','03-16','Real Madrid','Mallorca','H','Santiago Bernabéu','52',5,2,'La Liga',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (351,'2013-03-30','03-30','Real Madrid','Real Zaragoza','A','La Romareda','38',1,1,'La Liga',0),
 (352,'2013-04-03','04-03','Real Madrid','Galatasaray','H','Santiago Bernabéu','9',3,0,'Champions League · Quarter-final',0),
 (353,'2013-04-06','04-06','Real Madrid','Levante','H','Santiago Bernabéu','84',5,1,'La Liga',0),
@@ -424,7 +424,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (398,'2013-12-22','12-22','Real Madrid','Valencia','A','Mestalla','40',3,2,'La Liga',0),
 (399,'2014-01-06','01-06','Real Madrid','Celta Vigo','H','Santiago Bernabéu','82',3,0,'La Liga',0),
 (400,'2014-01-06','01-06','Real Madrid','Celta Vigo','H','Santiago Bernabéu','90',3,0,'La Liga',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (401,'2014-01-15','01-15','Real Madrid','Osasuna','A','El Sadar','22',2,0,'Copa del Rey · Round of 16',0),
 (402,'2014-01-18','01-18','Real Madrid','Real Betis','A','Benito Villamarín','10',5,0,'La Liga',0),
 (403,'2014-01-25','01-25','Real Madrid','Granada','H','Santiago Bernabéu','57',2,0,'La Liga',0),
@@ -475,7 +475,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (448,'2014-11-01','11-01','Real Madrid','Granada','A','Nuevo Los Cármenes','2',4,0,'La Liga',0),
 (449,'2014-11-08','11-08','Real Madrid','Rayo Vallecano','H','Santiago Bernabéu','83',5,1,'La Liga',0),
 (450,'2014-11-14','11-14','Portugal','Armenia','H','Estádio Algarve',NULL,1,0,'Euro Qualifier',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (451,'2014-11-22','11-22','Real Madrid','Eibar','A','Ipurúa','43',4,0,'La Liga',0),
 (452,'2014-11-22','11-22','Real Madrid','Eibar','A','Ipurúa','83',4,0,'La Liga',1),
 (453,'2014-11-26','11-26','Real Madrid','Basel','A','St. Jakob-Park','35',1,0,'Champions League · Group',0),
@@ -526,7 +526,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (498,'2015-09-15','09-15','Real Madrid','Shakhtar Donetsk','H','Santiago Bernabéu','64',4,0,'Champions League · Group',1),
 (499,'2015-09-15','09-15','Real Madrid','Shakhtar Donetsk','H','Santiago Bernabéu','82',4,0,'Champions League · Group',0),
 (500,'2015-09-30','09-30','Real Madrid','Malmö','A','Swedbank Stadion','29',2,0,'Champions League · Group',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (501,'2015-09-30','09-30','Real Madrid','Malmö','A','Swedbank Stadion','90',2,0,'Champions League · Group',0),
 (502,'2015-10-17','10-17','Real Madrid','Levante','H','Santiago Bernabéu','30',3,0,'La Liga',0),
 (503,'2015-10-24','10-24','Real Madrid','Celta Vigo','A','Balaídos','8',3,1,'La Liga',0),
@@ -577,7 +577,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (548,'2016-07-06','07-06','Portugal','Wales','N','Parc Olympique Lyonnais',NULL,2,0,'UEFA Euro 2016',0),
 (549,'2016-09-10','09-10','Real Madrid','Osasuna','H','Santiago Bernabéu','6',5,2,'La Liga',0),
 (550,'2016-09-14','09-14','Real Madrid','Sporting CP','H','Santiago Bernabéu','89',2,1,'Champions League · Group',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (551,'2016-09-27','09-27','Real Madrid','Borussia Dortmund','A','Signal Iduna Park','17',2,2,'Champions League · Group',0),
 (552,'2016-10-07','10-07','Portugal','Andorra','H','Estádio Municipal de Aveiro',NULL,6,0,'World Cup Qualifier',0),
 (553,'2016-10-07','10-07','Portugal','Andorra','H','Estádio Municipal de Aveiro',NULL,6,0,'World Cup Qualifier',0),
@@ -628,7 +628,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (598,'2017-05-21','05-21','Real Madrid','Málaga','A','La Rosaleda','2',2,0,'La Liga',0),
 (599,'2017-06-03','06-03','Real Madrid','Juventus','N','Principality Stadium, Cardiff','20',4,1,'Champions League · Final',0),
 (600,'2017-06-03','06-03','Real Madrid','Juventus','N','Principality Stadium, Cardiff','64',4,1,'Champions League · Final',0);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (601,'2017-06-09','06-09','Portugal','Latvia','A','Skonto Stadium',NULL,3,0,'World Cup Qualifier',0),
 (602,'2017-06-09','06-09','Portugal','Latvia','A','Skonto Stadium',NULL,3,0,'World Cup Qualifier',0),
 (603,'2017-06-21','06-21','Portugal','Russia','A','Spartak Stadium',NULL,1,0,'2017 Confederations Cup',0),
@@ -679,7 +679,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (648,'2018-04-03','04-03','Real Madrid','Juventus','A','Allianz Stadium (Juventus Stadium)','3',3,0,'Champions League · Quarter-final',NULL),
 (649,'2018-04-03','04-03','Real Madrid','Juventus','A','Allianz Stadium (Juventus Stadium)','64',3,0,'Champions League · Quarter-final',NULL),
 (650,'2018-04-08','04-08','Real Madrid','Atlético Madrid','H','Santiago Bernabéu','53',1,1,'La Liga',NULL);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (651,'2018-04-11','04-11','Real Madrid','Juventus','H','Santiago Bernabéu','90+7',1,3,'Champions League · Quarter-final',NULL),
 (652,'2018-04-18','04-18','Real Madrid','Athletic Bilbao','H','Santiago Bernabéu','87',1,1,'La Liga',NULL),
 (653,'2018-05-06','05-06','Real Madrid','Barcelona','A','Camp Nou','14',2,2,'La Liga',NULL),
@@ -730,7 +730,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (698,'2019-10-01','10-01','Juventus','Bayer Leverkusen','H','Allianz Stadium (Juventus Stadium)','89',3,0,'Champions League · Group',NULL),
 (699,'2019-10-11','10-11','Portugal','Luxembourg','H','Estádio José Alvalade','65',3,0,'Euro Qualifier',NULL),
 (700,'2019-10-14','10-14','Portugal','Ukraine','A','Olimpiyskiy National Sports Complex','72',1,2,'Euro Qualifier',NULL);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (701,'2019-10-19','10-19','Juventus','Bologna','H','Allianz Stadium (Juventus Stadium)','19',2,1,'Serie A',NULL),
 (702,'2019-10-30','10-30','Juventus','Genoa','H','Allianz Stadium (Juventus Stadium)','90+6',2,1,'Serie A',NULL),
 (703,'2019-11-14','11-14','Portugal','Lithuania','H','Estádio Algarve','7',6,0,'Euro Qualifier',NULL),
@@ -781,7 +781,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (748,'2020-11-21','11-21','Juventus','Cagliari','H','Allianz Stadium (Juventus Stadium)','42',2,0,'Serie A',NULL),
 (749,'2020-11-24','11-24','Juventus','Ferencváros','H','Allianz Stadium (Juventus Stadium)','35',2,1,'Champions League · Group',NULL),
 (750,'2020-12-02','12-02','Juventus','Dynamo Kyiv','H','Allianz Stadium (Juventus Stadium)','57',3,0,'Champions League · Group',NULL);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (751,'2020-12-08','12-08','Juventus','Barcelona','A','Camp Nou','13',3,0,'Champions League · Group',NULL),
 (752,'2020-12-08','12-08','Juventus','Barcelona','A','Camp Nou','52',3,0,'Champions League · Group',NULL),
 (753,'2020-12-13','12-13','Juventus','Genoa','A','Stadio Luigi Ferraris','78',3,1,'Serie A',NULL),
@@ -832,7 +832,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (798,'2021-11-02','11-02','Manchester United','Atalanta','A','Gewiss Stadium','90+1',2,2,'Champions League · Group',NULL),
 (799,'2021-11-23','11-23','Manchester United','Villarreal','A','Estadio de la Cerámica','78',2,0,'Champions League · Group',NULL),
 (800,'2021-12-02','12-02','Manchester United','Arsenal','H','Old Trafford','52',3,2,'Premier League',NULL);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (801,'2021-12-02','12-02','Manchester United','Arsenal','H','Old Trafford','70',3,2,'Premier League',NULL),
 (802,'2021-12-11','12-11','Manchester United','Norwich City','A','Carrow Road','75',1,0,'Premier League',NULL),
 (803,'2021-12-30','12-30','Manchester United','Burnley','H','Old Trafford','35',3,1,'Premier League',NULL),
@@ -883,7 +883,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (848,'2023-08-29','08-29','Al Nassr','Al-Shabab','H','Al-Awwal Park','13',4,0,'Saudi Pro League',NULL),
 (849,'2023-08-29','08-29','Al Nassr','Al-Shabab','H','Al-Awwal Park','38',4,0,'Saudi Pro League',NULL),
 (850,'2023-09-02','09-02','Al Nassr','Al-Hazem','A','King Abdullah Sport City Stadium, Buraidah','68',5,1,'Saudi Pro League',NULL);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (851,'2023-09-16','09-16','Al Nassr','Al-Raed','A','King Abdullah Sport City Stadium, Buraidah','78',3,0,'Saudi Pro League',NULL),
 (852,'2023-09-22','09-22','Al Nassr','Al-Ahli','H','Al-Awwal Park','4',4,3,'Saudi Pro League',NULL),
 (853,'2023-09-22','09-22','Al Nassr','Al-Ahli','H','Al-Awwal Park','52',4,3,'Saudi Pro League',NULL),
@@ -934,7 +934,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (898,'2024-08-22','08-22','Al Nassr','Al-Raed','H','Al-Awwal Park','34',1,1,'Saudi Pro League',NULL),
 (899,'2024-08-27','08-27','Al Nassr','Al-Fayha','A','King Abdullah Sport City Stadium, Buraidah','45+10',4,1,'Saudi Pro League',NULL),
 (900,'2024-09-05','09-05','Portugal','Croatia','H','Estádio da Luz','34',2,1,'Nations League · Group',NULL);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (901,'2024-09-08','09-08','Portugal','Scotland','H','Estádio da Luz','88',2,1,'Nations League · Group',NULL),
 (902,'2024-09-20','09-20','Al Nassr','Al-Ettifaq','A','Al-Ettifaq Club Stadium, Dammam','33',3,0,'Saudi Pro League',NULL),
 (903,'2024-09-27','09-27','Al Nassr','Al-Wehda','H','Al-Awwal Park','56',2,0,'Saudi Pro League',NULL),
@@ -985,7 +985,7 @@ INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team
 (948,'2025-10-14','10-14','Portugal','Hungary','H','Estádio José Alvalade','45+3',2,2,'World Cup Qualifier',NULL),
 (949,'2025-10-18','10-18','Al Nassr','Al-Fateh','H','Al-Awwal Park','60',5,1,'Saudi Pro League',NULL),
 (950,'2025-10-25','10-25','Al Nassr','Al-Hazem','A','King Abdullah Sport City Stadium, Buraidah','88',2,0,'Saudi Pro League',NULL);
-INSERT INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
+INSERT OR IGNORE INTO cr7_goals (no,date,month_day,team,opponent,venue,stadium,minute,team_score,opp_score,competition,penalty) VALUES
 (951,'2025-11-01','11-01','Al Nassr','Al-Fayha','H','Al-Awwal Park','37',2,1,'Saudi Pro League',NULL),
 (952,'2025-11-01','11-01','Al Nassr','Al-Fayha','H','Al-Awwal Park','90+14',2,1,'Saudi Pro League',NULL),
 (953,'2025-11-08','11-08','Al Nassr','NEOM','A','King Khalid Sport City Stadium, Tabuk','65',3,1,'Saudi Pro League',NULL),
