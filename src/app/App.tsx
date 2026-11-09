@@ -16,6 +16,7 @@ import { Challenge } from './pages/Challenge';
 import { Legal } from './pages/Legal';
 import { About } from './pages/About';
 import { Legacy } from './pages/Legacy';
+import { Birthday } from './pages/Birthday';
 
 export function App() {
   return (
@@ -23,6 +24,9 @@ export function App() {
       <Route path="/" element={<Home />} />
       <Route path="/play" element={<Play />} />
       <Route path="/legacy" element={<Legacy />} />
+      {/* Canonical home is birthday.goldenrun.fun (see BirthdayApp); this path serves dev and previews. */}
+      <Route path="/birthday" element={<Birthday />} />
+      <Route path="/birthday/:slug" element={<Birthday />} />
       <Route path="/modes" element={<Modes />} />
       <Route path="/2008" element={<Chapter2008 />} />
       <Route path="/road-to-1000" element={<Road />} />
@@ -38,6 +42,16 @@ export function App() {
       <Route path="/account" element={<Account />} />
       <Route path="/rules" element={<Rules />} />
       <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
+
+/** birthday.goldenrun.fun: just the birthday page, without the game's account bootstrap. */
+export function BirthdayApp() {
+  return (
+    <Routes>
+      <Route path="/" element={<Birthday />} />
+      <Route path="/:slug" element={<Birthday />} />
     </Routes>
   );
 }

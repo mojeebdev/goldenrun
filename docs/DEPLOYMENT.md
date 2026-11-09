@@ -82,6 +82,27 @@ No secrets are needed. Rate limiters (`ratelimits` in `wrangler.jsonc`) and the 
 
 4. Merge the pull request (Workers Builds deploys `main`) or deploy manually: `npm ci && npm run build && npx wrangler deploy`.
 
+## Birthday page: migration 0003, then deploy (birthday.goldenrun.fun)
+
+"Has Ronaldo scored on your birthday?" uses the same Worker and the same D1. Migration `0003_birthday_goals.sql` creates `cr7_goals` and loads all 985 official goals up to 29 Oct 2026. It only adds a table, so it's safe to apply before the code ships.
+
+1. Apply: `npx wrangler d1 migrations apply goldenrun-db --remote`
+2. Check: `npx wrangler d1 execute goldenrun-db --remote --command "SELECT COUNT(*) goals, COUNT(DISTINCT month_day) days FROM cr7_goals"`. Expect `985` and `288`.
+3. Deploy `main` (Workers Builds) or manually: `npm ci && npm run build && npx wrangler deploy`. The build pre-renders 367 share cards into `public/birthday/og/`, which takes about a minute.
+4. `wrangler deploy` attaches `birthday.goldenrun.fun` as a second Custom Domain from `wrangler.jsonc`, and Cloudflare creates the DNS record and certificate. Check Settings → Domains & Routes lists both domains.
+5. Smoke test:
+   - https://birthday.goldenrun.fun/aug-12 shows 4 goals.
+   - https://goldenrun.fun/birthday/aug-12 returns a 301 to the subdomain.
+   - Paste https://birthday.goldenrun.fun/may-2 into the X composer (or https://cards-dev.twitter.com/validator) and check that the card image appears.
+
+**When he scores again:**
+1. Add rows to `data/birthday/source-recent.csv`, using the next career number, minute, score, H/A/N, date and competition.
+2. Add any away or neutral venue to `NEUTRAL_VENUES` in `scripts/birthday/stadiums.mjs`, and bump `EXPECTED_TOTAL` in `build-data.mjs`.
+3. Run `npm run birthday:data`, commit and deploy.
+4. Load the new rows with `npm run birthday:seed:remote`, which replaces the table contents in one file.
+
+Applied migrations never change.
+
 ## Cloudflare dashboard checklist (no command line)
 
 Everything production needs is already set up. Use this list to check it, or to rebuild it from the dashboard. Don't buy the domain again or change nameservers: goldenrun.fun is already on Cloudflare.

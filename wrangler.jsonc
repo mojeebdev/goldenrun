@@ -11,9 +11,18 @@
     // share previews for /u/* and /c/*, canonical URL + JSON-LD for / and /about.
     "binding": "ASSETS",
     "not_found_handling": "single-page-application",
-    "run_worker_first": ["/api/*", "/u/*", "/c/*", "/", "/about", "/legacy"]
+    // birthday.goldenrun.fun shares this Worker: its date pages (/aug-2) and /birthday* on the main
+    // domain need the Worker for share previews; month prefixes keep every other path asset-first.
+    "run_worker_first": [
+      "/api/*", "/u/*", "/c/*", "/", "/about", "/legacy", "/birthday", "/birthday/*",
+      "/jan-*", "/feb-*", "/mar-*", "/apr-*", "/may-*", "/jun-*", "/jul-*", "/aug-*", "/sep-*", "/oct-*", "/nov-*", "/dec-*"
+    ]
   },
-  "routes": [{ "pattern": "goldenrun.fun", "custom_domain": true }],
+  "routes": [
+    { "pattern": "goldenrun.fun", "custom_domain": true },
+    // "Has Ronaldo scored on your birthday?" (src/worker/birthday.ts). Same Worker, same D1.
+    { "pattern": "birthday.goldenrun.fun", "custom_domain": true }
+  ],
   "d1_databases": [
     {
       "binding": "DB",

@@ -3,14 +3,14 @@
   "private": true,
   "license": "Apache-2.0",
   "version": "0.1.0",
-  "description": "The Golden Run \u2014 an unofficial football arcade game. 2008 \u2192 1,000.",
+  "description": "The Golden Run — an unofficial football arcade game. 2008 → 1,000.",
   "type": "module",
   "engines": {
     "node": ">=20.19"
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run birthday:og && tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "lint": "eslint .",
@@ -21,7 +21,11 @@
     "balance": "tsx scripts/balance.ts",
     "loadcheck": "tsx scripts/loadcheck.ts",
     "deploy:dry-run": "npm run build && wrangler deploy --dry-run",
-    "db:migrate:local": "wrangler d1 migrations apply goldenrun-db --local"
+    "db:migrate:local": "wrangler d1 migrations apply goldenrun-db --local",
+    "birthday:data": "node scripts/birthday/build-data.mjs",
+    "birthday:og": "node scripts/birthday/render-og.mjs",
+    "birthday:seed:local": "wrangler d1 execute goldenrun-db --local --file data/birthday/seed.sql",
+    "birthday:seed:remote": "wrangler d1 execute goldenrun-db --remote --file data/birthday/seed.sql"
   },
   "dependencies": {
     "@fontsource/azeret-mono": "^5.3.0",
@@ -47,6 +51,8 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.13.0",
+    "satori": "^0.63.2",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
     "typescript": "~5.9.0",
     "typescript-eslint": "^8.72.1",

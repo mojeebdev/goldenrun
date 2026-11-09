@@ -12,6 +12,9 @@ import { leaderboard } from './api/leaderboard';
 import { deleteMe, getMe, getProfile, updateMe } from './api/players';
 import { getRun, startRun, submitRun } from './api/runs';
 import { getChallenge, getProgress, reportPlayer } from './api/progress';
+import { getBirthday } from './api/birthday';
+import { birthdayPage, birthdaySegment, canonicalRedirect, isBirthdayPath } from './birthday';
+import { isBirthdayHost } from '../shared/birthday';
 import { hasPageMeta, withShareMeta } from './meta';
 import { settle } from './cron';
 import { ensureWeek } from './db/cup';
@@ -52,6 +55,7 @@ const routes: [method: string, pattern: RegExp, handler: Handler][] = [
   ['GET', /^\/api\/v1\/challenges\/([0-9a-f-]{36})$/, (_req, env, now, p) => getChallenge(env, now, p[0]!)],
   ['POST', /^\/api\/v1\/reports$/, reportPlayer],
   ['GET', /^\/api\/v1\/players\/([A-Za-z0-9_]{3,20})$/, (_req, env, _now, p) => getProfile(env, p[0]!)],
+  ['GET', /^\/api\/v1\/birthday\/(\d{2}-\d{2})$/, (req, env, now, p) => getBirthday(req, env, now, p[0]!)],
 ];
 
 export async function handleApi(request: Request, env: Env, now = Date.now()): Promise<Response> {
@@ -78,6 +82,18 @@ export default {
   async fetch(request, env): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname.startsWith('/api/')) return handleApi(request, env);
+    // birthday.goldenrun.fun: "/" and "/aug-2" are the birthday page; everything else is a static asset.
+    if (isBirthdayHost(url.hostname)) {
+      const seg = birthdaySegment(url.pathname, true);
+      if (seg !== null && !seg.includes('.') && !url.pathname.startsWith('/birthday/')) return birthdayPage(request, env, seg);
+      return env.ASSETS.fetch(request);
+    }
+    if (isBirthdayPath(url.pathname) && !url.pathname.startsWith('/birthday/og/')) {
+      // Production main domain sends visitors to the subdomain; local dev and previews serve it in place.
+      if (url.hostname === 'goldenrun.fun' || url.hostname === 'www.goldenrun.fun') return canonicalRedirect(url);
+      const seg = birthdaySegment(url.pathname, false);
+      if (seg !== null) return birthdayPage(request, env, seg);
+    }
     if (hasPageMeta(url.pathname)) return withShareMeta(request, env);
     return env.ASSETS.fetch(request);
   },

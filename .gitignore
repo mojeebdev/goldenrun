@@ -7,3 +7,5 @@ dist
 .DS_Store
 coverage
 worker-configuration.d.ts
+# Generated at build time by scripts/birthday/render-og.mjs
+public/birthday/og/

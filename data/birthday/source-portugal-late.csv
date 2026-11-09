@@ -1,0 +1,68 @@
+no,date,venue,opponent,score,result,competition
+80,23 March 2018,"Letzigrund, Zürich, Switzerland",Egypt,1–1,2–1,Friendly
+81,23 March 2018,"Letzigrund, Zürich, Switzerland",Egypt,2–1,2–1,Friendly
+82,15 June 2018,"Fisht Olympic Stadium, Sochi, Russia",Spain,1–0‡,3–3,2018 FIFA World Cup
+83,15 June 2018,"Fisht Olympic Stadium, Sochi, Russia",Spain,2–1,3–3,2018 FIFA World Cup
+84,15 June 2018,"Fisht Olympic Stadium, Sochi, Russia",Spain,3–3,3–3,2018 FIFA World Cup
+85,20 June 2018,"Luzhniki Stadium, Moscow, Russia",Morocco,1–0,1–0,2018 FIFA World Cup
+86,5 June 2019,"Estádio do Dragão, Porto, Portugal",Switzerland,1–0,3–1,2019 UEFA Nations League Finals
+87,5 June 2019,"Estádio do Dragão, Porto, Portugal",Switzerland,2–1,3–1,2019 UEFA Nations League Finals
+88,5 June 2019,"Estádio do Dragão, Porto, Portugal",Switzerland,3–1,3–1,2019 UEFA Nations League Finals
+89,7 September 2019,"Red Star Stadium, Belgrade, Serbia",Serbia,3–1,4–2,UEFA Euro 2020 qualifying
+90,10 September 2019,"LFF Stadium, Vilnius, Lithuania",Lithuania,1–0‡,5–1,UEFA Euro 2020 qualifying
+91,10 September 2019,"LFF Stadium, Vilnius, Lithuania",Lithuania,2–1,5–1,UEFA Euro 2020 qualifying
+92,10 September 2019,"LFF Stadium, Vilnius, Lithuania",Lithuania,3–1,5–1,UEFA Euro 2020 qualifying
+93,10 September 2019,"LFF Stadium, Vilnius, Lithuania",Lithuania,4–1,5–1,UEFA Euro 2020 qualifying
+94,11 October 2019,"Estádio José Alvalade, Lisbon, Portugal",Luxembourg,2–0,3–0,UEFA Euro 2020 qualifying
+95,14 October 2019,"Olimpiyskiy National Sports Complex, Kyiv, Ukraine",Ukraine,1–2‡,1–2,UEFA Euro 2020 qualifying
+96,14 November 2019,"Estádio Algarve, Faro, Portugal",Lithuania,1–0‡,6–0,UEFA Euro 2020 qualifying
+97,14 November 2019,"Estádio Algarve, Faro, Portugal",Lithuania,2–0,6–0,UEFA Euro 2020 qualifying
+98,14 November 2019,"Estádio Algarve, Faro, Portugal",Lithuania,6–0,6–0,UEFA Euro 2020 qualifying
+99,17 November 2019,"Stade Josy Barthel, Luxembourg City, Luxembourg",Luxembourg,2–0,2–0,UEFA Euro 2020 qualifying
+100,8 September 2020,"Friends Arena, Solna, Sweden",Sweden,1–0,2–0,2020–21 UEFA Nations League A
+101,8 September 2020,"Friends Arena, Solna, Sweden",Sweden,2–0,2–0,2020–21 UEFA Nations League A
+102,11 November 2020,"Estádio da Luz, Lisbon, Portugal",Andorra,6–0,7–0,Friendly
+103,30 March 2021,"Stade Josy Barthel, Luxembourg City, Luxembourg",Luxembourg,2–1,3–1,2022 FIFA World Cup qualification
+104,9 June 2021,"Estádio José Alvalade, Lisbon, Portugal",Israel,2–0,4–0,Friendly
+105,15 June 2021,"Puskás Aréna, Budapest, Hungary",Hungary,2–0‡,3–0,UEFA Euro 2020
+106,15 June 2021,"Puskás Aréna, Budapest, Hungary",Hungary,3–0,3–0,UEFA Euro 2020
+107,19 June 2021,"Allianz Arena, Munich, Germany",Germany,1–0,2–4,UEFA Euro 2020
+108,23 June 2021,"Puskás Aréna, Budapest, Hungary",France,1–0‡,2–2,UEFA Euro 2020
+109,23 June 2021,"Puskás Aréna, Budapest, Hungary",France,2–2‡,2–2,UEFA Euro 2020
+110,1 September 2021,"Estádio Algarve, Faro, Portugal",Republic of Ireland,1–1,2–1,2022 FIFA World Cup qualification
+111,1 September 2021,"Estádio Algarve, Faro, Portugal",Republic of Ireland,2–1,2–1,2022 FIFA World Cup qualification
+112,9 October 2021,"Estádio Algarve, Faro, Portugal",Qatar,1–0,3–0,Friendly
+113,12 October 2021,"Estádio Algarve, Faro, Portugal",Luxembourg,1–0‡,5–0,2022 FIFA World Cup qualification
+114,12 October 2021,"Estádio Algarve, Faro, Portugal",Luxembourg,2–0,5–0,2022 FIFA World Cup qualification
+115,12 October 2021,"Estádio Algarve, Faro, Portugal",Luxembourg,5–0,5–0,2022 FIFA World Cup qualification
+116,5 June 2022,"Estádio José Alvalade, Lisbon, Portugal",Switzerland,2–0‡,4–0,2022–23 UEFA Nations League A
+117,5 June 2022,"Estádio José Alvalade, Lisbon, Portugal",Switzerland,3–0,4–0,2022–23 UEFA Nations League A
+118,24 November 2022,"Stadium 974, Doha, Qatar",Ghana,1–0‡,3–2,2022 FIFA World Cup
+119,23 March 2023,"Estádio José Alvalade, Lisbon, Portugal",Liechtenstein,3–0‡,4–0,UEFA Euro 2024 qualifying
+120,23 March 2023,"Estádio José Alvalade, Lisbon, Portugal",Liechtenstein,4–0,4–0,UEFA Euro 2024 qualifying
+121,26 March 2023,"Stade de Luxembourg, Luxembourg City, Luxembourg",Luxembourg,1–0,6–0,UEFA Euro 2024 qualifying
+122,26 March 2023,"Stade de Luxembourg, Luxembourg City, Luxembourg",Luxembourg,4–0,6–0,UEFA Euro 2024 qualifying
+123,20 June 2023,"Laugardalsvöllur, Reykjavík, Iceland",Iceland,1–0,1–0,UEFA Euro 2024 qualifying
+124,13 October 2023,"Estádio do Dragão, Porto, Portugal",Slovakia,2–0‡,3–2,UEFA Euro 2024 qualifying
+125,13 October 2023,"Estádio do Dragão, Porto, Portugal",Slovakia,3–1,3–2,UEFA Euro 2024 qualifying
+126,16 October 2023,"Bilino Polje Stadium, Zenica, Bosnia and Herzegovina",Bosnia and Herzegovina,1–0‡,5–0,UEFA Euro 2024 qualifying
+127,16 October 2023,"Bilino Polje Stadium, Zenica, Bosnia and Herzegovina",Bosnia and Herzegovina,2–0,5–0,UEFA Euro 2024 qualifying
+128,16 November 2023,"Rheinpark Stadion, Vaduz, Liechtenstein",Liechtenstein,1–0,2–0,UEFA Euro 2024 qualifying
+129,11 June 2024,"Estádio Municipal de Aveiro, Aveiro, Portugal",Republic of Ireland,2–0,3–0,Friendly
+130,11 June 2024,"Estádio Municipal de Aveiro, Aveiro, Portugal",Republic of Ireland,3–0,3–0,Friendly
+131,5 September 2024,"Estádio da Luz, Lisbon, Portugal",Croatia,2–0,2–1,2024–25 UEFA Nations League A
+132,8 September 2024,"Estádio da Luz, Lisbon, Portugal",Scotland,2–1,2–1,2024–25 UEFA Nations League A
+133,12 October 2024,"Kazimierz Górski National Stadium, Warsaw, Poland",Poland,2–0,3–1,2024–25 UEFA Nations League A
+134,15 November 2024,"Estádio do Dragão, Porto, Portugal",Poland,2–0‡,5–1,2024–25 UEFA Nations League A
+135,15 November 2024,"Estádio do Dragão, Porto, Portugal",Poland,5–0,5–1,2024–25 UEFA Nations League A
+136,23 March 2025,"Estádio José Alvalade, Lisbon, Portugal",Denmark,2–1,5–2 (a.e.t.),2024–25 UEFA Nations League A
+137,4 June 2025,"Allianz Arena, Munich, Germany",Germany,2–1,2–1,2025 UEFA Nations League Finals
+138,8 June 2025,"Allianz Arena, Munich, Germany",Spain,2–2,2–2 (a.e.t.) (5–3 p),2025 UEFA Nations League Finals
+139,6 September 2025,"Vazgen Sargsyan Republican Stadium, Yerevan, Armenia",Armenia,2–0,5–0,2026 FIFA World Cup qualification
+140,6 September 2025,"Vazgen Sargsyan Republican Stadium, Yerevan, Armenia",Armenia,4–0,5–0,2026 FIFA World Cup qualification
+141,9 September 2025,"Puskás Aréna, Budapest, Hungary",Hungary,2–1‡,3–2,2026 FIFA World Cup qualification
+142,14 October 2025,"Estádio José Alvalade, Lisbon, Portugal",Hungary,1–1,2–2,2026 FIFA World Cup qualification
+143,14 October 2025,"Estádio José Alvalade, Lisbon, Portugal",Hungary,2–1,2–2,2026 FIFA World Cup qualification
+144,23 June 2026,"NRG Stadium, Houston, United States",Uzbekistan,1–0,5–0,2026 FIFA World Cup
+145,23 June 2026,"NRG Stadium, Houston, United States",Uzbekistan,3–0,5–0,2026 FIFA World Cup
+146,2 July 2026,"BMO Field, Toronto, Canada",Croatia,1–1‡,2–1,2026 FIFA World Cup

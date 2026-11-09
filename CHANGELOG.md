@@ -1,5 +1,33 @@
 # Changelog
 
+## Has Ronaldo scored on your birthday? (2026-11-09)
+
+### Added
+- **birthday.goldenrun.fun**: pick a month and day and see every official Cristiano Ronaldo goal scored on that date. Each match card shows:
+  - The year, the club or country, and the score.
+  - The competition, the stadium and home/away.
+  - The goal count, with a brace, hat-trick or poker badge.
+  - The goal minutes, where known.
+  - Kit-colour stripes stand in for crests. No logos or photos are used.
+- **Dates with no goal** get a "Not yet." result and links to the nearest dates he did score on. Example: August 2 → July 31 / August 3.
+- **Built for sharing on X:**
+  - Every date has its own URL (`/aug-2`), server-rendered title and description, and a pre-rendered 1200×630 card (`/birthday/og/<slug>.jpg`, 367 cards generated at build).
+  - Buttons: Share on X (pre-filled post), Share card (on-device image) and Copy link.
+- **Data:** 985 official goals (Sporting → Al Nassr plus 146 for Portugal), up to 29 Oct 2026.
+  - Stored in D1 (`cr7_goals`, migration `0003`).
+  - Served by `GET /api/v1/birthday/:mmdd`, which is cached and public.
+  - Built by `scripts/birthday/build-data.mjs` from source CSVs in `data/birthday/`.
+  - The build cross-checks the sources: 985 total, 146 Portugal goals, and an exact per-date match where the club dataset and the recent-goals source overlap (124 dates).
+  - Stadiums match published per-stadium totals.
+  - Every Al Nassr away and neutral venue was verified match by match.
+  - Club friendlies are excluded. Portugal goals before October 2017 have no minutes yet.
+- **Routing:**
+  - The Worker serves the subdomain by hostname, so it's a second custom domain on the same Worker.
+  - `goldenrun.fun/birthday/*` redirects (301) to the subdomain.
+  - Local dev serves it at `/birthday`.
+  - The subdomain skips the account bootstrap.
+- Unit and integration tests for date parsing, the dataset, share text length, routing and the API.
+
 ## Apache 2.0 licence (2026-10-29)
 
 - The source code is now licensed under the **Apache License 2.0**:
